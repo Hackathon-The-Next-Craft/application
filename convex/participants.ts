@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import { internalQuery, mutation, query } from "./_generated/server";
 import { requireCandidate, requireInterviewer, resolveCandidate } from "./lib/auth";
 import { activeParticipants } from "./lib/participants";
 
@@ -12,6 +12,7 @@ export const join = mutation({
     displayName: v.string(),
     consentAudio: v.boolean(),
     consentTranscript: v.boolean(),
+    consentCamera: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const session = await ctx.db
@@ -43,6 +44,9 @@ export const join = mutation({
       consent: {
         audio: args.consentAudio,
         transcript: args.consentTranscript,
+        // La cámara es opcional (PRD §13.3): sin ella el candidato entra igual,
+        // solo que el entrevistador no lo ve.
+        camera: args.consentCamera ?? false,
         acceptedAt: now,
         noticeVersion: NOTICE_VERSION,
       },
@@ -167,5 +171,19 @@ export const remove = mutation({
       at: Date.now(),
       payload: { displayName: participant.displayName, reason },
     });
+  },
+});
+
+/** Para convex/media.ts: una action no tiene ctx.db y necesita resolver el token. */
+export const forMedia = internalQuery({
+  args: { joinToken: v.string() },
+  handler: async (ctx, { joinToken }) => {
+    const { participant, session } = await requireCandidate(ctx, joinToken);
+    return {
+      participantId: participant._id,
+      sessionId: session._id,
+      displayName: participant.displayName,
+      cameraConsent: participant.consent.camera === true,
+    };
   },
 });

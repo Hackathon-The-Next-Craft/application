@@ -38,7 +38,7 @@ ya viene con el tipo correcto. Esta tabla es para saber **qué existe** y **qué
 | Función | Tipo | Pantalla |
 |---|---|---|
 | `sessions.publicInfo` | query | `/join/[code]` antes de entrar |
-| `participants.join` | mutation | `/join/[code]` → devuelve el `joinToken` |
+| `participants.join` | mutation | `/join/[code]` → devuelve el `joinToken`. Acepta `consentCamera` (opcional) |
 | `participants.me` | query | lobby + room |
 | `participants.setReady` | mutation | preflight de micrófono |
 | `participants.requestHelp` | mutation | room → botón "pedir ayuda" |
@@ -47,6 +47,37 @@ ya viene con el tipo correcto. Esta tabla es para saber **qué existe** y **qué
 | `workspaces.save` | mutation | room → autosave, **debounce 400ms** |
 | `workspaces.recordRun` | mutation | room → después de ejecutar en el navegador |
 | `workspaces.submit` | mutation | room → "Enviar" |
+
+## Video (LiveKit) — convive con Vapi
+
+LiveKit lleva **únicamente la cámara**. El micrófono es de Vapi. Esa frontera se
+impone en el servidor: el token solo concede `canPublishSources: ["camera"]`, así
+que aunque el cliente pidiera publicar audio, LiveKit lo rechaza. Sin eso los dos
+SDKs capturarían el micro a la vez y habría eco.
+
+| Función | Tipo | Quién |
+|---|---|---|
+| `media.candidateToken` | **action** | Candidato (`joinToken`). Publica cámara, **no se suscribe a nadie** |
+| `media.interviewerToken` | **action** | Entrevistador. Se suscribe a todos, **no publica** |
+
+El aislamiento de FR-03 vive en el token, no en la UI: el `canSubscribe: false`
+del candidato hace imposible que vea a sus pares aunque manipule el cliente. La
+identidad (`participant_<id>`) la firma el servidor.
+
+Componentes de partida, pensados para rediseñarse:
+`components/candidate/CameraPublisher.tsx` y
+`components/interviewer/CameraStage.tsx` (exporta `CameraStage` y `CandidateVideo`).
+
+La cámara **nunca bloquea la entrevista**: sin consentimiento o sin LiveKit
+configurado, los componentes se apagan solos y todo lo demás sigue igual.
+
+Configuración, una sola vez por deployment:
+
+```
+npx convex env set LIVEKIT_API_KEY <key>
+npx convex env set LIVEKIT_API_SECRET <secret>
+npx convex env set LIVEKIT_URL wss://<proyecto>.livekit.cloud
+```
 
 ## Contrato de un reto con el ejecutor de código
 

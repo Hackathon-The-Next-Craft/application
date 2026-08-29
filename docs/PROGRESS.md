@@ -42,6 +42,7 @@ es prioridad sobre cualquier otra cosa.
 - [x] Contrato del reto con el runner (`entryPoint`) y ciclo de vida validado
 - [ ] Detección de "fallo de entorno" vs "atascado" — **P2**
 - [x] Disparar reportes automáticamente al cerrar la sesión
+- [x] Video con LiveKit conviviendo con Vapi (falta la key para probarlo en vivo)
 - [ ] Webhook de Vapi para el audio — **P2**
 
 ## Anjali — frontend (`app/`, `components/`, `lib/`)
@@ -87,7 +88,8 @@ No re-litigar sin una razón nueva.
 | Candidatos sin cuenta, con `joinToken` | Registro en una entrevista es fricción absurda |
 | Código se ejecuta en el navegador | Sandbox real no cabe en un hackathon; se dice en el pitch |
 | Un solo reto por sesión, no dos | El PRD permite dos; uno alcanza para demostrar |
-| Audio es P2, con Vapi | El diferenciador es el mosaico + la evidencia, no la llamada |
+| Audio con Vapi, video con LiveKit | Vapi no hace video: usa códecs de audio comprimido. LiveKit lleva solo la cámara y Vapi solo el micro; la frontera se impone en el token, no por convención |
+| Cámara sí, análisis facial no | El PRD §4.1 la incluye y §13.3 la deja opcional. Lo prohibido es analizarla. "Tenemos cámara y deliberadamente no la analizamos" es mejor argumento que no tenerla |
 | Sin cámara, sin transcripción | Fuera de alcance y con riesgo de privacidad |
 
 ## Bitácora

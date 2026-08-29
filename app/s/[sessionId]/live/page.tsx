@@ -8,6 +8,7 @@ import type { Doc, Id } from "@/convex/_generated/dataModel";
 import { AlertsPanel } from "@/components/interviewer/AlertsPanel";
 import { FocusPanel } from "@/components/interviewer/FocusPanel";
 import { ParticipantCard } from "@/components/interviewer/ParticipantCard";
+import { CameraStage } from "@/components/interviewer/CameraStage";
 import { SessionControls } from "@/components/interviewer/SessionControls";
 import { AppHeader, NAV_LINK } from "@/components/ui/AppHeader";
 import { Chip, type Tone } from "@/components/ui/Chip";
@@ -96,9 +97,13 @@ export default function LivePage({ params }: PageProps<"/s/[sessionId]/live"> ) 
               </p>
             </div>
           ) : (
-            <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-              {participantes.map((participante) => (
-                <ParticipantCard
+            // CameraStage abre una sola conexión para todo el mosaico; cada
+            // tarjeta saca de ahí el recuadro de su candidato. Si LiveKit no
+            // está configurado se aparta y el mosaico sigue igual.
+            <CameraStage sessionId={sessionId}>
+              <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                {participantes.map((participante) => (
+                  <ParticipantCard
                   key={participante._id}
                   participante={participante}
                   enfocado={enfocado === participante._id}
@@ -109,7 +114,8 @@ export default function LivePage({ params }: PageProps<"/s/[sessionId]/live"> ) 
                   }
                 />
               ))}
-            </ul>
+              </ul>
+            </CameraStage>
           )}
 
           {enfocado !== null && nombreEnfocado !== null && (
