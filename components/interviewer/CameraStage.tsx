@@ -52,6 +52,12 @@ export function CameraStage({
 
   return (
     <LiveKitRoom
+      // display: contents. LiveKitRoom renderiza un <div> alrededor de sus
+      // hijos, y ese div rompe el layout de quien lo envuelva: en la pantalla
+      // de foco dejaba la rejilla en 87px en vez de 400, porque el flex-1 ya
+      // no miraba a su padre flex. Con esto el envoltorio desaparece de la
+      // maquetación y solo quedan los hijos, que es lo que se espera de él.
+      className="contents"
       token={cred.token}
       serverUrl={cred.url}
       connect

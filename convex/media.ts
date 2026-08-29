@@ -93,8 +93,13 @@ export const interviewerToken = action({
   args: { sessionId: v.id("sessions") },
   handler: async (ctx, { sessionId }): Promise<MediaToken> => {
     await ctx.runQuery(internal.sessions.assertInterviewer, { sessionId });
+    // Identidad única por conexión, no por sesión. LiveKit expulsa al
+    // participante anterior cuando entra otro con la misma identidad, así que
+    // con un identificador fijo el mosaico y la pantalla de foco abiertos a la
+    // vez se echaban el uno al otro. El entrevistador no publica nada, así que
+    // tener varias conexiones observando no molesta a nadie.
     return await mint(
-      `interviewer_${sessionId}`,
+      `interviewer_${sessionId}_${crypto.randomUUID().slice(0, 8)}`,
       "Entrevistador",
       roomName(sessionId),
       { canPublish: false, canSubscribe: true },
