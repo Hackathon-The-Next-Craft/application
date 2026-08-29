@@ -1,0 +1,80 @@
+# Project-local sources and files
+.local/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.DocumentRevisions-V100/
+.fseventsd/
+.Spotlight-V100/
+.TemporaryItems/
+.Trashes/
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux and file managers
+.directory
+.Trash-*/
+.nfs*
+
+# IDEs and editors
+.idea/
+*.iml
+*.ipr
+*.iws
+.fleet/
+.vscode/
+*.swp
+*.swo
+*~
+.#*
+#*#
+
+# Temporary files, backups, and logs
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+*.rej
+*.log
+
+# Common cache
+.cache/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Node
+node_modules/
+dist/
+.npm/
+.pnpm-store/
+.yarn/
+.yarn/cache/
+.yarn/install-state.gz
+.yarn/unplugged/
+
+# Env files
+.env
+.env.*
+!.env.example
+!.env.*.example
