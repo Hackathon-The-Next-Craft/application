@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { internalMutation, mutation, query } from "./_generated/server";
 import { requireInterviewer } from "./lib/auth";
+import { activeParticipants } from "./lib/participants";
 import { classify } from "./lib/progress";
 
 export const listForSession = query({
@@ -33,12 +34,9 @@ export const sweepStuck = internalMutation({
       .collect();
 
     for (const session of live) {
-      const participants = await ctx.db
-        .query("participants")
-        .withIndex("by_session", (q) => q.eq("sessionId", session._id))
-        .collect();
-
-      for (const p of participants) {
+      // Un retirado seguia acumulando alertas de inactividad para siempre:
+      // exactamente el fantasma que retirarlo deberia haber eliminado.
+      for (const p of await activeParticipants(ctx, session._id)) {
         await classify(ctx, p._id);
         const fresh = await ctx.db.get(p._id);
         if (!fresh || fresh.progress !== "stuck") continue;

@@ -18,6 +18,7 @@ import type * as crons from "../crons.js";
 import type * as events from "../events.js";
 import type * as http from "../http.js";
 import type * as lib_auth from "../lib/auth.js";
+import type * as lib_participants from "../lib/participants.js";
 import type * as lib_progress from "../lib/progress.js";
 import type * as notes from "../notes.js";
 import type * as participants from "../participants.js";
@@ -44,6 +45,7 @@ declare const fullApi: ApiFromModules<{
   events: typeof events;
   http: typeof http;
   "lib/auth": typeof lib_auth;
+  "lib/participants": typeof lib_participants;
   "lib/progress": typeof lib_progress;
   notes: typeof notes;
   participants: typeof participants;
