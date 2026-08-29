@@ -43,17 +43,23 @@ export const sweepStuck = internalMutation({
         const fresh = await ctx.db.get(p._id);
         if (!fresh || fresh.progress !== "stuck") continue;
 
+        // "stuck" tiene dos causas y el entrevistador las atiende distinto:
+        // quedarse quieto no es lo mismo que pelear con el mismo error.
+        const type = fresh.progressReason.startsWith("Sin actividad")
+          ? ("inactivity" as const)
+          : ("repeated_error" as const);
+
         // Dedup: no repetir la misma alerta dentro de 3 minutos. PRD §8.1.
         const recent = await ctx.db
           .query("alerts")
           .withIndex("by_session", (q) =>
             q.eq("sessionId", session._id).gt("at", Date.now() - 180_000))
           .collect();
-        if (recent.some((a) => a.participantId === p._id && a.type === "inactivity")) continue;
+        if (recent.some((a) => a.participantId === p._id && a.type === type)) continue;
 
         await ctx.db.insert("alerts", {
           sessionId: session._id, participantId: p._id,
-          type: "inactivity", reason: fresh.progressReason, at: Date.now(),
+          type, reason: fresh.progressReason, at: Date.now(),
         });
       }
     }
