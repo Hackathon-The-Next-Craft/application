@@ -134,7 +134,7 @@ export function Room({ code, joinToken }: { code: string; joinToken: string }) {
                 workspaceId={workspace._id}
                 language={reto.language}
                 codigo={codigo || workspace.code}
-                starterCode={reto.starterCode}
+                entryPoint={reto.entryPoint}
                 tests={reto.tests}
                 yaEnviado={workspace.submittedAt !== undefined}
                 bloqueado={datos.paused}

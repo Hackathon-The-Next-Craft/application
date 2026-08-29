@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useMutation } from "convex/react";
+import { useState } from "react";
 import type { FunctionReturnType } from "convex/server";
-import type { api } from "@/convex/_generated/api";
+import { api } from "@/convex/_generated/api";
 import type { Doc } from "@/convex/_generated/dataModel";
 import { ProgressBadge } from "./ProgressBadge";
 
@@ -39,6 +41,8 @@ export function ParticipantCard({
   onEnfocar: () => void;
 }) {
   const { lastRun } = participante;
+  const remove = useMutation(api.participants.remove);
+  const [confirmandoRetiro, setConfirmandoRetiro] = useState(false);
 
   return (
     <li
@@ -85,7 +89,44 @@ export function ParticipantCard({
         >
           Reporte
         </Link>
+        <button
+          type="button"
+          onClick={() => setConfirmandoRetiro(true)}
+          className="ml-auto text-sm text-zinc-500 underline underline-offset-4 hover:text-red-700"
+        >
+          Retirar
+        </button>
       </div>
+
+      {confirmandoRetiro && (
+        <div className="mt-3 rounded-md border border-red-200 bg-red-50 p-3">
+          <p className="text-sm text-red-900">
+            {participante.displayName} dejará de contar para el cupo y perderá
+            el acceso. Su trabajo y sus eventos se conservan.
+          </p>
+          <div className="mt-2 flex gap-2">
+            <button
+              type="button"
+              onClick={() =>
+                remove({
+                  sessionId: participante.sessionId,
+                  participantId: participante._id,
+                })
+              }
+              className="rounded-md bg-red-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-800"
+            >
+              Sí, retirar
+            </button>
+            <button
+              type="button"
+              onClick={() => setConfirmandoRetiro(false)}
+              className="rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm font-medium hover:bg-zinc-100"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )}
     </li>
   );
 }

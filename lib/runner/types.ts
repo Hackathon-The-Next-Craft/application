@@ -1,19 +1,15 @@
 /**
  * Contrato de ejecución en el navegador.
  *
- * ⚠️ PROVISIONAL — falta acuerdo con Salim y Alejandro.
+ * Documentado en docs/api-contract.md — no se deduce del código. La solución
+ * es siempre una función con exactamente un argumento que devuelve un valor:
+ * nada de leer stdin ni imprimir.
  *
- * `challenges.tests` trae `{ name, input, expected }` como strings, pero
- * nadie definió su formato ni qué función invocar. Mientras tanto, aquí se
- * asume:
- *
- *   input     JSON del ÚNICO argumento.  "[]" → f([])
- *   expected  JSON del valor de retorno esperado.
- *             El literal "throws" significa "debe lanzar".
- *   igualdad  Comparación profunda, con las claves de los objetos ordenadas.
- *
- * Lo que falta de verdad es un campo `entryPoint` en `challenges`. Mientras no
- * exista, se deduce del `starterCode` (ver entryPoint.ts).
+ *   entryPoint  Nombre exacto de la función a invocar. Viene del campo
+ *               `entryPoint` del reto; NO se adivina leyendo el starterCode.
+ *   input       JSON del único argumento.  "[3,1,2]"
+ *   expected    JSON del valor de retorno esperado.  "[1,2,3]"
+ *   igualdad    Comparación profunda, con las claves de los objetos ordenadas.
  */
 
 export type CasoDePrueba = {
@@ -31,7 +27,7 @@ export type ResultadoDeCaso = {
 
 export type PeticionDeEjecucion = {
   code: string;
-  entryPoint: string | null;
+  entryPoint: string;
   tests: CasoDePrueba[];
 };
 

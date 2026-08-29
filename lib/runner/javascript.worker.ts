@@ -33,11 +33,6 @@ self.onmessage = (event: MessageEvent<PeticionDeEjecucion>) => {
   };
 
   try {
-    if (entryPoint === null) {
-      throw new Error(
-        "No se pudo determinar qué función ejecutar a partir del código inicial del reto.",
-      );
-    }
     const fn = resolverFuncion(code, entryPoint);
     for (const test of tests) {
       resultados.push(ejecutarCaso(fn, test));
