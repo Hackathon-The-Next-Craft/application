@@ -16,12 +16,29 @@ import { z } from "zod";
  * de tumbar una entrevista en vivo, bajamos al siguiente. Todos manejan JSON
  * estructurado, así que el contrato de salida no cambia.
  */
-export const MODELS = ["gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash"];
+export const MODELS = [
+  "gemini-3.7-flash",
+  "gemini-3.6-flash",
+  "gemini-3.5-flash",
+  "gemini-3.5-flash-lite",
+  "gemini-3.1-flash-lite",
+  "gemini-2.5-flash",
+  "gemini-2.5-flash-lite",
+];
 export const PROMPT_VERSION = "gemini-flash/v1";
 
-/** El modelo devuelve 503 cuando está saturado. Pasa, y no queremos que eso
- *  tumbe una entrevista en vivo: reintentamos con espera creciente. */
-const RETRYABLE = [429, 500, 502, 503, 504];
+/**
+ * 503 y 5xx son saturación pasajera: esperar un momento suele bastar.
+ *
+ * 429 NO. Es cuota agotada, y en el plan gratuito es por DÍA y por modelo (20
+ * peticiones). Reintentar ahí es contraproducente por partida doble: no se va
+ * a arreglar en 800ms, y cada intento fallido sigue contando contra la cuota.
+ * Antes 429 estaba aquí dentro, así que un solo reporte podía quemar nueve
+ * peticiones agotando la cuota más rápido. Ahora salta directo al siguiente
+ * modelo, que tiene su propia cuota independiente.
+ */
+const REINTENTABLES = [500, 502, 503, 504];
+const SIN_CUOTA = 429;
 const MAX_ATTEMPTS = 3;
 
 function statusOf(error: unknown): number | null {
@@ -54,6 +71,7 @@ export async function generateJson<T extends z.ZodType>(opts: {
 
   let text: string | undefined;
   let lastError: unknown;
+  const sinCuota: string[] = [];
 
   outer: for (const model of MODELS) {
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
@@ -74,15 +92,29 @@ export async function generateJson<T extends z.ZodType>(opts: {
       } catch (error) {
         lastError = error;
         const status = statusOf(error);
+        // Cuota agotada en este modelo: al siguiente, sin esperar ni reintentar.
+        if (status === SIN_CUOTA) {
+          sinCuota.push(model);
+          break;
+        }
         // Un error que no es de saturación (key inválida, esquema rechazado)
         // se propaga tal cual: reintentarlo solo pierde tiempo.
-        if (status === null || !RETRYABLE.includes(status)) throw error;
+        if (status === null || !REINTENTABLES.includes(status)) throw error;
         if (attempt < MAX_ATTEMPTS) await sleep(400 * 2 ** (attempt - 1));
       }
     }
     // Este modelo está saturado: probamos el siguiente.
   }
   if (text === undefined) {
+    // Un volcado de ApiError no le dice nada a quien lee el reporte.
+    if (sinCuota.length === MODELS.length) {
+      throw new Error(
+        "Se agotó la cuota diaria de la API de Gemini en todos los modelos " +
+          "disponibles. El plan gratuito permite 20 peticiones por día y por " +
+          "modelo. Hay que activar facturación en la API key, o esperar a que " +
+          "se reinicie la cuota.",
+      );
+    }
     throw lastError ?? new Error("No se pudo obtener respuesta de ningún modelo");
   }
   if (!text) throw new Error("El modelo devolvió una respuesta vacía");
