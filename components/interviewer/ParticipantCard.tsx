@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { FunctionReturnType } from "convex/server";
 import type { api } from "@/convex/_generated/api";
 import type { Doc } from "@/convex/_generated/dataModel";
@@ -68,13 +69,21 @@ export function ParticipantCard({
         {participante.currentCode || "// sin código todavía"}
       </pre>
 
-      <button
-        type="button"
-        onClick={onEnfocar}
-        className="mt-3 self-start rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium hover:bg-zinc-100"
-      >
-        {enfocado ? "Enfocado" : "Enfocar"}
-      </button>
+      <div className="mt-3 flex items-center gap-3">
+        <button
+          type="button"
+          onClick={onEnfocar}
+          className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium hover:bg-zinc-100"
+        >
+          {enfocado ? "Enfocado" : "Enfocar"}
+        </button>
+        <Link
+          href={`/s/${participante.sessionId}/report/${participante._id}`}
+          className="text-sm text-zinc-500 underline underline-offset-4 hover:text-zinc-900"
+        >
+          Reporte
+        </Link>
+      </div>
     </li>
   );
 }
