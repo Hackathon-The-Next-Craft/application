@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { api } from "@/convex/_generated/api";
 import type { Doc } from "@/convex/_generated/dataModel";
 import { NewSessionForm } from "@/components/interviewer/NewSessionForm";
-import { SessionCard } from "@/components/interviewer/SessionCard";
+import { SESSION_ROW_GRID, SessionCard } from "@/components/interviewer/SessionCard";
 import { AppHeader } from "@/components/ui/AppHeader";
 import { Button } from "@/components/ui/Button";
 
@@ -151,11 +151,33 @@ export default function DashboardPage() {
               body="Ninguna sesión coincide con este filtro. Prueba con otra pestaña o limpia la búsqueda."
             />
           ) : (
-            <ul className="overflow-hidden rounded-2xl border border-ink-200 bg-white">
-              {visible.map((session) => (
-                <SessionCard key={session._id} session={session} />
-              ))}
-            </ul>
+            <div className="overflow-hidden rounded-2xl border border-ink-200 bg-white">
+              <div
+                className={`grid ${SESSION_ROW_GRID} items-center gap-x-4 border-b border-ink-200 bg-ink-25 px-5 py-2.5`}
+                aria-hidden
+              >
+                <span className="font-mono text-label uppercase tracking-wide text-ink-400">
+                  Sesión
+                </span>
+                <span className="justify-self-start font-mono text-label uppercase tracking-wide text-ink-400">
+                  Estado
+                </span>
+                <span className="font-mono text-label uppercase tracking-wide text-ink-400">
+                  Código
+                </span>
+                <span className="font-mono text-label uppercase tracking-wide text-ink-400">
+                  Fecha
+                </span>
+                <span />
+                <span />
+                <span />
+              </div>
+              <ul>
+                {visible.map((session) => (
+                  <SessionCard key={session._id} session={session} />
+                ))}
+              </ul>
+            </div>
           )}
         </div>
 

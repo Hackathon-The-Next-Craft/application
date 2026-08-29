@@ -24,6 +24,7 @@ import type * as participants from "../participants.js";
 import type * as reports from "../reports.js";
 import type * as seed from "../seed.js";
 import type * as sessions from "../sessions.js";
+import type * as users from "../users.js";
 import type * as workspaces from "../workspaces.js";
 
 import type {
@@ -49,6 +50,7 @@ declare const fullApi: ApiFromModules<{
   reports: typeof reports;
   seed: typeof seed;
   sessions: typeof sessions;
+  users: typeof users;
   workspaces: typeof workspaces;
 }>;
 

@@ -31,6 +31,29 @@ const STATUS_TONE: Record<Status, Tone> = {
   closed: "neutral",
 };
 
+// Mismo filete de 3px que usan los paneles de estado (nunca fondo completo
+// de fila): es lo que en la tabla de referencia distingue "En vivo" de un
+// vistazo sin necesitar una franja de color de pared a pared.
+const STATUS_BORDER: Record<Status, string> = {
+  draft: "border-l-ink-200",
+  ready: "border-l-advance",
+  live: "border-l-fail",
+  paused: "border-l-stuck",
+  closing: "border-l-explore",
+  closed: "border-l-ink-200",
+};
+
+// El orden de columnas y sus anchos son compartidos con el encabezado de la
+// tabla en el dashboard: si cambian aquí, cambian ahí.
+//
+// Cada fila es su propio grid (una <li> por sesión), así que una columna
+// "auto" se mide con el contenido de ESA fila nada más: dos filas con
+// etiquetas de distinto largo terminan con columnas de distinto ancho y la
+// tabla se ve torcida. Por eso todas las columnas, salvo el título, tienen
+// un ancho fijo — así miden lo mismo en cualquier fila y quedan rectas.
+export const SESSION_ROW_GRID =
+  "grid-cols-[minmax(0,1fr)_128px_128px_104px_88px_120px_36px]";
+
 // La acción que toca según dónde esté la sesión. La otra sigue disponible
 // como enlace secundario: ninguna ruta deja de ser alcanzable.
 // Las etiquetas son de una sola palabra a propósito: en dos cabían mal y el
@@ -130,7 +153,9 @@ export function SessionCard({ session }: { session: Doc<"sessions"> }) {
   }
 
   return (
-    <li className="grid grid-cols-[minmax(0,1fr)_auto_128px_104px_auto] items-center gap-x-5 border-b border-ink-200 px-5 py-4 last:border-b-0 hover:bg-ink-25">
+    <li
+      className={`grid ${SESSION_ROW_GRID} items-center gap-x-4 border-b border-l-[3px] border-b-ink-200 px-5 py-4 last:border-b-0 hover:bg-ink-25 ${STATUS_BORDER[session.status]}`}
+    >
       <div className="min-w-0">
         <h3 className="truncate text-body-sm font-semibold text-ink-900">
           {session.title}
@@ -163,50 +188,48 @@ export function SessionCard({ session }: { session: Doc<"sessions"> }) {
         {formatDate(session._creationTime)}
       </p>
 
-      <div className="flex shrink-0 items-center gap-1">
-        <Link
-          href={secondaryHref}
-          className="rounded-md px-2.5 py-1.5 text-meta whitespace-nowrap text-ink-500 underline underline-offset-4 hover:text-iris-600"
-        >
-          {secondaryHref.endsWith("/live") ? "En vivo" : "Preparar"}
-        </Link>
+      <Link
+        href={secondaryHref}
+        className="justify-self-end truncate rounded-md px-2.5 py-1.5 text-meta text-ink-500 underline underline-offset-4 hover:text-iris-600"
+      >
+        {secondaryHref.endsWith("/live") ? "En vivo" : "Preparar"}
+      </Link>
 
-        <Link
-          href={primaryHref}
-          className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md border border-ink-200 px-3.5 font-sans text-[13px] font-semibold leading-4 text-iris-600 transition-colors duration-[120ms] hover:border-iris-200 hover:bg-iris-50"
-        >
-          {primary.label}
-        </Link>
+      <Link
+        href={primaryHref}
+        className="inline-flex h-9 w-full items-center justify-center whitespace-nowrap rounded-md border border-ink-200 px-3.5 font-sans text-[13px] font-semibold leading-4 text-iris-600 transition-colors duration-[120ms] hover:border-iris-200 hover:bg-iris-50"
+      >
+        {primary.label}
+      </Link>
 
-        <button
-          type="button"
-          onClick={() => setConfirmando(true)}
-          disabled={enVivo}
-          title={
-            enVivo
-              ? "Cierra la sesión antes de eliminarla"
-              : `Eliminar ${session.title}`
-          }
-          aria-label={`Eliminar ${session.title}`}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-md text-ink-400 transition-colors duration-[120ms] hover:bg-fail-bg hover:text-fail-text disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-ink-400"
+      <button
+        type="button"
+        onClick={() => setConfirmando(true)}
+        disabled={enVivo}
+        title={
+          enVivo
+            ? "Cierra la sesión antes de eliminarla"
+            : `Eliminar ${session.title}`
+        }
+        aria-label={`Eliminar ${session.title}`}
+        className="justify-self-center inline-flex h-9 w-9 items-center justify-center rounded-md text-ink-400 transition-colors duration-[120ms] hover:bg-fail-bg hover:text-fail-text disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-ink-400"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden
         >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden
-          >
-            <path d="M2.5 4h11M6 4V2.75A.75.75 0 0 1 6.75 2h2.5a.75.75 0 0 1 .75.75V4" />
-            <path d="M12.5 4l-.6 8.4a1 1 0 0 1-1 .93H5.1a1 1 0 0 1-1-.93L3.5 4" />
-            <path d="M6.5 7v3.5M9.5 7v3.5" />
-          </svg>
-        </button>
-      </div>
+          <path d="M2.5 4h11M6 4V2.75A.75.75 0 0 1 6.75 2h2.5a.75.75 0 0 1 .75.75V4" />
+          <path d="M12.5 4l-.6 8.4a1 1 0 0 1-1 .93H5.1a1 1 0 0 1-1-.93L3.5 4" />
+          <path d="M6.5 7v3.5M9.5 7v3.5" />
+        </svg>
+      </button>
     </li>
   );
 }
