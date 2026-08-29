@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { use, useState } from "react";
+import { use } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Doc, Id } from "@/convex/_generated/dataModel";
 import { AlertsPanel } from "@/components/interviewer/AlertsPanel";
-import { FocusPanel } from "@/components/interviewer/FocusPanel";
+import { Countdown } from "@/components/interviewer/Countdown";
 import { ParticipantCard } from "@/components/interviewer/ParticipantCard";
 import { CameraStage } from "@/components/interviewer/CameraStage";
 import { SessionControls } from "@/components/interviewer/SessionControls";
@@ -38,19 +38,22 @@ export default function LivePage({ params }: PageProps<"/s/[sessionId]/live"> ) 
   // Reactivo: el código de los candidatos cambia solo, sin polling.
   const session = useQuery(api.sessions.get, { sessionId });
   const participantes = useQuery(api.participants.listForSession, { sessionId });
-  const [enfocado, setEnfocado] = useState<Id<"participants"> | null>(null);
+  const challenges = useQuery(api.challenges.listForSession, { sessionId });
 
   const nombrePorParticipante = new Map(
     (participantes ?? []).map((p) => [p._id as string, p.displayName]),
   );
-  const nombreEnfocado =
-    enfocado === null ? null : (nombrePorParticipante.get(enfocado) ?? "Candidato");
 
   return (
     <div className="flex flex-1 flex-col">
       <AppHeader
         actions={
-          session && <SessionControls sessionId={sessionId} status={session.status} />
+          session && (
+            <div className="flex items-center gap-4">
+              {session.status === "live" && <Countdown endsAt={session.endsAt} />}
+              <SessionControls sessionId={sessionId} status={session.status} />
+            </div>
+          )
         }
       >
         <div className="flex min-w-0 items-center gap-3">
@@ -61,9 +64,17 @@ export default function LivePage({ params }: PageProps<"/s/[sessionId]/live"> ) 
             Sesiones
           </Link>
           <span className="text-ink-400">/</span>
-          <span className="truncate text-body-sm font-semibold text-ink-900">
-            {session?.title ?? "…"}
-          </span>
+          <div className="min-w-0">
+            <p className="truncate text-body-sm font-semibold text-ink-900">
+              {session?.title ?? "…"}
+            </p>
+            {session && (
+              <p className="tabular truncate font-mono text-meta text-ink-500">
+                {(participantes ?? []).length} candidatos ·{" "}
+                {(challenges ?? []).length} retos · {session.durationMinutes} min
+              </p>
+            )}
+          </div>
           {session && (
             <Chip tone={ESTADO_TONO[session.status]} dot={session.status === "live"}>
               {ESTADO[session.status]}
@@ -103,28 +114,10 @@ export default function LivePage({ params }: PageProps<"/s/[sessionId]/live"> ) 
             <CameraStage sessionId={sessionId}>
               <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 {participantes.map((participante) => (
-                  <ParticipantCard
-                  key={participante._id}
-                  participante={participante}
-                  enfocado={enfocado === participante._id}
-                  onEnfocar={() =>
-                    setEnfocado(
-                      enfocado === participante._id ? null : participante._id,
-                    )
-                  }
-                />
-              ))}
+                  <ParticipantCard key={participante._id} participante={participante} />
+                ))}
               </ul>
             </CameraStage>
-          )}
-
-          {enfocado !== null && nombreEnfocado !== null && (
-            <FocusPanel
-              sessionId={sessionId}
-              participantId={enfocado}
-              nombre={nombreEnfocado}
-              onCerrar={() => setEnfocado(null)}
-            />
           )}
         </main>
 
@@ -132,7 +125,6 @@ export default function LivePage({ params }: PageProps<"/s/[sessionId]/live"> ) 
           sessionId={sessionId}
           nombrePorParticipante={nombrePorParticipante}
           participantesCargados={participantes !== undefined}
-          onEnfocar={setEnfocado}
         />
       </div>
     </div>

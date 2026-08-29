@@ -3,25 +3,7 @@
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
-
-const TIPO: Record<string, string> = {
-  "participant.joined": "Entró a la sesión",
-  "participant.left": "Salió",
-  "participant.ready": "Se marcó listo",
-  "session.started": "Sesión iniciada",
-  "session.paused": "Sesión pausada",
-  "session.resumed": "Sesión reanudada",
-  "session.closed": "Sesión cerrada",
-  "code.checkpoint": "Guardó código",
-  "code.run": "Ejecutó",
-  "test.result": "Resultado de tests",
-  "challenge.switched": "Cambió de reto",
-  "challenge.submitted": "Envió su solución",
-  "help.requested": "Pidió ayuda",
-  "help.given": "Se le dio ayuda",
-  "note.added": "Nota del entrevistador",
-  "state.changed": "Cambio de estado",
-};
+import { EVENT_LABEL } from "./eventLabels";
 
 function hora(at: number) {
   return new Date(at).toLocaleTimeString("es", {
@@ -65,7 +47,7 @@ export function EvidenceList({
           <li key={evento._id} className="rounded-md border border-ink-200 bg-ink-25 p-3">
             <div className="flex items-baseline justify-between gap-2">
               <span className="text-meta font-medium">
-                {TIPO[evento.type] ?? evento.type}
+                {EVENT_LABEL[evento.type] ?? evento.type}
               </span>
               <span className="text-meta text-ink-500">{hora(evento.at)}</span>
             </div>

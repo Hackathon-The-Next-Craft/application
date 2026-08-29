@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Doc, Id } from "@/convex/_generated/dataModel";
@@ -31,13 +32,11 @@ export function AlertsPanel({
   sessionId,
   nombrePorParticipante,
   participantesCargados,
-  onEnfocar,
 }: {
   sessionId: Id<"sessions">;
   nombrePorParticipante: Map<string, string>;
   /** false mientras la lista de participantes carga: sin esto se ocultaría todo. */
   participantesCargados: boolean;
-  onEnfocar: (participantId: Id<"participants">) => void;
 }) {
   const todas = useQuery(api.alerts.listForSession, { sessionId });
 
@@ -89,14 +88,16 @@ export function AlertsPanel({
                 <p className="mt-0.5 text-body-sm text-ink-500">{alerta.reason}</p>
 
                 <div className="mt-3 flex gap-2">
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant={atendida ? "ghost" : "primary"}
-                    onClick={() => onEnfocar(alerta.participantId)}
+                  <Link
+                    href={`/s/${sessionId}/live/${alerta.participantId}`}
+                    className={`inline-flex h-[30px] items-center justify-center rounded-sm px-3 font-sans text-[12px] font-semibold leading-[14px] ${
+                      atendida
+                        ? "border border-ink-200 bg-transparent text-iris-600 hover:bg-iris-50"
+                        : "bg-iris-600 text-white hover:bg-iris-700"
+                    }`}
                   >
                     Enfocar
-                  </Button>
+                  </Link>
                   {!atendida && (
                     <Button
                       type="button"
