@@ -1,0 +1,152 @@
+<div style="width:1440px;height:1100px;background:var(--bg);display:flex;flex-direction:column;font-family:var(--sans);">
+
+  <header style="height:56px;flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:24px;padding:0 32px;">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <svg width="24" height="24" viewBox="0 0 40 40" fill="none" aria-label="Multix"><path d="M5 10H17C23.5 10 24 20 30 20" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><path d="M5 20H30" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><path d="M5 30H17C23.5 30 24 20 30 20" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><circle cx="31.5" cy="20" r="4.5" fill="var(--mx-iris-600)"></circle></svg>
+      <span style="font-family:var(--display);font-size:18px;font-weight:800;letter-spacing:-0.03em;">Multix</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;font:400 14px/20px var(--sans);">
+      <a href="#" style="color:var(--text-2);">Sesiones</a>
+      <span style="color:var(--mx-n-400);">/</span>
+      <span style="font-weight:500;">Nueva sesión</span>
+    </div>
+    <div style="flex-grow:1;"></div>
+    <span class="mx-chip mx-chip--neutral">Borrador</span>
+  </header>
+
+  <!-- Pasos: dos, no tres -->
+  <div style="height:64px;flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 32px;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="width:26px;height:26px;border-radius:999px;background:var(--mx-iris-600);color:#fff;font:700 13px/16px var(--sans);display:flex;align-items:center;justify-content:center;">1</span>
+      <span style="font:600 14px/20px var(--sans);">Definir la prueba</span>
+    </div>
+    <span style="width:40px;height:1px;background:var(--border);margin:0 4px;"></span>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="width:26px;height:26px;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--text-2);font:700 13px/16px var(--sans);display:flex;align-items:center;justify-content:center;">2</span>
+      <span style="font:400 14px/20px var(--sans);color:var(--text-2);">Revisar y publicar</span>
+    </div>
+  </div>
+
+  <div style="flex-grow:1;display:grid;grid-template-columns:1fr 372px;gap:24px;padding:32px;min-height:0;">
+
+    <section style="display:flex;flex-direction:column;gap:24px;min-height:0;">
+
+      <div>
+        <h1 style="font-size:32px;line-height:36px;letter-spacing:-0.03em;font-weight:800;">¿Qué quieres evaluar?</h1>
+        <p style="font:400 16px/24px var(--sans);color:var(--text-2);margin-top:8px;max-width:62ch;">Cuatro datos y una descripción. Con eso Multix propone los retos, la rúbrica, los aspectos críticos y los casos de prueba, y tú los revisas antes de publicar.</p>
+      </div>
+
+      <!-- Lo único que la IA necesita saber de ti -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:16px;">
+        <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:16px;">
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label class="mx-label">Rol</label>
+            <div style="height:40px;border:1px solid var(--border);border-radius:8px;background:var(--surface);display:flex;align-items:center;padding:0 12px;gap:10px;">
+              <span style="font:400 14px/20px var(--sans);flex-grow:1;">Backend</span>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="var(--mx-n-400)" stroke-width="1.5" stroke-linecap="round"><path d="M4 6.5L8 10.5l4-4"></path></svg>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label class="mx-label">Nivel</label>
+            <div style="height:40px;border:1px solid var(--border);border-radius:8px;background:var(--surface);display:flex;align-items:center;padding:0 12px;gap:10px;">
+              <span style="font:400 14px/20px var(--sans);flex-grow:1;">Junior</span>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="var(--mx-n-400)" stroke-width="1.5" stroke-linecap="round"><path d="M4 6.5L8 10.5l4-4"></path></svg>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label class="mx-label">Lenguaje</label>
+            <div style="height:40px;border:1px solid var(--border);border-radius:8px;background:var(--surface);display:flex;align-items:center;padding:0 12px;gap:10px;">
+              <span style="font:400 14px/20px var(--sans);flex-grow:1;">Python 3.11</span>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="var(--mx-n-400)" stroke-width="1.5" stroke-linecap="round"><path d="M4 6.5L8 10.5l4-4"></path></svg>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <label class="mx-label">Duración</label>
+            <div style="height:40px;border:1px solid var(--border);border-radius:8px;background:var(--surface);display:flex;align-items:center;padding:0 12px;gap:10px;">
+              <span class="num" style="font:400 14px/20px var(--sans);flex-grow:1;">60 min</span>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="var(--mx-n-400)" stroke-width="1.5" stroke-linecap="round"><path d="M4 6.5L8 10.5l4-4"></path></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- El campo que de verdad alimenta a la IA -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:8px;flex-grow:1;min-height:0;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <h2 style="font-size:20px;line-height:26px;letter-spacing:-0.02em;flex-grow:1;">Describe la prueba</h2>
+          <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);">en tus palabras</span>
+        </div>
+        <p style="font:400 13px/18px var(--sans);color:var(--text-2);margin-bottom:8px;">Di qué quieres observar, no cómo redactar el enunciado. Cuanto más concreta sea la señal que buscas, mejor será la rúbrica.</p>
+
+        <div style="border:1.5px solid var(--mx-iris-600);border-radius:8px;background:var(--surface);padding:16px;flex-grow:1;min-height:200px;box-shadow:var(--mx-focus-ring);">
+          <p style="font:400 16px/24px var(--sans);max-width:62ch;">Quiero ver si sabe elegir la estructura de datos correcta bajo presión de tiempo. Un problema de streaming donde la solución ingenua es O(n²) y la buena es O(n) con un set. Que el caso de la lista vacía y el de «sin repetidos» sean trampas reales, no adornos.<span style="display:inline-block;width:1.5px;height:18px;background:var(--mx-iris-600);vertical-align:-3px;margin-left:2px;"></span></p>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap;">
+          <span class="mx-label" style="margin-right:4px;">Ejemplos</span>
+          <span style="font:400 13px/18px var(--sans);color:var(--mx-iris-700);background:var(--mx-iris-50);border:1px solid var(--mx-iris-200);border-radius:999px;padding:5px 12px;cursor:pointer;">Depurar código ajeno</span>
+          <span style="font:400 13px/18px var(--sans);color:var(--mx-iris-700);background:var(--mx-iris-50);border:1px solid var(--mx-iris-200);border-radius:999px;padding:5px 12px;cursor:pointer;">Diseñar un modelo de datos</span>
+          <span style="font:400 13px/18px var(--sans);color:var(--mx-iris-700);background:var(--mx-iris-50);border:1px solid var(--mx-iris-200);border-radius:999px;padding:5px 12px;cursor:pointer;">Optimizar una consulta lenta</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lateral -->
+    <aside style="display:flex;flex-direction:column;gap:16px;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:16px;">
+        <h2 style="font-size:20px;line-height:26px;letter-spacing:-0.02em;">Multix propondrá</h2>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--mx-iris-600)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:3px;"><path d="M3 8.4l3 3L13 5"></path></svg>
+            <p style="font:400 14px/20px var(--sans);">Dos retos con enunciado y código inicial</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--mx-iris-600)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:3px;"><path d="M3 8.4l3 3L13 5"></path></svg>
+            <p style="font:400 14px/20px var(--sans);">Rúbrica con pesos y aspectos críticos</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--mx-iris-600)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:3px;"><path d="M3 8.4l3 3L13 5"></path></svg>
+            <p style="font:400 14px/20px var(--sans);">Casos públicos y ocultos, y solución de referencia</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--mx-iris-600)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:3px;"><path d="M3 8.4l3 3L13 5"></path></svg>
+            <p style="font:400 14px/20px var(--sans);">Guía de ayuda solo para ti</p>
+          </div>
+        </div>
+
+        <div style="height:1px;background:var(--border);"></div>
+
+        <p style="font:400 13px/18px var(--sans);color:var(--text-2);">Todo se puede editar en el paso 2. Nada llega al candidato sin que tú lo apruebes.</p>
+
+        <button style="height:44px;border:none;background:var(--mx-iris-600);border-radius:10px;font:600 15px/18px var(--sans);color:#fff;cursor:pointer;">Generar propuesta</button>
+        <button style="height:36px;border:1px solid var(--border);background:var(--surface);border-radius:8px;font:600 13px/16px var(--sans);color:var(--mx-iris-600);cursor:pointer;">Guardar borrador</button>
+      </div>
+
+      <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <span class="mx-label">Fijado por ahora</span>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:12px;">
+            <span style="font:400 13px/18px var(--sans);color:var(--text-2);width:100px;flex-shrink:0;">Candidatos</span>
+            <span class="num" style="font:500 13px/18px var(--sans);flex-grow:1;">3 · máximo del MVP</span>
+          </div>
+          <div style="display:flex;gap:12px;">
+            <span style="font:400 13px/18px var(--sans);color:var(--text-2);width:100px;flex-shrink:0;">Retos</span>
+            <span class="num" style="font:500 13px/18px var(--sans);flex-grow:1;">2 · según la duración</span>
+          </div>
+          <div style="display:flex;gap:12px;">
+            <span style="font:400 13px/18px var(--sans);color:var(--text-2);width:100px;flex-shrink:0;">Internet</span>
+            <span style="font:500 13px/18px var(--sans);flex-grow:1;">Bloqueado en el sandbox</span>
+          </div>
+          <div style="display:flex;gap:12px;">
+            <span style="font:400 13px/18px var(--sans);color:var(--text-2);width:100px;flex-shrink:0;">Título</span>
+            <span style="font:500 13px/18px var(--sans);flex-grow:1;">Backend Junior · Python</span>
+          </div>
+        </div>
+        <p style="font:400 13px/18px var(--sans);color:var(--text-2);">Se ajustan en el paso 2 si hace falta. No te los preguntamos ahora.</p>
+      </div>
+
+      <div style="flex-grow:1;"></div>
+    </aside>
+
+  </div>
+</div>

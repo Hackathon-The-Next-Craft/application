@@ -104,3 +104,6 @@ dist/
 .env.*
 !.env.example
 !.env.*.example
+
+# Canvas de diseño publicado (generado desde design/, ~3 MB)
+multix-pantallas.html

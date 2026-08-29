@@ -1,0 +1,74 @@
+<div style="width:1440px;height:900px;background:var(--bg-grad);display:flex;flex-direction:column;font-family:var(--sans);position:relative;">
+
+  <header style="height:56px;flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:20px;padding:0 24px;">
+    <div style="display:flex;align-items:center;gap:10px;opacity:0.55;">
+      <svg width="24" height="24" viewBox="0 0 40 40" fill="none" aria-label="Multix"><path d="M5 10H17C23.5 10 24 20 30 20" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><path d="M5 20H30" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><path d="M5 30H17C23.5 30 24 20 30 20" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><circle cx="31.5" cy="20" r="4.5" fill="var(--mx-iris-600)"></circle></svg>
+      <span style="font-family:var(--display);font-size:18px;font-weight:800;letter-spacing:-0.03em;">Multix</span>
+    </div>
+    <div style="width:1px;height:24px;background:var(--border);"></div>
+    <div style="display:flex;align-items:center;gap:9px;background:var(--explore-bg);border:1px solid var(--explore-bd);border-radius:999px;padding:5px 13px;">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="var(--explore)" stroke-width="1.8" stroke-linecap="round"><path d="M6 4v8M10 4v8"></path></svg>
+      <span style="font-family:var(--mono);font-size:10px;line-height:10px;font-weight:700;letter-spacing:0.10em;color:var(--explore);">EN PAUSA</span>
+    </div>
+    <div style="flex-grow:1;"></div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;">
+      <span class="num" style="font-family:var(--mono);font-size:20px;font-weight:500;color:var(--text-2);">32:14</span>
+      <span style="font-size:11px;color:var(--explore);font-weight:500;">reloj detenido</span>
+    </div>
+  </header>
+
+  <!-- Workspace atenuado -->
+  <div style="flex-grow:1;display:grid;grid-template-columns:392px 1fr 336px;min-height:0;opacity:0.32;">
+    <section style="border-right:1px solid var(--border);background:var(--surface);padding:20px 24px;">
+      <h2 style="font-size:16px;font-weight:600;margin-bottom:14px;">Enunciado</h2>
+      <p style="font-size:13.5px;line-height:1.6;color:var(--text-2);">Recibes un flujo de enteros que se lee una sola vez. Devuelve el primer valor que aparece dos veces…</p>
+    </section>
+    <section style="background:var(--surface-2);padding:20px;">
+      <pre class="code" style="font-size:13px;line-height:22px;"><div><span class="k">def</span> <span class="f">first_duplicate</span>(stream):</div><div>    seen = <span class="f">set</span>()</div><div>    <span class="k">for</span> item <span class="k">in</span> stream:</div><div>        <span class="k">if</span> item <span class="k">in</span> seen:</div><div>            <span class="k">return</span> item</div><div>        seen.<span class="f">add</span>(item)</div><div>    <span class="k">return</span> <span class="k">None</span></div></pre>
+    </section>
+    <aside style="border-left:1px solid var(--border);background:var(--surface);padding:20px;">
+      <h2 style="font-size:16px;font-weight:600;margin-bottom:14px;">Pruebas</h2>
+      <p class="num" style="font-size:13px;color:var(--text-2);">3 de 4 públicas</p>
+    </aside>
+  </div>
+
+  <!-- Capa de pausa -->
+  <div style="position:absolute;left:0;right:0;top:56px;bottom:0;background:var(--veil);display:flex;align-items:center;justify-content:center;">
+    <div style="width:540px;background:var(--surface);border:1px solid var(--border-2);border-radius:10px;padding:32px;display:flex;flex-direction:column;gap:22px;box-shadow:0 10px 32px var(--shadow-lg);">
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;">
+        <span style="width:60px;height:60px;border-radius:50%;background:var(--explore-bg);border:1px solid var(--explore-bd);display:flex;align-items:center;justify-content:center;">
+          <svg width="26" height="26" viewBox="0 0 16 16" fill="none" stroke="var(--explore)" stroke-width="1.7" stroke-linecap="round"><path d="M6 3.5v9M10 3.5v9"></path></svg>
+        </span>
+        <div>
+          <h1 style="font-size:24px;font-weight:600;letter-spacing:-0.015em;">Tu entrevistador pausó la prueba</h1>
+          <p style="font-size:14.5px;color:var(--text-2);margin-top:8px;line-height:1.55;">El editor está bloqueado y el reloj detenido. No es un problema tuyo ni un fallo del sistema.</p>
+        </div>
+      </div>
+
+      <div style="border:1px solid var(--border);border-radius:10px;background:var(--surface-2);overflow:hidden;">
+        <div style="display:flex;align-items:center;gap:11px;padding:13px 16px;border-bottom:1px solid var(--border);">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--ok)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M3 8.4l3 3L13 5"></path></svg>
+          <span style="font-size:13.5px;color:var(--text-2);flex-grow:1;">Tu código está guardado</span>
+          <span class="num" style="font-size:12px;color:var(--text-3);font-family:var(--mono);">14:36:02</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:11px;padding:13px 16px;border-bottom:1px solid var(--border);">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--ok)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M3 8.4l3 3L13 5"></path></svg>
+          <span style="font-size:13.5px;color:var(--text-2);flex-grow:1;">Tus 3 pruebas superadas se conservan</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:11px;padding:13px 16px;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--ok)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M3 8.4l3 3L13 5"></path></svg>
+          <span style="font-size:13.5px;color:var(--text-2);flex-grow:1;">El tiempo en pausa no te resta</span>
+          <span class="num" style="font-size:12px;color:var(--text-3);font-family:var(--mono);">1:12 en pausa</span>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:11px;padding:14px 16px;border:1px solid var(--accent-bd);background:var(--accent-bg);border-radius:7px;">
+        <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="var(--accent-2)" stroke-width="1.6" stroke-linecap="round" style="flex-shrink:0;"><rect x="6" y="2" width="4" height="7" rx="2"></rect><path d="M4 8a4 4 0 0 0 8 0M8 12v2"></path></svg>
+        <p style="font-size:13.5px;color:var(--accent-2);line-height:1.5;flex-grow:1;">Tu micrófono sigue abierto. Si tu entrevistador quiere hablar contigo, puedes responder.</p>
+      </div>
+
+      <p style="font-size:13px;color:var(--text-2);text-align:center;line-height:1.5;">Volverás justo donde lo dejaste en cuanto se reanude. No cierres esta pestaña.</p>
+    </div>
+  </div>
+</div>

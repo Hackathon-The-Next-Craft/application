@@ -1,0 +1,156 @@
+<div style="width:1440px;height:900px;background:var(--bg-grad);display:flex;flex-direction:column;font-family:var(--sans);">
+
+  <header style="height:56px;flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:20px;padding:0 24px;">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <svg width="24" height="24" viewBox="0 0 40 40" fill="none" aria-label="Multix"><path d="M5 10H17C23.5 10 24 20 30 20" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><path d="M5 20H30" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><path d="M5 30H17C23.5 30 24 20 30 20" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><circle cx="31.5" cy="20" r="4.5" fill="var(--mx-iris-600)"></circle></svg>
+      <span style="font-family:var(--display);font-size:18px;font-weight:800;letter-spacing:-0.03em;">Multix</span>
+    </div>
+    <div style="width:1px;height:24px;background:var(--border);"></div>
+    <span style="font-weight:500;">Backend Junior · Python</span>
+    <div style="flex-grow:1;"></div>
+    <span style="font-size:13px;color:var(--text-2);">Dos estados del ciclo de vida de la sesión</span>
+  </header>
+
+  <div style="flex-grow:1;display:grid;grid-template-columns:1fr 520px;gap:24px;padding:24px 40px 32px;min-height:0;">
+
+    <!-- Pausada -->
+    <section style="display:flex;flex-direction:column;gap:10px;min-height:0;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-family:var(--mono);font-size:11px;line-height:12px;font-weight:700;letter-spacing:0.14em;color:var(--text-2);">ESTADO</span>
+        <span style="font-size:12px;font-weight:600;color:var(--explore);background:var(--explore-bg);border:1px solid var(--explore-bd);border-radius:4px;padding:3px 9px;letter-spacing:0.02em;">PAUSADA</span>
+        <span style="flex-grow:1;height:1px;background:var(--border);"></span>
+      </div>
+
+      <div style="flex-grow:1;position:relative;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-height:0;">
+
+        <div style="height:52px;flex-shrink:0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;padding:0 18px;background:var(--explore-bg);">
+          <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="var(--explore)" stroke-width="1.7" stroke-linecap="round"><path d="M6 4v8M10 4v8"></path></svg>
+          <span style="font-size:14px;font-weight:600;color:var(--text);flex-grow:1;">Sesión pausada por ti · el reloj está detenido</span>
+          <span class="num" style="font-family:var(--mono);font-size:16px;font-weight:500;">32:14</span>
+        </div>
+
+        <!-- Mosaico atenuado -->
+        <div style="flex-grow:1;position:relative;padding:16px;min-height:0;">
+          <div style="height:100%;display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:12px;opacity:0.4;">
+            <div style="border:1px solid var(--border);border-radius:10px;background:var(--surface-2);display:flex;flex-direction:column;">
+              <div style="padding:11px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+                <span style="width:7px;height:7px;border-radius:50%;background:var(--text-3);"></span>
+                <span style="font-size:13px;font-weight:600;">Ana Restrepo</span>
+              </div>
+              <div style="flex-grow:1;padding:12px;">
+                <pre class="code" style="font-size:10.5px;line-height:1.7;color:var(--text-2);"><div>def first_duplicate(s):</div><div>    seen = set()</div><div>    for item in s:</div><div>        ...</div></pre>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:10px;background:var(--surface-2);display:flex;flex-direction:column;">
+              <div style="padding:11px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+                <span style="width:7px;height:7px;border-radius:50%;background:var(--text-3);"></span>
+                <span style="font-size:13px;font-weight:600;">Bruno Méndez</span>
+              </div>
+              <div style="flex-grow:1;padding:12px;">
+                <pre class="code" style="font-size:10.5px;line-height:1.7;color:var(--text-2);"><div>def first_duplicate(s):</div><div>    result = []</div><div>    for i in range(...):</div><div>        ...</div></pre>
+              </div>
+            </div>
+            <div style="border:1px solid var(--border);border-radius:10px;background:var(--surface-2);display:flex;flex-direction:column;">
+              <div style="padding:11px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+                <span style="width:7px;height:7px;border-radius:50%;background:var(--text-3);"></span>
+                <span style="font-size:13px;font-weight:600;">Carla Yañez</span>
+              </div>
+              <div style="flex-grow:1;padding:12px;">
+                <pre class="code" style="font-size:10.5px;line-height:1.7;color:var(--text-2);"><div>def first_duplicate(s):</div><div>    # 1) set</div><div>    # 2) sort</div><div>    pass</div></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta de pausa -->
+          <div style="position:absolute;left:50%;top:50%;transform:translate(-50%, -50%);width:460px;background:var(--surface);border:1px solid var(--border-2);border-radius:10px;padding:24px;display:flex;flex-direction:column;gap:16px;box-shadow:0 8px 28px var(--shadow-lg);">
+            <div>
+              <h2 style="font-size:18px;font-weight:600;letter-spacing:-0.01em;">Todo está congelado</h2>
+              <p style="font-size:13.5px;color:var(--text-2);margin-top:6px;line-height:1.55;">Los editores están bloqueados y el reloj detenido para los tres candidatos. Su código está guardado; nadie pierde trabajo.</p>
+            </div>
+
+            <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+              <div style="display:flex;align-items:center;gap:10px;padding:11px 13px;border-bottom:1px solid var(--border);">
+                <span style="width:16px;height:16px;border-radius:50%;border:5px solid var(--accent);background:var(--surface);flex-shrink:0;"></span>
+                <span style="font-size:13.5px;font-weight:500;flex-grow:1;">Pausar a todos</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:11px 13px;">
+                <span style="width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border-2);flex-shrink:0;"></span>
+                <span style="font-size:13.5px;color:var(--text-2);flex-grow:1;">Pausar solo a un candidato</span>
+              </div>
+            </div>
+
+            <p class="num" style="font-size:12px;color:var(--text-3);">Pausada a las 14:36 · llevan 1 min 12 s detenidos</p>
+
+            <div style="display:flex;gap:10px;">
+              <button style="flex-grow:1;height:44px;border:1px solid transparent;background:var(--grad-accent);box-shadow:var(--shadow-accent);border-radius:10px;font-family:var(--sans);font-size:15px;font-weight:600;color:#fff;cursor:pointer;">Reanudar sesión</button>
+              <button style="height:44px;padding:0 20px;border:1px solid var(--border-2);background:var(--surface);border-radius:10px;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--text);cursor:pointer;">Finalizar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Finalizando -->
+    <section style="display:flex;flex-direction:column;gap:10px;min-height:0;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-family:var(--mono);font-size:11px;line-height:12px;font-weight:700;letter-spacing:0.14em;color:var(--text-2);">ESTADO</span>
+        <span style="font-size:12px;font-weight:600;color:var(--accent-2);background:var(--accent-bg);border:1px solid var(--accent-bd);border-radius:4px;padding:3px 9px;letter-spacing:0.02em;">FINALIZANDO</span>
+        <span style="flex-grow:1;height:1px;background:var(--border);"></span>
+      </div>
+
+      <div style="flex-grow:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:20px;min-height:0;">
+        <div>
+          <h2 style="font-size:18px;font-weight:600;letter-spacing:-0.01em;">Consolidando la sesión</h2>
+          <p style="font-size:13.5px;color:var(--text-2);margin-top:6px;line-height:1.55;">Los editores quedaron bloqueados a las 14:47. Se están reuniendo los eventos y preparando un informe por candidato.</p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:13px;color:var(--text-2);flex-grow:1;">Progreso general</span>
+            <span class="num" style="font-size:13px;font-weight:600;">2 de 3 informes</span>
+          </div>
+          <div style="height:8px;border-radius:4px;background:var(--surface-2);border:1px solid var(--border);overflow:hidden;display:flex;">
+            <span style="width:66%;background:var(--grad-accent);display:block;"></span>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px;">
+            <span style="width:34px;height:34px;border-radius:50%;background:var(--accent-bg);border:1px solid var(--accent-bd);font-size:12px;font-weight:600;color:var(--accent-2);display:flex;align-items:center;justify-content:center;">AR</span>
+            <div style="flex-grow:1;">
+              <p style="font-size:14px;font-weight:500;">Ana Restrepo</p>
+              <p style="font-size:12.5px;color:var(--text-2);margin-top:2px;">Eventos consolidados · transcripción incluida</p>
+            </div>
+            <span style="display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;font-family:var(--mono);font-size:10px;line-height:10px;font-weight:700;letter-spacing:0.10em;color:var(--ok);background:var(--ok-bg);">INFORME LISTO</span>
+          </div>
+
+          <div style="border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px;">
+            <span style="width:34px;height:34px;border-radius:50%;background:var(--accent-bg);border:1px solid var(--accent-bd);font-size:12px;font-weight:600;color:var(--accent-2);display:flex;align-items:center;justify-content:center;">BM</span>
+            <div style="flex-grow:1;">
+              <p style="font-size:14px;font-weight:500;">Bruno Méndez</p>
+              <p style="font-size:12.5px;color:var(--text-2);margin-top:2px;">Eventos consolidados · sin transcripción</p>
+            </div>
+            <span style="display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;font-family:var(--mono);font-size:10px;line-height:10px;font-weight:700;letter-spacing:0.10em;color:var(--ok);background:var(--ok-bg);">INFORME LISTO</span>
+          </div>
+
+          <div style="border:1px solid var(--accent-bd);border-radius:7px;padding:14px;display:flex;align-items:center;gap:12px;background:var(--accent-bg);">
+            <span style="width:34px;height:34px;border-radius:50%;background:var(--surface);border:1px solid var(--accent-bd);font-size:12px;font-weight:600;color:var(--accent-2);display:flex;align-items:center;justify-content:center;">CY</span>
+            <div style="flex-grow:1;">
+              <p style="font-size:14px;font-weight:500;">Carla Yañez</p>
+              <p style="font-size:12.5px;color:var(--text-2);margin-top:2px;">Enlazando evidencia con los criterios…</p>
+            </div>
+            <span style="font-size:12px;font-weight:600;color:var(--accent-2);background:var(--surface);border:1px solid var(--accent-bd);border-radius:5px;padding:5px 10px;">GENERANDO</span>
+          </div>
+        </div>
+
+        <div style="flex-grow:1;"></div>
+
+        <div style="border-top:1px solid var(--border);padding-top:16px;display:flex;flex-direction:column;gap:12px;">
+          <p style="font-size:12.5px;color:var(--text-2);line-height:1.5;">Los candidatos ya vieron su confirmación de entrega y su acceso terminó. Puedes cerrar esta pestaña: los informes te esperarán en la sesión.</p>
+          <button style="height:44px;border:1px solid var(--border-2);background:var(--surface);border-radius:10px;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--text);cursor:pointer;">Ver informes disponibles</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>

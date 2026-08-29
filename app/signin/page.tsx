@@ -3,6 +3,9 @@
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { Field } from "@/components/ui/Field";
+import { Logo } from "@/components/ui/Logo";
 
 type Flow = "signUp" | "signIn";
 
@@ -36,77 +39,156 @@ export default function SignInPage() {
   }
 
   return (
-    <main className="flex flex-1 items-center justify-center p-6">
-      <div className="w-full max-w-sm rounded-lg border border-zinc-200 bg-white p-8 shadow-sm">
-        <h1 className="text-2xl font-semibold tracking-tight">LiveRoom AI</h1>
-        <p className="mt-1 mb-6 text-sm text-zinc-500">
-          {flow === "signUp"
-            ? "Crea tu cuenta de entrevistador."
-            : "Entra a tu cuenta de entrevistador."}
-        </p>
+    <main className="grid flex-1 lg:grid-cols-[1fr_620px]">
+      {/* Formulario */}
+      <section className="flex flex-col justify-center border-ink-200 bg-white px-6 py-16 sm:px-16 lg:border-r lg:px-24">
+        <div className="w-full max-w-[420px]">
+          <Logo size={34} className="mb-12 text-ink-900" />
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium">Correo</span>
-            <input
+          <h1 className="font-display text-display-sm text-ink-900">
+            Entra a tus entrevistas
+          </h1>
+          <p className="mt-2.5 max-w-[62ch] text-body text-ink-500 text-pretty">
+            El acceso es solo para entrevistadores. Los candidatos entran con el
+            enlace de la sesión, sin crear cuenta.
+          </p>
+
+          <form onSubmit={handleSubmit} className="mt-9 flex flex-col gap-4">
+            <Field
+              label="Correo de trabajo"
               name="email"
               type="email"
               required
               autoComplete="email"
-              className="rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-900"
+              placeholder="tu@empresa.com"
             />
-          </label>
 
-          <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium">Contraseña</span>
-            <input
+            <Field
+              label="Contraseña"
               name="password"
               type="password"
               required
               minLength={8}
               autoComplete={flow === "signUp" ? "new-password" : "current-password"}
-              className="rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-900"
+              hint={flow === "signUp" ? "Mínimo 8 caracteres." : undefined}
             />
-            {flow === "signUp" && (
-              <span className="text-xs text-zinc-500">Mínimo 8 caracteres.</span>
-            )}
-          </label>
 
-          {error && (
-            <p
-              role="alert"
-              className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700"
-            >
-              {error}
-            </p>
-          )}
+            {error && (
+              <p
+                role="alert"
+                className="rounded-lg border border-fail-bg bg-fail-bg px-3 py-2.5 text-body-sm text-fail-text"
+              >
+                {error}
+              </p>
+            )}
+
+            <Button type="submit" size="lg" disabled={pending} className="mt-1 w-full">
+              {pending
+                ? "Un momento…"
+                : flow === "signUp"
+                  ? "Crear cuenta"
+                  : "Entrar"}
+            </Button>
+          </form>
+
+          <div className="my-4 flex items-center gap-3.5">
+            <span className="h-px flex-1 bg-ink-200" />
+            <span className="text-meta text-ink-400">o</span>
+            <span className="h-px flex-1 bg-ink-200" />
+          </div>
+
+          {/* Aún no hay proveedor SSO configurado: se anuncia, no se ofrece. */}
+          <div className="flex h-11 items-center justify-center gap-2.5 rounded-lg border border-dashed border-ink-300 bg-ink-25">
+            <span className="text-body-sm text-ink-400">
+              Entrar con el SSO de tu empresa
+            </span>
+            <span className="rounded-xs border border-ink-200 bg-white px-1.5 py-0.5 font-mono text-chip uppercase text-ink-500">
+              V1
+            </span>
+          </div>
 
           <button
-            type="submit"
-            disabled={pending}
-            className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50"
+            type="button"
+            onClick={() => {
+              setFlow(flow === "signUp" ? "signIn" : "signUp");
+              setError(null);
+            }}
+            className="mt-6 w-full text-body-sm text-ink-500 underline underline-offset-4 hover:text-iris-600"
           >
-            {pending
-              ? "Un momento…"
-              : flow === "signUp"
-                ? "Crear cuenta"
-                : "Entrar"}
+            {flow === "signUp"
+              ? "¿Ya tienes cuenta? Entra"
+              : "¿No tienes cuenta? Créala"}
           </button>
-        </form>
+        </div>
+      </section>
 
-        <button
-          type="button"
-          onClick={() => {
-            setFlow(flow === "signUp" ? "signIn" : "signUp");
-            setError(null);
-          }}
-          className="mt-4 w-full text-sm text-zinc-500 underline underline-offset-4 hover:text-zinc-900"
-        >
-          {flow === "signUp"
-            ? "¿Ya tienes cuenta? Entra"
-            : "¿No tienes cuenta? Créala"}
-        </button>
-      </div>
+      {/* Panel lateral: qué es esto. Se retira cuando no hay ancho para él. */}
+      <aside className="hidden flex-col justify-center bg-ink-25 px-16 lg:flex">
+        <h2 className="max-w-[400px] font-display text-subtitle text-ink-900 text-pretty">
+          Tres candidatos a la vez, cada uno en su propio entorno.
+        </h2>
+        <p className="mt-3 max-w-[400px] text-body-sm text-ink-500">
+          Tú te concentras en el razonamiento. Multix registra el proceso, te
+          avisa cuando alguien se atasca y reúne la evidencia del informe.
+        </p>
+
+        <div className="mt-9 grid max-w-[440px] grid-cols-3 gap-2.5" aria-hidden>
+          <StateCard state="advance" label="Avanza" tests="3/5" lines={[90, 70, 80, 50]} />
+          <StateCard state="stuck" label="Atascado" tests="1/5" lines={[75, 85, 60, 45]} highlight={2} />
+          <StateCard state="explore" label="Explorando" tests="0/5" lines={[65, 55, 40, 30]} />
+        </div>
+
+        <p className="mt-8 max-w-[400px] text-caption text-ink-400">
+          La IA reúne evidencia y sugiere; la decisión de contratación siempre es
+          humana.
+        </p>
+      </aside>
     </main>
+  );
+}
+
+/* Miniatura decorativa de un candidato en el mosaico. Las líneas de código
+   simuladas siguen §6: alto 4 px, radio 2, gap 4. */
+function StateCard({
+  state,
+  label,
+  tests,
+  lines,
+  highlight,
+}: {
+  state: "advance" | "stuck" | "explore";
+  label: string;
+  tests: string;
+  lines: number[];
+  highlight?: number;
+}) {
+  const dot = {
+    advance: "bg-advance",
+    stuck: "bg-stuck",
+    explore: "bg-explore",
+  }[state];
+  const text = {
+    advance: "text-advance-text",
+    stuck: "text-stuck-text",
+    explore: "text-explore-text",
+  }[state];
+
+  return (
+    <div className="flex flex-col gap-2 rounded-lg border border-ink-200 bg-white p-3">
+      <div className="flex items-center gap-1.5">
+        <span className={`h-1.5 w-1.5 rounded-full ${dot}`} />
+        <span className={`font-mono text-chip uppercase ${text}`}>{label}</span>
+      </div>
+      <div className="flex flex-col gap-1">
+        {lines.map((width, i) => (
+          <span
+            key={i}
+            className={`h-1 rounded-xs ${i === highlight ? "bg-stuck-bg" : "bg-ink-50"}`}
+            style={{ width: `${width}%` }}
+          />
+        ))}
+      </div>
+      <span className="tabular font-mono text-meta text-ink-500">{tests} tests</span>
+    </div>
   );
 }
