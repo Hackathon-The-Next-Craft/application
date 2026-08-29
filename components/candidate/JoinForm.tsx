@@ -6,27 +6,12 @@ import { api } from "@/convex/_generated/api";
 import { saveToken } from "@/lib/candidateToken";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
-import { Logo } from "@/components/ui/Logo";
-
-/** Cabecera de 56 px: es la primera vez que el candidato ve la marca. */
-function Cabecera({ contexto }: { contexto?: string }) {
-  return (
-    <header className="flex h-14 shrink-0 items-center gap-5 border-b border-ink-200 bg-white px-8">
-      <Logo size={24} className="text-ink-900" />
-      {contexto && (
-        <>
-          <span className="h-6 w-px bg-ink-200" />
-          <span className="truncate text-body-sm text-ink-500">{contexto}</span>
-        </>
-      )}
-    </header>
-  );
-}
+import { CandidateHeader } from "./CandidateHeader";
 
 function Aviso({ title, detail }: { title: string; detail: string }) {
   return (
     <div className="flex flex-1 flex-col">
-      <Cabecera />
+      <CandidateHeader />
       <main className="mx-auto flex w-full max-w-[560px] flex-1 items-center px-6">
         <div className="w-full rounded-2xl border border-ink-200 bg-white p-8">
           <h2 className="font-display text-subtitle text-ink-900">{title}</h2>
@@ -90,7 +75,7 @@ export function JoinForm({
   if (info === undefined) {
     return (
       <div className="flex flex-1 flex-col">
-        <Cabecera />
+        <CandidateHeader />
         <main className="mx-auto w-full max-w-[840px] flex-1 px-6 py-12">
           <div className="h-72 animate-pulse rounded-2xl border border-ink-200 bg-white" />
         </main>
@@ -134,7 +119,7 @@ export function JoinForm({
 
   return (
     <div className="flex flex-1 flex-col">
-      <Cabecera contexto={`Entrevista técnica · ${info.title}`} />
+      <CandidateHeader contexto={`Entrevista técnica · ${info.title}`} />
 
       <main className="mx-auto w-full max-w-[840px] flex-1 px-6 py-12">
         <h1 className="font-display text-display-sm text-ink-900">Antes de entrar</h1>

@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { api } from "@/convex/_generated/api";
 import { PanelRetirado } from "./InvalidTokenBoundary";
-import { Logo } from "@/components/ui/Logo";
+import { CandidateHeader } from "./CandidateHeader";
 import { DeviceCheck } from "./DeviceCheck";
+import { Chip, type Tone } from "@/components/ui/Chip";
 
 type SessionStatus = "draft" | "ready" | "live" | "paused" | "closing" | "closed";
 
@@ -16,6 +17,24 @@ const ESPERA: Record<Exclude<SessionStatus, "live">, string> = {
   paused: "La sesión está en pausa. No cierres esta pestaña.",
   closing: "La sesión terminó. Se está generando el análisis.",
   closed: "La sesión terminó. Ya puedes cerrar esta pestaña.",
+};
+
+const ESTADO_TONO: Record<SessionStatus, Tone> = {
+  draft: "neutral",
+  ready: "advance",
+  live: "fail",
+  paused: "stuck",
+  closing: "explore",
+  closed: "neutral",
+};
+
+const ESTADO_LABEL: Record<SessionStatus, string> = {
+  draft: "Preparando",
+  ready: "Lista",
+  live: "En vivo",
+  paused: "Pausada",
+  closing: "Finalizando",
+  closed: "Cerrada",
 };
 
 export function Lobby({ code, joinToken }: { code: string; joinToken: string }) {
@@ -34,7 +53,14 @@ export function Lobby({ code, joinToken }: { code: string; joinToken: string }) 
   }, [status, presencia, code, router]);
 
   if (state === undefined) {
-    return <div className="mx-auto w-full max-w-[560px] px-6 py-12"><div className="h-64 animate-pulse rounded-2xl border border-ink-200 bg-white" /></div>;
+    return (
+      <div className="flex flex-1 flex-col">
+        <CandidateHeader />
+        <main className="mx-auto w-full max-w-[640px] flex-1 px-6 py-12">
+          <div className="h-64 animate-pulse rounded-2xl border border-ink-200 bg-white" />
+        </main>
+      </div>
+    );
   }
 
   const { participant, session } = state;
@@ -48,27 +74,41 @@ export function Lobby({ code, joinToken }: { code: string; joinToken: string }) 
   const listo = participant.presence === "ready";
 
   return (
-    <div className="rounded-2xl border border-ink-200 bg-white p-6">
-      <h1 className="font-display text-title text-ink-900">{session.title}</h1>
-      <p className="mt-1 text-body-sm text-ink-500">
-        Entras como <span className="font-medium text-ink-900">{participant.displayName}</span>
-      </p>
+    <div className="flex flex-1 flex-col">
+      <CandidateHeader contexto={session.title} />
 
-      <p className="mt-6 rounded-lg border border-ink-200 bg-ink-25 px-4 py-3 text-body-sm text-ink-900">
-        {session.status === "live"
-          ? "La sesión empezó. Llevándote a la sala…"
-          : ESPERA[session.status]}
-      </p>
+      {/* Antes era una sola tarjeta larga con todo apilado adentro: el
+          estado de la sesión y la prueba de cámara/micrófono son cosas
+          distintas y cada una merece su propia tarjeta, no un párrafo
+          suelto seguido de otro bloque anidado. */}
+      <main className="mx-auto flex w-full max-w-[640px] flex-1 flex-col gap-5 px-6 py-12">
+        <div>
+          <h1 className="font-display text-title text-ink-900">{session.title}</h1>
+          <p className="mt-1 text-body-sm text-ink-500">
+            Entras como{" "}
+            <span className="font-medium text-ink-900">{participant.displayName}</span>
+          </p>
+        </div>
 
-      <div className="mt-6">
+        <section className="flex items-center gap-3 rounded-2xl border border-ink-200 bg-white p-5">
+          <Chip tone={ESTADO_TONO[session.status]} dot>
+            {ESTADO_LABEL[session.status]}
+          </Chip>
+          <p className="text-body-sm text-ink-900">
+            {session.status === "live"
+              ? "La sesión empezó. Llevándote a la sala…"
+              : ESPERA[session.status]}
+          </p>
+        </section>
+
         <DeviceCheck joinToken={joinToken} deviceCheck={participant.deviceCheck} />
-      </div>
 
-      <p className="mt-4 text-body-sm text-ink-500">
-        {listo
-          ? "Estás marcado como listo."
-          : "Prueba tu micrófono para marcarte como listo."}
-      </p>
+        {!listo && (
+          <p className="text-body-sm text-ink-500">
+            Prueba tu cámara y tu micrófono para marcarte como listo.
+          </p>
+        )}
+      </main>
     </div>
   );
 }
