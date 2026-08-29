@@ -17,10 +17,16 @@ const Challenge = z.object({
   statement: z
     .string()
     .describe("Enunciado en markdown: problema, ejemplos y restricciones"),
-  language: z.enum(["python", "javascript"]),
+  // Solo JavaScript: lib/runner todavía no ejecuta Python, y un reto en Python
+  // deja al candidato sin poder ejecutar nada. Volver a abrirlo cuando exista
+  // el runner de Pyodide.
+  language: z.literal("javascript"),
   starterCode: z
     .string()
     .describe("Código inicial con la firma de la función, sin resolver nada"),
+  entryPoint: z
+    .string()
+    .describe("Nombre exacto de la función que el runner debe invocar"),
   timeLimitMinutes: z.number().int().min(10).max(60),
   rubric: z
     .array(
@@ -43,8 +49,8 @@ const Challenge = z.object({
     .array(
       z.object({
         name: z.string(),
-        input: z.string(),
-        expected: z.string(),
+        input: z.string().describe("JSON del ÚNICO argumento de la función"),
+        expected: z.string().describe("JSON del valor de retorno esperado"),
         hidden: z.boolean(),
       }),
     )
@@ -69,7 +75,16 @@ Reglas:
 - Incluye casos normales, de borde y de error. Marca hidden: true en los que no
   debe ver el candidato, y que esos no revelen la solución.
 - starterCode da la firma y nada más: no resuelve ni insinúa la solución.
-- Escribe todo en español, salvo el código y los identificadores.`;
+- Escribe todo en español, salvo el código y los identificadores.
+
+Contrato con el ejecutor de código, sin excepciones:
+- El reto es en JavaScript. La solución es UNA función que recibe EXACTAMENTE
+  un argumento y devuelve un valor. Nada de leer stdin ni imprimir resultados.
+- entryPoint es el nombre exacto de esa función, tal como aparece en starterCode.
+- En cada test, input es el JSON de ese único argumento y expected es el JSON
+  del valor devuelto. Ambos deben poder pasar por JSON.parse sin fallar.
+  Ejemplo: input "[3,1,2]", expected "[1,2,3]".
+- starterCode debe exportar la función con module.exports.`;
 
 export const run = internalAction({
   args: { prompt: v.string(), count: v.number() },

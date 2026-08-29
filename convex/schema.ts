@@ -106,6 +106,10 @@ export default defineSchema({
     statement: v.string(),         // markdown
     language: v.union(v.literal("python"), v.literal("javascript")),
     starterCode: v.string(),
+    // Nombre de la función que el runner debe invocar. Es un contrato con
+    // lib/runner: sin esto, el frontend tiene que adivinarlo leyendo el
+    // starterCode con una regex, y un cambio de prompt lo rompe en silencio.
+    entryPoint: v.string(),
     timeLimitMinutes: v.number(),
     rubric: v.array(v.object({
       criterion: v.string(),

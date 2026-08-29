@@ -4,6 +4,20 @@ import { internalQuery, mutation, query } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { requireInterviewer } from "./lib/auth";
 
+/**
+ * Ciclo de vida del PRD §5.3. Sin esto setStatus aceptaba cualquier salto —
+ * de borrador a cerrada, o de cerrada de vuelta a en vivo— y una UI con el
+ * estado desactualizado podía cerrar una sesión sin querer.
+ */
+const TRANSICIONES: Record<string, string[]> = {
+  draft: ["ready", "closed"],
+  ready: ["live", "closed"],
+  live: ["paused", "closing"],
+  paused: ["live", "closing"],
+  closing: ["closed"],
+  closed: [],
+};
+
 function makeJoinCode() {
   return Math.random().toString(36).slice(2, 10);
 }
@@ -77,6 +91,13 @@ export const setStatus = mutation({
   },
   handler: async (ctx, { sessionId, status }) => {
     const { userId, session } = await requireInterviewer(ctx, sessionId);
+
+    if (!TRANSICIONES[session.status].includes(status)) {
+      throw new Error(
+        `Transición no permitida: ${session.status} -> ${status}`,
+      );
+    }
+
     const now = Date.now();
     await ctx.db.patch(sessionId, {
       status,
