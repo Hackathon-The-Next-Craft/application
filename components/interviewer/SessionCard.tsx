@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Doc } from "@/convex/_generated/dataModel";
 
 const STATUS_LABEL: Record<Doc<"sessions">["status"], string> = {
@@ -36,6 +37,20 @@ export function SessionCard({ session }: { session: Doc<"sessions"> }) {
           <span className="font-mono text-zinc-600">{session.joinCode}</span>
           {session.linkRevoked && " · link revocado"}
         </p>
+        <div className="mt-3 flex gap-3 text-sm">
+          <Link
+            href={`/s/${session._id}/setup`}
+            className="underline underline-offset-4 hover:text-zinc-500"
+          >
+            Preparar
+          </Link>
+          <Link
+            href={`/s/${session._id}/live`}
+            className="underline underline-offset-4 hover:text-zinc-500"
+          >
+            En vivo
+          </Link>
+        </div>
       </div>
       <span
         className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_STYLE[session.status]}`}
