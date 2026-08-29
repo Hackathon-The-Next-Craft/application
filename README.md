@@ -6,18 +6,25 @@ Un entrevistador, hasta 3 candidatos, cada uno en un workspace aislado.
 Stack: **Next.js 16 (App Router) + Convex + Tailwind + Monaco**.
 Convex cubre base de datos, tiempo real y funciones de servidor — no hay WebSockets propios.
 
+## Documentación
+
+| Documento | Para qué |
+|---|---|
+| [docs/SETUP.md](docs/SETUP.md) | **Empieza aquí.** Clonar, variables de entorno, correr, reglas del equipo |
+| [docs/PROGRESS.md](docs/PROGRESS.md) | Avance de cada quien, decisiones tomadas y bitácora |
+| [docs/api-contract.md](docs/api-contract.md) | Qué función de Convex alimenta cada pantalla |
+| [docs/frontend.md](docs/frontend.md) | Plan de trabajo del frontend, rama por rama |
+
 ## Arrancar
 
 ```bash
-pnpm install
+pnpm install   # y crea .env.local — ver docs/SETUP.md
 pnpm dev
 ```
 
-Necesitas `NEXT_PUBLIC_CONVEX_URL` en `.env.local` (ver [.env.example](.env.example)).
-
 > **Solo Salim corre `npx convex dev`.** Ese comando publica el backend en el
 > deployment compartido; si lo corre alguien más, sobrescribe las funciones con
-> su copia local. Los demás solo necesitan la URL y `pnpm dev`.
+> su copia local. Los demás solo necesitan las variables y `pnpm dev`.
 
 ## Estructura
 
