@@ -22,7 +22,7 @@ type State = { message: string | null };
 
 export function PanelRetirado() {
   return (
-    <div className="rounded-2xl border border-ink-200 bg-white p-6">
+    <div className="mx-auto my-12 w-full max-w-[560px] rounded-2xl border border-ink-200 bg-white p-6">
       <h2 className="font-display text-subtitle text-ink-900">El entrevistador te retiró de la sesión</h2>
       <p className="mt-2 text-body-sm text-ink-500">
         Tu trabajo quedó guardado. Si crees que fue un error, escríbele a quien
@@ -51,7 +51,7 @@ export class InvalidTokenBoundary extends Component<Props, State> {
     }
 
     return (
-      <div className="rounded-2xl border border-ink-200 bg-white p-6">
+      <div className="mx-auto my-12 w-full max-w-[560px] rounded-2xl border border-ink-200 bg-white p-6">
         <h2 className="font-display text-subtitle text-ink-900">
           {isInvalidToken
             ? "Tu acceso a esta sesión ya no es válido"

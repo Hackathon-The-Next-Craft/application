@@ -18,9 +18,13 @@ export default function JoinPage({ params }: PageProps<"/join/[code]">) {
   }, [code]);
 
   return (
-    <main className="mx-auto w-full max-w-lg flex-1 p-8">
+    // Sin ancho máximo aquí: cada estado compone su propia página, porque el
+    // formulario de acceso ocupa toda la pantalla y el lobby no.
+    <div className="flex flex-1 flex-col">
       {joinToken === undefined ? (
-        <div className="h-48 animate-pulse rounded-2xl border border-ink-200 bg-white" />
+        <div className="mx-auto w-full max-w-[840px] px-6 py-12">
+          <div className="h-48 animate-pulse rounded-2xl border border-ink-200 bg-white" />
+        </div>
       ) : joinToken === null ? (
         <JoinForm code={code} onJoined={setJoinToken} />
       ) : (
@@ -36,6 +40,6 @@ export default function JoinPage({ params }: PageProps<"/join/[code]">) {
           <Lobby code={code} joinToken={joinToken} />
         </InvalidTokenBoundary>
       )}
-    </main>
+    </div>
   );
 }

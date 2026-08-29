@@ -34,7 +34,7 @@ export function Lobby({ code, joinToken }: { code: string; joinToken: string }) 
   }, [status, presencia, code, router]);
 
   if (state === undefined) {
-    return <div className="h-64 animate-pulse rounded-2xl border border-ink-200 bg-white" />;
+    return <div className="mx-auto w-full max-w-[560px] px-6 py-12"><div className="h-64 animate-pulse rounded-2xl border border-ink-200 bg-white" /></div>;
   }
 
   const { participant, session } = state;
