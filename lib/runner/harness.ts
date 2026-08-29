@@ -94,10 +94,16 @@ export function ejecutarCaso(
   try {
     const obtenido = fn(argumento);
     if (esperaExcepcion) {
-      return { name: test.name, passed: false, detail: "se esperaba una excepción" };
+      return {
+        name: test.name,
+        passed: false,
+        detail: `se esperaba una excepción, obtuvo ${representar(obtenido)}`,
+      };
     }
+    // El detalle sale siempre, no solo en el fallo: un candidato que ve puro
+    // "✓" no tiene forma de comprobar qué devolvió realmente su función.
     return iguales(obtenido, esperado)
-      ? { name: test.name, passed: true, detail: "" }
+      ? { name: test.name, passed: true, detail: `obtuvo ${representar(obtenido)}` }
       : {
           name: test.name,
           passed: false,
@@ -106,7 +112,7 @@ export function ejecutarCaso(
   } catch (caught) {
     const mensaje = caught instanceof Error ? caught.message : String(caught);
     return esperaExcepcion
-      ? { name: test.name, passed: true, detail: "" }
+      ? { name: test.name, passed: true, detail: "lanzó una excepción, como se esperaba" }
       : { name: test.name, passed: false, detail: `lanzó: ${mensaje}` };
   }
 }
