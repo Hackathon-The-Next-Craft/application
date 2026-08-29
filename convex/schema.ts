@@ -84,6 +84,9 @@ export default defineSchema({
     consent: v.object({
       audio: v.boolean(),
       transcript: v.boolean(),
+      // Opcional a propósito: ausente significa NO consentido. La cámara se
+      // añadió después, y los participantes que ya existían nunca la aceptaron.
+      camera: v.optional(v.boolean()),
       acceptedAt: v.optional(v.number()),
       noticeVersion: v.string(),   // prueba de consentimiento — PRD §11.1
     }),

@@ -20,6 +20,7 @@ import type * as http from "../http.js";
 import type * as lib_auth from "../lib/auth.js";
 import type * as lib_participants from "../lib/participants.js";
 import type * as lib_progress from "../lib/progress.js";
+import type * as media from "../media.js";
 import type * as notes from "../notes.js";
 import type * as participants from "../participants.js";
 import type * as reports from "../reports.js";
@@ -47,6 +48,7 @@ declare const fullApi: ApiFromModules<{
   "lib/auth": typeof lib_auth;
   "lib/participants": typeof lib_participants;
   "lib/progress": typeof lib_progress;
+  media: typeof media;
   notes: typeof notes;
   participants: typeof participants;
   reports: typeof reports;
