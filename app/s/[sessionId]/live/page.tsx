@@ -1,13 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { use, useState } from "react";
+import { use } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Doc, Id } from "@/convex/_generated/dataModel";
 import { AlertsPanel } from "@/components/interviewer/AlertsPanel";
 import { Countdown } from "@/components/interviewer/Countdown";
-import { FocusPanel } from "@/components/interviewer/FocusPanel";
 import { ParticipantCard } from "@/components/interviewer/ParticipantCard";
 import { SessionControls } from "@/components/interviewer/SessionControls";
 import { AppHeader, NAV_LINK } from "@/components/ui/AppHeader";
@@ -39,13 +38,10 @@ export default function LivePage({ params }: PageProps<"/s/[sessionId]/live"> ) 
   const session = useQuery(api.sessions.get, { sessionId });
   const participantes = useQuery(api.participants.listForSession, { sessionId });
   const challenges = useQuery(api.challenges.listForSession, { sessionId });
-  const [enfocado, setEnfocado] = useState<Id<"participants"> | null>(null);
 
   const nombrePorParticipante = new Map(
     (participantes ?? []).map((p) => [p._id as string, p.displayName]),
   );
-  const nombreEnfocado =
-    enfocado === null ? null : (nombrePorParticipante.get(enfocado) ?? "Candidato");
 
   return (
     <div className="flex flex-1 flex-col">
@@ -113,35 +109,13 @@ export default function LivePage({ params }: PageProps<"/s/[sessionId]/live"> ) 
           ) : (
             <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {participantes.map((participante) => (
-                <ParticipantCard
-                  key={participante._id}
-                  participante={participante}
-                  enfocado={enfocado === participante._id}
-                  onEnfocar={() =>
-                    setEnfocado(
-                      enfocado === participante._id ? null : participante._id,
-                    )
-                  }
-                />
+                <ParticipantCard key={participante._id} participante={participante} />
               ))}
             </ul>
           )}
-
-          {enfocado !== null && nombreEnfocado !== null && (
-            <FocusPanel
-              sessionId={sessionId}
-              participantId={enfocado}
-              nombre={nombreEnfocado}
-              onCerrar={() => setEnfocado(null)}
-            />
-          )}
         </main>
 
-        <AlertsPanel
-          sessionId={sessionId}
-          nombrePorParticipante={nombrePorParticipante}
-          onEnfocar={setEnfocado}
-        />
+        <AlertsPanel sessionId={sessionId} nombrePorParticipante={nombrePorParticipante} />
       </div>
     </div>
   );
