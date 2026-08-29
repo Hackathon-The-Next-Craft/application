@@ -22,8 +22,10 @@ const CERRAR = {
 };
 
 const ACCIONES: Record<Status, Accion[]> = {
-  draft: [{ label: "Habilitar el link", destino: "ready" }],
-  ready: [{ label: "Iniciar sesión", destino: "live" }],
+  draft: [{ label: "Abrir la sala de espera", destino: "ready" }],
+  // "Iniciar sesión" sonaba a login. Y ya no es un paso redundante:
+  // abrir la sala deja entrar al lobby, esto arranca la prueba.
+  ready: [{ label: "Comenzar la prueba", destino: "live" }],
   live: [
     { label: "Pausar", destino: "paused" },
     { label: "Cerrar", destino: "closing", confirmar: CERRAR },
