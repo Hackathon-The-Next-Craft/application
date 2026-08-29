@@ -38,8 +38,9 @@ es prioridad sobre cualquier otra cosa.
 - [x] Wiring de reportes
 - [x] Llaves de Convex Auth generadas
 - [x] Generacion de retos y reportes con Gemini
-- [ ] Seed de datos de prueba (3 candidatos falsos para no demostrar en vacío)
-- [ ] Detección de "fallo de entorno" vs "atascado"
+- [x] Seed de datos de prueba (`npx convex run seed:demo '{}'`)
+- [x] Contrato del reto con el runner (`entryPoint`) y ciclo de vida validado
+- [ ] Detección de "fallo de entorno" vs "atascado" — **P2**
 - [x] Disparar reportes automáticamente al cerrar la sesión
 - [ ] Webhook de Vapi para el audio — **P2**
 
@@ -62,9 +63,11 @@ Es **P2**: no bloquea el demo.
 - [ ] Definir qué eventos manda al webhook
 - [ ] `convex/http.ts`: endpoint que recibe la transcripción — Salim
 - [ ] Verificar `consent.transcript` antes de guardar nada
-- [ ] (opcional) `lib/runner/` — ejecutar código en el navegador, hoy sin dueño
+- [ ] `lib/runner/` en Python (Pyodide) — Anjali dejó `PENDIENTE-python.md`; hoy sin dueño
 
 ## Gael — diseño
+
+Trabajando en `feat/design-*`. Sin mergear todavía.
 
 - [ ] Tokens: color, tipografía, espaciado
 - [ ] Estados del candidato en el mosaico (avanza / explorando / atascado / fallo)
@@ -91,6 +94,8 @@ No re-litigar sin una razón nueva.
 
 Una línea por hito. Lo más reciente arriba.
 
+- **2026-08-29** — **Nadie ha recorrido el flujo completo de punta a punta.**
+  Las piezas están; el ensayo no. Es lo que falta antes de cualquier extra.
 - **2026-08-29** — Generación de retos y reportes con Gemini (`gemini-3.7-flash`),
   salida validada con Zod. La evidencia del reporte se cita por índice y se
   traduce a ids reales en el servidor, así el modelo no puede inventarla.
