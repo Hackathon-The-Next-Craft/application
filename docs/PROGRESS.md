@@ -35,11 +35,13 @@ es prioridad sobre cualquier otra cosa.
 - [x] Eventos append-only + timeline
 - [x] Clasificador de progreso + cron de alertas
 - [x] Notas privadas y registro de ayudas
-- [x] Wiring de reportes (pendiente la IA de Alejandro)
+- [x] Wiring de reportes
+- [x] Llaves de Convex Auth generadas
+- [x] Generacion de retos y reportes con Gemini
 - [ ] Seed de datos de prueba (3 candidatos falsos para no demostrar en vacío)
 - [ ] Detección de "fallo de entorno" vs "atascado"
-- [ ] Disparar reportes automáticamente al cerrar la sesión
-- [ ] Audio con LiveKit — **P2, solo si sobra tiempo**
+- [x] Disparar reportes automáticamente al cerrar la sesión
+- [ ] Webhook de Vapi para el audio — **P2**
 
 ## Anjali — frontend (`app/`, `components/`, `lib/`)
 
@@ -51,13 +53,16 @@ Detalle en [frontend.md](frontend.md).
 - [x] `feature/candidate-room` — Monaco, autosave, runner en navegador (Python pendiente)
 - [ ] `feature/setup-and-report` — generar retos, ver reporte con evidencia
 
-## Alejandro — IA (`convex/ai/`)
+## Alejandro — audio (Vapi)
 
-- [ ] `generateChallenge.run` — enunciado, rúbrica, aspectos críticos, tests
-- [ ] Validar la salida antes de devolverla (un reto malformado rompe la sesión)
-- [ ] `evaluate.run` — reporte por candidato
-- [ ] **Cada hallazgo con `evidenceEventIds` o `confidence: "low"`.** Sin excepción.
-- [ ] Sin recomendación de contratación, sin inferir emociones ni rasgos personales
+La IA de texto (retos y reportes) pasó a Salim; Alejandro se queda con la voz.
+Es **P2**: no bloquea el demo.
+
+- [ ] Cliente de Vapi en el navegador del candidato
+- [ ] Definir qué eventos manda al webhook
+- [ ] `convex/http.ts`: endpoint que recibe la transcripción — Salim
+- [ ] Verificar `consent.transcript` antes de guardar nada
+- [ ] (opcional) `lib/runner/` — ejecutar código en el navegador, hoy sin dueño
 
 ## Gael — diseño
 
@@ -79,13 +84,17 @@ No re-litigar sin una razón nueva.
 | Candidatos sin cuenta, con `joinToken` | Registro en una entrevista es fricción absurda |
 | Código se ejecuta en el navegador | Sandbox real no cabe en un hackathon; se dice en el pitch |
 | Un solo reto por sesión, no dos | El PRD permite dos; uno alcanza para demostrar |
-| Audio es P2 | El diferenciador es el mosaico + la evidencia, no la llamada |
+| Audio es P2, con Vapi | El diferenciador es el mosaico + la evidencia, no la llamada |
 | Sin cámara, sin transcripción | Fuera de alcance y con riesgo de privacidad |
 
 ## Bitácora
 
 Una línea por hito. Lo más reciente arriba.
 
+- **2026-08-29** — Generación de retos y reportes con Gemini (`gemini-3.7-flash`),
+  salida validada con Zod. La evidencia del reporte se cita por índice y se
+  traduce a ids reales en el servidor, así el modelo no puede inventarla.
+- **2026-08-29** — Anjali cierra `feature/app-shell`: login y dashboard.
 - **2026-08-29** — Backend base desplegado en `descriptive-penguin-663`. Schema,
   autorización, sesiones, workspaces, eventos y alertas funcionando. Contrato de
   API documentado. Frontend aún sin conectar a Convex.

@@ -21,7 +21,11 @@ export const listForSession = query({
 export const generate = action({
   args: { sessionId: v.id("sessions"), prompt: v.string(), count: v.number() },
   handler: async (ctx, { sessionId, prompt, count }): Promise<null> => {
-    // TODO(alejandro): implementar en convex/ai/generateChallenge.ts
+    // Una action no tiene ctx.db: la verificación se delega a una internalQuery,
+    // que sí recibe la identidad del usuario. Va ANTES de llamar al modelo para
+    // no gastar una llamada de API en alguien que no es dueño de la sesión.
+    await ctx.runQuery(internal.sessions.assertInterviewer, { sessionId });
+
     const drafts = await ctx.runAction(internal.ai.generateChallenge.run, {
       prompt, count,
     });

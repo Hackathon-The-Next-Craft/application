@@ -9,6 +9,7 @@
  */
 
 import type * as ai_evaluate from "../ai/evaluate.js";
+import type * as ai_gemini from "../ai/gemini.js";
 import type * as ai_generateChallenge from "../ai/generateChallenge.js";
 import type * as alerts from "../alerts.js";
 import type * as auth from "../auth.js";
@@ -33,6 +34,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   "ai/evaluate": typeof ai_evaluate;
+  "ai/gemini": typeof ai_gemini;
   "ai/generateChallenge": typeof ai_generateChallenge;
   alerts: typeof alerts;
   auth: typeof auth;
