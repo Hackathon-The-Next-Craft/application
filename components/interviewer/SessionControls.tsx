@@ -34,20 +34,11 @@ const ACCIONES: Record<Status, Accion[]> = {
     { label: "Reanudar", destino: "live" },
     { label: "Cerrar", destino: "closing", confirmar: CERRAR },
   ],
-  // También pide confirmación, y no por simetría: al aplicar "Cerrar" el
-  // estado pasa a "closing" y este botón se dibuja donde acaba de estar el de
-  // confirmar. Sin esta segunda pregunta, un doble clic cierra la sesión de
-  // corrido y no hay vuelta atrás.
-  closing: [
-    {
-      label: "Marcar como cerrada",
-      destino: "closed",
-      confirmar: {
-        pregunta: "La sesión quedará cerrada definitivamente. ¿Seguro?",
-        boton: "Sí, cerrarla",
-      },
-    },
-  ],
+  // Ninguna: el PRD §5.3 pone a "Cerrada" en manos del SISTEMA, no del
+  // entrevistador. "Finalizando" dura lo que tardan los reportes, y cuando el
+  // último termina la sesión se cierra sola (convex/reports.ts). Pedir una
+  // segunda confirmación aquí era pedirle a una persona que hiciera de reloj.
+  closing: [],
   closed: [],
 };
 
@@ -65,7 +56,13 @@ export function SessionControls({
 
   const acciones = ACCIONES[status];
   if (acciones.length === 0) {
-    return <p className="text-body-sm text-ink-500">La sesión está cerrada.</p>;
+    return (
+      <p className="text-body-sm text-ink-500">
+        {status === "closing"
+          ? "Finalizando: generando los reportes. La sesión se cerrará sola."
+          : "La sesión está cerrada."}
+      </p>
+    );
   }
 
   async function aplicar(destino: Destino) {
@@ -88,28 +85,55 @@ export function SessionControls({
   }
 
   const enConfirmacion = acciones.find((a) => a.destino === confirmando);
-  if (enConfirmacion) {
-    return (
-      <div className="flex items-center gap-3 rounded-lg border border-ink-200 border-l-[3px] border-l-fail bg-white px-4 py-2.5">
-        <span className="text-body-sm text-ink-900">
-          {enConfirmacion.confirmar?.pregunta}
-        </span>
-        <Button
-          type="button"
-          variant="danger"
-          disabled={pendiente}
-          onClick={() => aplicar(enConfirmacion.destino)}
-        >
-          {enConfirmacion.confirmar?.boton}
-        </Button>
-        <Button type="button" variant="ghost" onClick={() => setConfirmando(null)}>
-          Cancelar
-        </Button>
-      </div>
-    );
-  }
 
   return (
+    <>
+    {/* Modal y no un aviso en línea: cerrar corta la sesión para todos y no
+        tiene vuelta atrás. Merece detener lo que estabas haciendo, y sobre
+        todo no aparecer justo donde acabas de hacer clic. */}
+    {enConfirmacion && (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-ink-900/40 p-6"
+        onClick={() => setConfirmando(null)}
+      >
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="confirmar-titulo"
+          onClick={(e) => e.stopPropagation()}
+          className="w-full max-w-[420px] rounded-2xl border border-ink-200 bg-white p-6 shadow-lg"
+        >
+          <h2
+            id="confirmar-titulo"
+            className="font-display text-subtitle text-ink-900"
+          >
+            {enConfirmacion.confirmar?.pregunta}
+          </h2>
+          <p className="mt-2 text-body-sm text-ink-500">
+            Los candidatos perderán el acceso y se generarán los reportes. No se
+            puede deshacer.
+          </p>
+          <div className="mt-5 flex justify-end gap-2">
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => setConfirmando(null)}
+            >
+              Cancelar
+            </Button>
+            <Button
+              type="button"
+              variant="danger"
+              disabled={pendiente}
+              onClick={() => aplicar(enConfirmacion.destino)}
+            >
+              {enConfirmacion.confirmar?.boton}
+            </Button>
+          </div>
+        </div>
+      </div>
+    )}
+
     <div className="flex flex-wrap items-center gap-2">
       {error && (
         <p role="alert" className="rounded-md border border-fail-bg bg-fail-bg px-3 py-1.5 text-body-sm text-fail-text">
@@ -132,5 +156,6 @@ export function SessionControls({
         </Button>
       ))}
     </div>
+    </>
   );
 }

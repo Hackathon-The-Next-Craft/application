@@ -48,9 +48,14 @@ export function JoinForm({
   const join = useMutation(api.participants.join);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
-  // El servidor rechaza el ingreso sin consentimiento de audio; el candidato
+  // Los tres son condición de entrada. El servidor los exige; el candidato
   // tiene que saberlo antes de intentarlo, no después de que lo rechacen.
-  const [consentAudio, setConsentAudio] = useState(false);
+  const [acepta, setAcepta] = useState({
+    audio: false,
+    camera: false,
+    transcript: false,
+  });
+  const aceptaTodo = acepta.audio && acepta.camera && acepta.transcript;
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -62,9 +67,9 @@ export function JoinForm({
       const { joinToken } = await join({
         joinCode: code,
         displayName: String(formData.get("displayName")).trim(),
-        consentAudio,
-        consentTranscript: formData.get("consentTranscript") === "on",
-        consentCamera: formData.get("consentCamera") === "on",
+        consentAudio: acepta.audio,
+        consentCamera: acepta.camera,
+        consentTranscript: acepta.transcript,
       });
       // Si el guardado falla, el candidato pierde el acceso al recargar.
       if (!saveToken(code, joinToken)) {
@@ -162,8 +167,9 @@ export function JoinForm({
                 Qué se captura durante la sesión
               </h2>
               <p className="mt-1 max-w-[62ch] text-body-sm text-ink-500">
-                Marca lo que aceptas. Lo obligatorio es lo mínimo para que la
-                prueba funcione.
+                Estas son las condiciones de esta entrevista. Las tres son
+                necesarias para que la prueba funcione, y hay que aceptarlas
+                por separado.
               </p>
             </div>
 
@@ -172,8 +178,10 @@ export function JoinForm({
               <input
                 type="checkbox"
                 name="consentAudio"
-                checked={consentAudio}
-                onChange={(e) => setConsentAudio(e.target.checked)}
+                checked={acepta.audio}
+                onChange={(e) =>
+                  setAcepta((a) => ({ ...a, audio: e.target.checked }))
+                }
                 className="mt-0.5 h-5 w-5 shrink-0 accent-iris-600"
               />
               <span className="min-w-0">
@@ -193,12 +201,14 @@ export function JoinForm({
             </label>
 
 
-            {/* Opcional (PRD §13.3). Sin esto el candidato entra igual, solo
-                que el entrevistador no lo ve. */}
-            <label className="flex cursor-pointer items-start gap-3.5 border-b border-ink-200 px-6 py-5">
+            <label className="flex cursor-pointer items-start gap-3.5 border-b border-ink-200 bg-ink-25 px-6 py-5">
               <input
                 type="checkbox"
                 name="consentCamera"
+                checked={acepta.camera}
+                onChange={(e) =>
+                  setAcepta((a) => ({ ...a, camera: e.target.checked }))
+                }
                 className="mt-0.5 h-5 w-5 shrink-0 accent-iris-600"
               />
               <span className="min-w-0">
@@ -206,24 +216,28 @@ export function JoinForm({
                   <span className="text-body font-semibold text-ink-900">
                     Cámara
                   </span>
-                  <span className="inline-flex h-[22px] items-center rounded-full bg-ink-100 px-2 font-mono text-chip uppercase text-ink-600">
-                    Opcional
+                  <span className="inline-flex h-[22px] items-center rounded-full bg-stuck-bg px-2 font-mono text-chip uppercase text-stuck-text">
+                    Obligatorio
                   </span>
                 </span>
                 <span className="mt-1.5 block max-w-[62ch] text-body-sm text-ink-500">
                   Para que quien te entrevista te vea, como en cualquier
                   entrevista. <strong className="font-semibold text-ink-900">
                   Tu imagen no se analiza ni se graba</strong>: no se evalúa tu
-                  rostro, tu expresión ni tu atención. Si dices que no, entras
-                  igual y no afecta tu evaluación.
+                  rostro, tu expresión ni tu atención. Solo se transmite en vivo
+                  mientras dura la sesión.
                 </span>
               </span>
             </label>
 
-            <label className="flex cursor-pointer items-start gap-3.5 px-6 py-5">
+            <label className="flex cursor-pointer items-start gap-3.5 bg-ink-25 px-6 py-5">
               <input
                 type="checkbox"
                 name="consentTranscript"
+                checked={acepta.transcript}
+                onChange={(e) =>
+                  setAcepta((a) => ({ ...a, transcript: e.target.checked }))
+                }
                 className="mt-0.5 h-5 w-5 shrink-0 accent-iris-600"
               />
               <span className="min-w-0">
@@ -231,14 +245,15 @@ export function JoinForm({
                   <span className="text-body font-semibold text-ink-900">
                     Transcripción de tu voz
                   </span>
-                  <span className="inline-flex h-[22px] items-center rounded-full bg-ink-100 px-2 font-mono text-chip uppercase text-ink-600">
-                    Opcional
+                  <span className="inline-flex h-[22px] items-center rounded-full bg-stuck-bg px-2 font-mono text-chip uppercase text-stuck-text">
+                    Obligatorio
                   </span>
                 </span>
                 <span className="mt-1.5 block max-w-[62ch] text-body-sm text-ink-500">
                   Convierte en texto lo que expliques, para que tu razonamiento
-                  cuente como evidencia. Si dices que no, ese criterio queda como
-                  no observado y no se puntúa en tu contra.
+                  cuente como evidencia y no solo el código que alcanzaste a
+                  escribir. Se procesa como contenido de lo que dices, nunca
+                  como rasgo de tu voz.
                 </span>
               </span>
             </label>
@@ -282,11 +297,11 @@ export function JoinForm({
 
           <div className="flex flex-wrap items-center gap-4 border-t border-ink-200 pt-6">
             <p className="flex-1 text-body-sm text-ink-500">
-              {consentAudio
+              {aceptaTodo
                 ? "Todo listo. Entrarás a la sala de espera hasta que empiece la prueba."
-                : "Sin el consentimiento de audio no es posible entrar a la sesión."}
+                : "Hay que aceptar las tres condiciones para entrar a la sesión."}
             </p>
-            <Button type="submit" size="lg" disabled={pending || !consentAudio}>
+            <Button type="submit" size="lg" disabled={pending || !aceptaTodo}>
               {pending ? "Entrando…" : "Entrar a la sala de espera"}
             </Button>
           </div>

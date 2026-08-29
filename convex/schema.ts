@@ -92,6 +92,7 @@ export default defineSchema({
     }),
     deviceCheck: v.optional(v.object({
       micOk: v.boolean(),
+      cameraOk: v.optional(v.boolean()),
       error: v.optional(v.string()),
     })),
     // Estado derivado por el clasificador; se recalcula, no lo escribe el cliente.

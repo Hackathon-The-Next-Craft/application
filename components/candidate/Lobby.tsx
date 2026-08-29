@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { api } from "@/convex/_generated/api";
 import { PanelRetirado } from "./InvalidTokenBoundary";
 import { Logo } from "@/components/ui/Logo";
-import { MicCheck } from "./MicCheck";
+import { DeviceCheck } from "./DeviceCheck";
 
 type SessionStatus = "draft" | "ready" | "live" | "paused" | "closing" | "closed";
 
@@ -61,7 +61,7 @@ export function Lobby({ code, joinToken }: { code: string; joinToken: string }) 
       </p>
 
       <div className="mt-6">
-        <MicCheck joinToken={joinToken} deviceCheck={participant.deviceCheck} />
+        <DeviceCheck joinToken={joinToken} deviceCheck={participant.deviceCheck} />
       </div>
 
       <p className="mt-4 text-body-sm text-ink-500">
