@@ -4,6 +4,7 @@ import { useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { api } from "@/convex/_generated/api";
+import { PanelRetirado } from "./InvalidTokenBoundary";
 import { Logo } from "@/components/ui/Logo";
 import { MicCheck } from "./MicCheck";
 
@@ -23,25 +24,34 @@ export function Lobby({ code, joinToken }: { code: string; joinToken: string }) 
   const router = useRouter();
 
   const status = state?.session.status;
+  const presencia = state?.participant.presence;
   useEffect(() => {
-    if (status === "live") router.replace(`/join/${code}/room`);
-  }, [status, code, router]);
+    // A un retirado no se le manda a la sala: allí `mine` lanza y solo vería
+    // un rebote antes del mismo mensaje.
+    if (status === "live" && presencia !== "removed") {
+      router.replace(`/join/${code}/room`);
+    }
+  }, [status, presencia, code, router]);
 
   if (state === undefined) {
     return <div className="h-64 animate-pulse rounded-2xl border border-ink-200 bg-white" />;
   }
 
   const { participant, session } = state;
+
+  // participants.me resuelve al retirado en vez de lanzar, justamente para
+  // poder decírselo en vez de dejarlo esperando en un lobby que ya no existe.
+  if (participant.presence === "removed") {
+    return <PanelRetirado />;
+  }
+
   const listo = participant.presence === "ready";
 
   return (
-    <div className="rounded-2xl border border-ink-200 bg-white p-8">
-      <Logo size={24} className="mb-8 text-ink-900" />
-
+    <div className="rounded-2xl border border-ink-200 bg-white p-6">
       <h1 className="font-display text-title text-ink-900">{session.title}</h1>
       <p className="mt-1 text-body-sm text-ink-500">
-        Entras como{" "}
-        <span className="font-semibold text-ink-900">{participant.displayName}</span>
+        Entras como <span className="font-medium text-ink-900">{participant.displayName}</span>
       </p>
 
       <p className="mt-6 rounded-lg border border-ink-200 bg-ink-25 px-4 py-3 text-body-sm text-ink-900">

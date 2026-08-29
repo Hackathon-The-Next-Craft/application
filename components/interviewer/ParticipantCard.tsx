@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useMutation } from "convex/react";
+import { useState } from "react";
 import type { FunctionReturnType } from "convex/server";
-import type { api } from "@/convex/_generated/api";
+import { api } from "@/convex/_generated/api";
 import type { Doc } from "@/convex/_generated/dataModel";
 import { Button } from "@/components/ui/Button";
 import { ProgressBadge, PROGRESS_TONE } from "./ProgressBadge";
@@ -52,6 +54,8 @@ export function ParticipantCard({
   onEnfocar: () => void;
 }) {
   const { lastRun } = participante;
+  const remove = useMutation(api.participants.remove);
+  const [confirmandoRetiro, setConfirmandoRetiro] = useState(false);
 
   return (
     <li
@@ -82,7 +86,7 @@ export function ParticipantCard({
           : "Todavía no ejecuta nada"}
       </p>
 
-      <pre className="mt-3 h-40 overflow-auto rounded-lg border border-ink-200 bg-ink-25 p-3 font-mono text-code text-ink-900">
+      <pre className="mt-3 h-40 overflow-auto rounded-2xl border border-ink-200 bg-ink-25 p-3 font-mono text-code text-ink-900">
         {participante.currentCode || "// sin código todavía"}
       </pre>
 
@@ -96,7 +100,44 @@ export function ParticipantCard({
         >
           Reporte
         </Link>
+        <button
+          type="button"
+          onClick={() => setConfirmandoRetiro(true)}
+          className="ml-auto text-body-sm text-ink-500 underline underline-offset-4 hover:text-fail-text"
+        >
+          Retirar
+        </button>
       </div>
+
+      {confirmandoRetiro && (
+        <div className="mt-3 rounded-2xl border border-ink-200 border-l-[3px] border-l-fail bg-white p-3">
+          <p className="text-body-sm text-ink-900">
+            {participante.displayName} dejará de contar para el cupo y perderá
+            el acceso. Su trabajo y sus eventos se conservan.
+          </p>
+          <div className="mt-2 flex gap-2">
+            <button
+              type="button"
+              onClick={() =>
+                remove({
+                  sessionId: participante.sessionId,
+                  participantId: participante._id,
+                })
+              }
+              className="inline-flex h-9 items-center justify-center rounded-md bg-fail px-3.5 font-sans text-[13px] font-semibold leading-4 text-white transition-colors duration-[120ms] hover:brightness-95"
+            >
+              Sí, retirar
+            </button>
+            <button
+              type="button"
+              onClick={() => setConfirmandoRetiro(false)}
+              className="rounded-md border border-ink-200 bg-white px-3 py-1.5 text-body-sm font-medium hover:bg-iris-50"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )}
     </li>
   );
 }

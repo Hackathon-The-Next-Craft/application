@@ -12,7 +12,7 @@ export function RunPanel({
   workspaceId,
   language,
   codigo,
-  starterCode,
+  entryPoint,
   tests,
   yaEnviado,
   bloqueado,
@@ -21,7 +21,7 @@ export function RunPanel({
   workspaceId: Id<"workspaces">;
   language: "javascript" | "python";
   codigo: string;
-  starterCode: string;
+  entryPoint: string;
   tests: CasoDePrueba[];
   yaEnviado: boolean;
   bloqueado: boolean;
@@ -42,7 +42,7 @@ export function RunPanel({
       const salida = await ejecutarEnElNavegador({
         language,
         code: codigo,
-        starterCode,
+        entryPoint,
         tests,
       });
       setResultado(salida);

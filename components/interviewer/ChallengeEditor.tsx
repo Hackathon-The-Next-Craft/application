@@ -19,6 +19,7 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
   const [enunciado, setEnunciado] = useState(challenge.statement);
   const [language, setLanguage] = useState(challenge.language);
   const [starterCode, setStarterCode] = useState(challenge.starterCode);
+  const [entryPoint, setEntryPoint] = useState(challenge.entryPoint);
   const [minutos, setMinutos] = useState(challenge.timeLimitMinutes);
   const [tests, setTests] = useState<Test[]>(challenge.tests);
   const [guardando, setGuardando] = useState(false);
@@ -35,6 +36,7 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
           statement: enunciado,
           language,
           starterCode,
+          entryPoint: entryPoint.trim(),
           timeLimitMinutes: minutos,
           tests,
         },
@@ -147,6 +149,23 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
           </div>
 
           <label className="flex flex-col gap-1.5">
+            <span className="text-body-sm font-medium">Función a evaluar</span>
+            <input
+              value={entryPoint}
+              onChange={(e) => {
+                setEntryPoint(e.target.value);
+                setGuardado(false);
+              }}
+              placeholder="productExceptSelf"
+              className={`${CAMPO} font-mono`}
+            />
+            <span className="text-meta text-ink-500">
+              El nombre exacto que invoca el runner. Tiene que coincidir con la
+              función que exporta el código inicial.
+            </span>
+          </label>
+
+          <label className="flex flex-col gap-1.5">
             <span className="text-body-sm font-medium">Código inicial</span>
             <textarea
               value={starterCode}
@@ -158,7 +177,7 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
               className={`${CAMPO} font-mono`}
             />
             <span className="text-meta text-ink-500">
-              De aquí sale el nombre de la función que ejecutan los tests.
+              Debe exportar la función con module.exports.
             </span>
           </label>
 
@@ -230,6 +249,14 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
               </div>
             ))}
           </div>
+
+          {entryPoint.trim() !== "" && !starterCode.includes(entryPoint.trim()) && (
+            <p className="rounded-md bg-stuck-bg px-3 py-2 text-body-sm text-stuck-text">
+              El código inicial no menciona <code>{entryPoint.trim()}</code>. Si
+              el nombre no coincide, ninguna ejecución del candidato encontrará
+              la función.
+            </p>
+          )}
 
           <div className="flex flex-wrap items-center gap-3">
             <button

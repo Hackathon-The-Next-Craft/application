@@ -6,6 +6,7 @@ import { Component, type ReactNode } from "react";
 // `participants.me` hace throw ante un joinToken desconocido. Sin este
 // boundary, un token viejo en localStorage deja la pantalla en blanco.
 const INVALID_TOKEN = "Token de acceso inválido";
+const RETIRADO = "El entrevistador te retiró de la sesión";
 
 type Props = {
   children: ReactNode;
@@ -19,6 +20,18 @@ type Props = {
 
 type State = { message: string | null };
 
+export function PanelRetirado() {
+  return (
+    <div className="rounded-2xl border border-ink-200 bg-white p-6">
+      <h2 className="font-display text-subtitle text-ink-900">El entrevistador te retiró de la sesión</h2>
+      <p className="mt-2 text-body-sm text-ink-500">
+        Tu trabajo quedó guardado. Si crees que fue un error, escríbele a quien
+        te compartió el enlace.
+      </p>
+    </div>
+  );
+}
+
 export class InvalidTokenBoundary extends Component<Props, State> {
   state: State = { message: null };
 
@@ -30,7 +43,13 @@ export class InvalidTokenBoundary extends Component<Props, State> {
     const { message } = this.state;
     if (message === null) return this.props.children;
 
-    const isInvalidToken = message.includes(INVALID_TOKEN);
+    const fueRetirado = message.includes(RETIRADO);
+    const isInvalidToken = !fueRetirado && message.includes(INVALID_TOKEN);
+
+    if (fueRetirado) {
+      return <PanelRetirado />;
+    }
+
     return (
       <div className="rounded-2xl border border-ink-200 bg-white p-6">
         <h2 className="font-display text-subtitle text-ink-900">
@@ -53,7 +72,7 @@ export class InvalidTokenBoundary extends Component<Props, State> {
               window.location.reload();
             }
           }}
-          className="mt-5 inline-flex h-11 items-center justify-center rounded-lg bg-iris-600 px-5 font-sans text-[15px] font-semibold leading-[18px] text-white transition-colors duration-[120ms] hover:bg-iris-700"
+          className="mt-5 inline-flex h-11 items-center justify-center rounded-2xl bg-iris-600 px-5 font-sans text-[15px] font-semibold leading-[18px] text-white transition-colors duration-[120ms] hover:bg-iris-700"
         >
           {isInvalidToken ? "Volver a entrar" : "Reintentar"}
         </button>

@@ -1,4 +1,3 @@
-import { deducirEntryPoint, esIdentificadorValido } from "./entryPoint";
 import type { CasoDePrueba, ResultadoDeEjecucion } from "./types";
 
 /**
@@ -10,16 +9,17 @@ const LIMITE_MS = 5_000;
 export async function ejecutarEnElNavegador({
   language,
   code,
-  starterCode,
+  entryPoint,
   tests,
 }: {
   language: "javascript" | "python";
   code: string;
-  starterCode: string;
+  entryPoint: string;
   tests: CasoDePrueba[];
 }): Promise<ResultadoDeEjecucion> {
   if (language === "python") {
-    // Pendiente: Pyodide. Ver PENDIENTE-python.md en esta carpeta.
+    // La generación fija javascript justamente para que esto no ocurra en una
+    // sesión real. Ver lib/runner/PENDIENTE-python.md.
     return {
       stdout: "",
       stderr:
@@ -29,10 +29,6 @@ export async function ejecutarEnElNavegador({
       durationMs: 0,
     };
   }
-
-  const deducido = deducirEntryPoint(starterCode, language);
-  const entryPoint =
-    deducido !== null && esIdentificadorValido(deducido) ? deducido : null;
 
   const inicio = performance.now();
   const worker = new Worker(new URL("./javascript.worker.ts", import.meta.url));
