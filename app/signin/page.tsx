@@ -91,34 +91,21 @@ export default function SignInPage() {
             </Button>
           </form>
 
-          <div className="my-4 flex items-center gap-3.5">
-            <span className="h-px flex-1 bg-ink-200" />
-            <span className="text-meta text-ink-400">o</span>
-            <span className="h-px flex-1 bg-ink-200" />
-          </div>
-
-          {/* Aún no hay proveedor SSO configurado: se anuncia, no se ofrece. */}
-          <div className="flex h-11 items-center justify-center gap-2.5 rounded-lg border border-dashed border-ink-300 bg-ink-25">
-            <span className="text-body-sm text-ink-400">
-              Entrar con el SSO de tu empresa
-            </span>
-            <span className="rounded-xs border border-ink-200 bg-white px-1.5 py-0.5 font-mono text-chip uppercase text-ink-500">
-              V1
-            </span>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => {
-              setFlow(flow === "signUp" ? "signIn" : "signUp");
-              setError(null);
-            }}
-            className="mt-6 w-full text-body-sm text-ink-500 underline underline-offset-4 hover:text-iris-600"
-          >
-            {flow === "signUp"
-              ? "¿Ya tienes cuenta? Entra"
-              : "¿No tienes cuenta? Créala"}
-          </button>
+          {/* Cambiar entre crear cuenta y entrar: es la única forma de llegar
+              al flujo de inicio de sesión, así que no puede desaparecer. */}
+          <p className="mt-6 text-body-sm text-ink-500">
+            {flow === "signUp" ? "¿Ya tienes cuenta?" : "¿No tienes cuenta?"}{" "}
+            <button
+              type="button"
+              onClick={() => {
+                setFlow(flow === "signUp" ? "signIn" : "signUp");
+                setError(null);
+              }}
+              className="font-semibold text-iris-600 underline underline-offset-4 hover:text-iris-700"
+            >
+              {flow === "signUp" ? "Entra" : "Créala"}
+            </button>
+          </p>
         </div>
       </section>
 
