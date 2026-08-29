@@ -51,7 +51,7 @@ Detalle en [frontend.md](frontend.md).
 - [x] `feature/join-flow` — /join, consentimiento, lobby, preflight
 - [x] `feature/live-mosaic` ⭐ — la pantalla del demo
 - [x] `feature/candidate-room` — Monaco, autosave, runner en navegador (Python pendiente)
-- [ ] `feature/setup-and-report` — generar retos, ver reporte con evidencia
+- [x] `feature/setup-and-report` — generar retos, ver reporte con evidencia
 
 ## Alejandro — audio (Vapi)
 
