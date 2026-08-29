@@ -26,26 +26,46 @@ export async function classify(ctx: MutationCtx, participantId: Id<"participants
   let reason = "Editando sin ejecutar todavía";
 
   const runs = recent.filter((e) => e.type === "code.run");
-  const lastTest = recent.find((e) => e.type === "test.result");
+  const tests = recent.filter((e) => e.type === "test.result");
+  const lastTest = tests[0];
+  const prevTest = tests[1];
   const submitted = recent.some((e) => e.type === "challenge.submitted");
+
+  const passed = lastTest?.payload?.passed ?? 0;
+  const total = lastTest?.payload?.total ?? 0;
+
+  // Mismo stderr en tres ejecuciones seguidas: está peleando con lo mismo.
+  const errs = runs.slice(0, 3).map((e) => String(e.payload?.stderr ?? "").slice(0, 120));
+  const repeatedError = errs.length === 3 && errs[0] !== "" && errs.every((e) => e === errs[0]);
 
   if (submitted) {
     state = "finished";
     reason = "Envió su solución";
-  } else if (lastTest && lastTest.payload?.passed === lastTest.payload?.total && lastTest.payload?.total > 0) {
-    state = "advancing";
-    reason = `Pasó ${lastTest.payload.passed}/${lastTest.payload.total} tests`;
+  } else if (total > 0 && passed === total) {
+    state = "finished";
+    reason = `Pasó los ${total} tests`;
   } else if (idleSec > session.stuckThresholdSec) {
     state = "stuck";
     reason = `Sin actividad hace ${Math.round(idleSec)}s`;
-  } else {
-    // TODO(salim): mismo stderr 3 veces seguidas -> "stuck" / "env_failure"
-    const errs = runs.slice(0, 3).map((e) => String(e.payload?.stderr ?? "").slice(0, 120));
-    if (errs.length === 3 && errs[0] && errs.every((e) => e === errs[0])) {
-      state = "stuck";
-      reason = "Mismo error en 3 ejecuciones seguidas";
-    }
+  } else if (repeatedError) {
+    state = "stuck";
+    reason = `Mismo error en 3 ejecuciones seguidas: ${errs[0]}`;
+  } else if (lastTest && passed > (prevTest?.payload?.passed ?? -1)) {
+    // Un test nuevo aprobado es la señal más clara de avance (PRD §7.3).
+    state = "advancing";
+    reason = prevTest
+      ? `Pasó de ${prevTest.payload.passed}/${total} a ${passed}/${total} tests`
+      : `Pasó ${passed}/${total} tests`;
+  } else if (lastTest) {
+    state = "exploring";
+    reason = `Sigue en ${passed}/${total} tests desde el último intento`;
+  } else if (runs.length > 0) {
+    state = "exploring";
+    reason = "Ejecutando sin pasar tests todavía";
   }
+
+  // TODO(salim): distinguir env_failure — stderr de red o de runtime que no
+  // depende de la solución del candidato. Es alerta de prioridad alta.
 
   if (state === participant.progress && reason === participant.progressReason) return;
   await ctx.db.patch(participantId, { progress: state, progressReason: reason });
