@@ -30,13 +30,24 @@ function hora(at: number) {
 export function AlertsPanel({
   sessionId,
   nombrePorParticipante,
+  participantesCargados,
   onEnfocar,
 }: {
   sessionId: Id<"sessions">;
   nombrePorParticipante: Map<string, string>;
+  /** false mientras la lista de participantes carga: sin esto se ocultaría todo. */
+  participantesCargados: boolean;
   onEnfocar: (participantId: Id<"participants">) => void;
 }) {
-  const alertas = useQuery(api.alerts.listForSession, { sessionId });
+  const todas = useQuery(api.alerts.listForSession, { sessionId });
+
+  // Un candidato retirado sale de listForSession, así que sus alertas viejas se
+  // quedarían sin nombre ("Candidato") y con un botón de enfocar que apunta a
+  // una tarjeta inexistente. Son ruido operativo: fuera del feed.
+  const alertas =
+    todas === undefined || !participantesCargados
+      ? todas
+      : todas.filter((a) => nombrePorParticipante.has(a.participantId));
   const acknowledge = useMutation(api.alerts.acknowledge);
 
   return (
@@ -72,7 +83,7 @@ export function AlertsPanel({
                 </div>
 
                 <p className="mt-1.5 text-body-sm font-semibold text-ink-900">
-                  {nombrePorParticipante.get(alerta.participantId) ?? "Candidato"}
+                  {nombrePorParticipante.get(alerta.participantId)}
                 </p>
                 {/* La razón viene legible desde el backend; se muestra tal cual. */}
                 <p className="mt-0.5 text-body-sm text-ink-500">{alerta.reason}</p>

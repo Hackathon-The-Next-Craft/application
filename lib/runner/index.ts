@@ -18,12 +18,13 @@ export async function ejecutarEnElNavegador({
   tests: CasoDePrueba[];
 }): Promise<ResultadoDeEjecucion> {
   if (language === "python") {
-    // La generación fija javascript justamente para que esto no ocurra en una
-    // sesión real. Ver lib/runner/PENDIENTE-python.md.
+    // Decisión de producto: las pruebas técnicas son solo en JavaScript. La
+    // generación lo fija y el editor ya no ofrece Python; esto solo cubre retos
+    // antiguos que quedaran guardados así.
     return {
       stdout: "",
       stderr:
-        "El runtime de Python todavía no está conectado. Por ahora solo se pueden ejecutar retos en JavaScript.",
+        "Este reto está en Python y las pruebas técnicas son solo en JavaScript. Pídele al entrevistador que lo cambie.",
       passed: 0,
       total: tests.length,
       durationMs: 0,

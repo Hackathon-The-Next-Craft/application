@@ -125,6 +125,7 @@ export default function LivePage({ params }: PageProps<"/s/[sessionId]/live"> ) 
         <AlertsPanel
           sessionId={sessionId}
           nombrePorParticipante={nombrePorParticipante}
+          participantesCargados={participantes !== undefined}
           onEnfocar={setEnfocado}
         />
       </div>
