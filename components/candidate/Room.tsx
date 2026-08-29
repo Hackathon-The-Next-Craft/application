@@ -8,6 +8,7 @@ import type { Id } from "@/convex/_generated/dataModel";
 import { Markdown } from "@/components/ui/Markdown";
 import { CodeEditor } from "./CodeEditor";
 import { RunPanel } from "./RunPanel";
+import { CameraPublisher } from "@/components/candidate/CameraPublisher";
 
 export function Room({ code, joinToken }: { code: string; joinToken: string }) {
   const datos = useQuery(api.workspaces.mine, { joinToken });
@@ -58,6 +59,9 @@ export function Room({ code, joinToken }: { code: string; joinToken: string }) {
 
   return (
     <div className="flex flex-col gap-4">
+      {/* No dibuja nada: solo publica la cámara si el candidato la aceptó.
+          El micrófono no es suyo — ese lo lleva Vapi. */}
+      <CameraPublisher joinToken={joinToken} />
       {datos.paused && (
         <p className="rounded-md bg-stuck-bg px-4 py-3 text-body-sm text-stuck-text">
           El entrevistador puso la sesión en pausa. Tus cambios no se guardan

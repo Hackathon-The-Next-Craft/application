@@ -64,6 +64,7 @@ export function JoinForm({
         displayName: String(formData.get("displayName")).trim(),
         consentAudio,
         consentTranscript: formData.get("consentTranscript") === "on",
+        consentCamera: formData.get("consentCamera") === "on",
       });
       // Si el guardado falla, el candidato pierde el acceso al recargar.
       if (!saveToken(code, joinToken)) {
@@ -171,6 +172,34 @@ export function JoinForm({
                 <span className="mt-1.5 block max-w-[62ch] text-body-sm text-ink-500">
                   Para poder hablar con quien te entrevista durante la prueba. Sin
                   esto no es posible entrar a la sesión.
+                </span>
+              </span>
+            </label>
+
+
+            {/* Opcional (PRD §13.3). Sin esto el candidato entra igual, solo
+                que el entrevistador no lo ve. */}
+            <label className="flex cursor-pointer items-start gap-3.5 border-b border-ink-200 px-6 py-5">
+              <input
+                type="checkbox"
+                name="consentCamera"
+                className="mt-0.5 h-5 w-5 shrink-0 accent-iris-600"
+              />
+              <span className="min-w-0">
+                <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                  <span className="text-body font-semibold text-ink-900">
+                    Cámara
+                  </span>
+                  <span className="inline-flex h-[22px] items-center rounded-full bg-ink-100 px-2 font-mono text-chip uppercase text-ink-600">
+                    Opcional
+                  </span>
+                </span>
+                <span className="mt-1.5 block max-w-[62ch] text-body-sm text-ink-500">
+                  Para que quien te entrevista te vea, como en cualquier
+                  entrevista. <strong className="font-semibold text-ink-900">
+                  Tu imagen no se analiza ni se graba</strong>: no se evalúa tu
+                  rostro, tu expresión ni tu atención. Si dices que no, entras
+                  igual y no afecta tu evaluación.
                 </span>
               </span>
             </label>

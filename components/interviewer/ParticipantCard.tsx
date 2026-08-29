@@ -8,6 +8,7 @@ import { api } from "@/convex/_generated/api";
 import type { Doc } from "@/convex/_generated/dataModel";
 import { Button } from "@/components/ui/Button";
 import { ProgressBadge, PROGRESS_TONE } from "./ProgressBadge";
+import { CandidateVideo } from "./CameraStage";
 
 // El tipo sale del backend: si Salim cambia listForSession, esto deja de compilar.
 export type ParticipanteEnVivo = FunctionReturnType<
@@ -85,6 +86,13 @@ export function ParticipantCard({
           ? `Tests ${lastRun.passed}/${lastRun.total} · última ejecución ${hora(lastRun.at)}`
           : "Todavía no ejecuta nada"}
       </p>
+
+      {/* Devuelve null si el candidato no aceptó cámara o aún no publica: la
+          tarjeta tiene que seguir siendo legible sin esto. */}
+      <CandidateVideo
+        participantId={participante._id}
+        className="mt-3 aspect-video w-full rounded-2xl border border-ink-200 bg-ink-900 object-cover"
+      />
 
       <pre className="mt-3 h-40 overflow-auto rounded-2xl border border-ink-200 bg-ink-25 p-3 font-mono text-code text-ink-900">
         {participante.currentCode || "// sin código todavía"}
