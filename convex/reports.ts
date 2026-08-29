@@ -2,6 +2,7 @@ import { v } from "convex/values";
 import { action, internalAction, internalMutation, internalQuery, mutation, query } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
+import type { MutationCtx } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { requireInterviewer } from "./lib/auth";
 
@@ -122,8 +123,41 @@ export const finish = internalMutation({
   args: { reportId: v.id("reports"), result: v.any() },
   handler: async (ctx, { reportId, result }) => {
     await ctx.db.patch(reportId, { status: "done", ...result });
+    await cerrarSiTerminaron(ctx, reportId);
   },
 });
+
+/**
+ * El PRD §5.3 dice que a "Cerrada" la lleva el SISTEMA, no el entrevistador:
+ * "Finalizando" es mientras se consolidan eventos y corre el análisis, y
+ * "Cerrada" significa que el reporte ya está disponible. Pedirle al humano que
+ * confirme dos veces era pedirle que hiciera de reloj.
+ *
+ * Cuando el último reporte de la sesión deja de estar en curso, la sesión se
+ * cierra sola.
+ */
+async function cerrarSiTerminaron(ctx: MutationCtx, reportId: Id<"reports">) {
+  const report = await ctx.db.get(reportId);
+  if (!report) return;
+  const session = await ctx.db.get(report.sessionId);
+  if (!session || session.status !== "closing") return;
+
+  const pendientes = await ctx.db
+    .query("reports")
+    .withIndex("by_session", (q) => q.eq("sessionId", report.sessionId))
+    .collect();
+  if (pendientes.some((r) => r.status === "pending" || r.status === "generating")) {
+    return;
+  }
+
+  await ctx.db.patch(session._id, { status: "closed" });
+  await ctx.db.insert("events", {
+    sessionId: session._id,
+    type: "session.closed",
+    at: Date.now(),
+    payload: { status: "closed", porElSistema: true },
+  });
+}
 
 export const fail = internalMutation({
   args: { reportId: v.id("reports"), message: v.string() },
@@ -132,6 +166,8 @@ export const fail = internalMutation({
       status: "failed",
       limitations: `No se pudo generar el reporte: ${message}`,
     });
+    // Un reporte fallido tampoco debe dejar la sesión colgada en "finalizando".
+    await cerrarSiTerminaron(ctx, reportId);
   },
 });
 

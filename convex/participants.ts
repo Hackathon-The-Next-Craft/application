@@ -13,7 +13,7 @@ export const join = mutation({
     displayName: v.string(),
     consentAudio: v.boolean(),
     consentTranscript: v.boolean(),
-    consentCamera: v.optional(v.boolean()),
+    consentCamera: v.boolean(),
   },
   handler: async (ctx, args) => {
     const session = await ctx.db
@@ -32,11 +32,24 @@ export const join = mutation({
       );
     }
 
-    // PRD §13.3: el audio es parte de la dinámica de la entrevista, así que su
-    // consentimiento es obligatorio. La transcripción sigue siendo opt-in.
-    if (!args.consentAudio) {
+    // Los tres son condición de entrada, no preferencias.
+    //
+    // El PRD §11.1 pide consentimiento granular, y lo sigue siendo: se explica
+    // cada cosa por separado y hay que aceptarla explícitamente. Lo que cambia
+    // es que ninguna es opcional, y §11.1 contempla exactamente eso —"si una
+    // organización requiere audio para su proceso, la condición se debe
+    // comunicar antes de la sesión"—. Por eso la pantalla las presenta como
+    // condiciones y no como casillas sueltas: sin cámara el entrevistador no ve
+    // a quien entrevista, y sin transcripción el razonamiento hablado no cuenta
+    // como evidencia y el reporte queda cojo.
+    const faltantes = [
+      !args.consentAudio && "audio",
+      !args.consentCamera && "cámara",
+      !args.consentTranscript && "transcripción",
+    ].filter(Boolean);
+    if (faltantes.length > 0) {
       throw new Error(
-        "Para participar es necesario aceptar el uso de audio durante la entrevista",
+        `Para participar hay que aceptar: ${faltantes.join(", ")}.`,
       );
     }
 
@@ -55,9 +68,7 @@ export const join = mutation({
       consent: {
         audio: args.consentAudio,
         transcript: args.consentTranscript,
-        // La cámara es opcional (PRD §13.3): sin ella el candidato entra igual,
-        // solo que el entrevistador no lo ve.
-        camera: args.consentCamera ?? false,
+        camera: args.consentCamera,
         acceptedAt: now,
         noticeVersion: NOTICE_VERSION,
       },
@@ -90,12 +101,18 @@ export const me = query({
 });
 
 export const setReady = mutation({
-  args: { joinToken: v.string(), micOk: v.boolean(), error: v.optional(v.string()) },
-  handler: async (ctx, { joinToken, micOk, error }) => {
+  args: {
+    joinToken: v.string(),
+    micOk: v.boolean(),
+    cameraOk: v.boolean(),
+    error: v.optional(v.string()),
+  },
+  handler: async (ctx, { joinToken, micOk, cameraOk, error }) => {
     const { participant } = await requireCandidate(ctx, joinToken);
+    // Listo solo si los dos responden: ahora ambos son necesarios.
     await ctx.db.patch(participant._id, {
-      presence: micOk ? "ready" : "lobby",
-      deviceCheck: { micOk, error },
+      presence: micOk && cameraOk ? "ready" : "lobby",
+      deviceCheck: { micOk, cameraOk, error },
     });
   },
 });
