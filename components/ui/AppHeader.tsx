@@ -11,6 +11,13 @@ import { api } from "@/convex/_generated/api";
 import { Logo } from "@/components/ui/Logo";
 import { QuietBoundary } from "@/components/ui/QuietBoundary";
 
+// Compartida con las migas "Sesiones" de cada pantalla (setup, en vivo):
+// un link de navegación en la barra superior no es texto en un párrafo, así
+// que lleva color y un fondo sutil al pasar el mouse, nunca el subrayado de
+// un <a> por defecto.
+export const NAV_LINK =
+  "-mx-2 rounded-md px-2 py-1 text-body-sm font-medium text-ink-500 transition-colors duration-[120ms] hover:bg-ink-50 hover:text-ink-900";
+
 function initialsFrom(text: string) {
   const local = text.split("@")[0];
   const parts = local.split(/[.\-_ ]+/).filter(Boolean);
@@ -71,7 +78,7 @@ export function AppHeader({
           await signOut();
           router.push("/signin");
         }}
-        className="text-body-sm text-ink-500 underline underline-offset-4 hover:text-iris-600"
+        className={NAV_LINK}
       >
         Salir
       </button>

@@ -9,7 +9,7 @@ import { AlertsPanel } from "@/components/interviewer/AlertsPanel";
 import { FocusPanel } from "@/components/interviewer/FocusPanel";
 import { ParticipantCard } from "@/components/interviewer/ParticipantCard";
 import { SessionControls } from "@/components/interviewer/SessionControls";
-import { AppHeader } from "@/components/ui/AppHeader";
+import { AppHeader, NAV_LINK } from "@/components/ui/AppHeader";
 import { Chip, type Tone } from "@/components/ui/Chip";
 
 const ESTADO: Record<Doc<"sessions">["status"], string> = {
@@ -55,7 +55,7 @@ export default function LivePage({ params }: PageProps<"/s/[sessionId]/live"> ) 
         <div className="flex min-w-0 items-center gap-3">
           <Link
             href="/dashboard"
-            className="shrink-0 text-body-sm text-ink-500 underline underline-offset-4 hover:text-iris-600"
+            className={`shrink-0 ${NAV_LINK}`}
           >
             Sesiones
           </Link>
