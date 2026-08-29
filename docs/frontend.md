@@ -28,7 +28,10 @@ Desbloquea todo lo demás. Hazla primero y mergéala rápido.
 **1. Conectar Convex.** `app/layout.tsx` debe envolverse en
 `<ConvexAuthNextjsServerProvider>` (de `@convex-dev/auth/nextjs/server`), y
 dentro va el `<ConvexClientProvider>` que ya existe. También hay que crear
-`middleware.ts` en la raíz con `convexAuthNextjsMiddleware`.
+`proxy.ts` en la raíz con `convexAuthNextjsMiddleware`.
+
+> **Ojo:** Next 16 renombró `middleware.ts` a `proxy.ts`. El nombre viejo sigue
+> funcionando pero está deprecado — ver `node_modules/next/dist/docs/01-app/02-guides/upgrading/version-16.md`.
 
 **2. Login del entrevistador.** Provider `Password` (email + contraseña), ya
 configurado en el backend. Se usa con `useAuthActions()` de
