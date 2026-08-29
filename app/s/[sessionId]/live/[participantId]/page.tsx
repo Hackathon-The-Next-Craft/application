@@ -5,6 +5,7 @@ import { use } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
+import { CameraStage, CandidateVideo } from "@/components/interviewer/CameraStage";
 import { Countdown } from "@/components/interviewer/Countdown";
 import { NotesPanel } from "@/components/interviewer/NotesPanel";
 import { ProgressBadge, PROGRESS_TONE } from "@/components/interviewer/ProgressBadge";
@@ -88,6 +89,9 @@ export default function WorkspaceFocoPage({
           </Link>
         </main>
       ) : (
+        // Una sola conexión de video para esta pantalla, igual que en el
+        // mosaico. Si LiveKit no está configurado se aparta sin romper nada.
+        <CameraStage sessionId={sessionId}>
         <div className="grid flex-1 grid-cols-[88px_minmax(0,1fr)_360px] gap-6 p-6 min-h-0">
           {/* Sala: cambiar de candidato no interrumpe a nadie */}
           <nav className="flex flex-col items-center gap-2 rounded-2xl border border-ink-200 bg-white py-4">
@@ -143,6 +147,13 @@ export default function WorkspaceFocoPage({
           )}
 
           <aside className="flex flex-col gap-6 overflow-auto rounded-2xl border border-ink-200 bg-white p-5">
+            {/* Verle la cara mientras escribes la nota es medio punto del foco.
+                Devuelve null si no publica, y la columna sigue igual. */}
+            <CandidateVideo
+              participantId={participantId}
+              className="aspect-video w-full rounded-2xl border border-ink-200 bg-ink-900 object-cover"
+            />
+
             <section className="flex flex-col gap-3">
               <h2 className="font-display text-body font-semibold text-ink-900">
                 Nota privada
@@ -158,6 +169,7 @@ export default function WorkspaceFocoPage({
             </section>
           </aside>
         </div>
+        </CameraStage>
       )}
     </div>
   );
