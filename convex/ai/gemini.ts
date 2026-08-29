@@ -22,9 +22,12 @@ export const MODELS = [
   "gemini-3.5-flash",
   "gemini-3.5-flash-lite",
   "gemini-3.1-flash-lite",
-  "gemini-2.5-flash",
-  "gemini-2.5-flash-lite",
 ];
+// Los gemini-2.5-* se quitaron: la API los LISTA como disponibles pero
+// devuelve 404 al generar si la cuenta es nueva ("no longer available to new
+// users"). Estaban de ultimos, asi que su 404 tapaba el error de verdad —que
+// era cuota agotada en los cinco anteriores— y el reporte mostraba un mensaje
+// sobre un modelo retirado en vez de decir que no quedaba cuota.
 export const PROMPT_VERSION = "gemini-flash/v1";
 
 /**
@@ -39,6 +42,14 @@ export const PROMPT_VERSION = "gemini-flash/v1";
  */
 const REINTENTABLES = [500, 502, 503, 504];
 const SIN_CUOTA = 429;
+/**
+ * 404 = ese modelo no existe para esta cuenta. Google retira modelos viejos
+ * para cuentas nuevas, asi que la misma cadena funciona con una key y no con
+ * otra. Es un problema DE ESE MODELO, no de la peticion: hay que pasar al
+ * siguiente, no abortar. Antes se propagaba y tumbaba la cadena entera aunque
+ * quedaran modelos utiles por probar.
+ */
+const NO_DISPONIBLE = 404;
 const MAX_ATTEMPTS = 3;
 
 function statusOf(error: unknown): number | null {
@@ -97,6 +108,8 @@ export async function generateJson<T extends z.ZodType>(opts: {
           sinCuota.push(model);
           break;
         }
+        // Modelo no disponible para esta cuenta: al siguiente.
+        if (status === NO_DISPONIBLE) break;
         // Un error que no es de saturación (key inválida, esquema rechazado)
         // se propaga tal cual: reintentarlo solo pierde tiempo.
         if (status === null || !REINTENTABLES.includes(status)) throw error;
@@ -107,12 +120,12 @@ export async function generateJson<T extends z.ZodType>(opts: {
   }
   if (text === undefined) {
     // Un volcado de ApiError no le dice nada a quien lee el reporte.
-    if (sinCuota.length === MODELS.length) {
+    if (sinCuota.length > 0) {
       throw new Error(
-        "Se agotó la cuota diaria de la API de Gemini en todos los modelos " +
-          "disponibles. El plan gratuito permite 20 peticiones por día y por " +
-          "modelo. Hay que activar facturación en la API key, o esperar a que " +
-          "se reinicie la cuota.",
+        `Se agotó la cuota diaria de la API de Gemini en ${sinCuota.length} de ` +
+          `${MODELS.length} modelos (${sinCuota.join(", ")}). El plan gratuito ` +
+          "permite 20 peticiones por día y por modelo. Hay que activar " +
+          "facturación en la API key, usar otra, o esperar a que se reinicie.",
       );
     }
     throw lastError ?? new Error("No se pudo obtener respuesta de ningún modelo");
