@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { use } from "react";
+import { useRouter } from "next/navigation";
+import { use, useEffect } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Doc, Id } from "@/convex/_generated/dataModel";
@@ -45,10 +46,21 @@ function hora(at: number) {
 
 export default function SetupPage({ params }: PageProps<"/s/[sessionId]/setup">) {
   const sessionId = use(params).sessionId as Id<"sessions">;
+  const router = useRouter();
 
   const session = useQuery(api.sessions.get, { sessionId });
   const challenges = useQuery(api.challenges.listForSession, { sessionId });
   const participantes = useQuery(api.participants.listForSession, { sessionId });
+
+  // Setup es la preparación (link, retos, lobby). En cuanto "Iniciar sesión"
+  // la pasa a en vivo, lo que hay que ver es el panel en vivo, no esta
+  // pantalla: sin esto, el entrevistador se queda viendo el enlace y el
+  // formulario de retos mientras los candidatos ya están rindiendo la prueba.
+  useEffect(() => {
+    if (session && session.status !== "draft" && session.status !== "ready") {
+      router.replace(`/s/${sessionId}/live`);
+    }
+  }, [session, sessionId, router]);
 
   const publicados = (challenges ?? []).filter((c) => c.published).length;
   const listos = (participantes ?? []).filter((p) => p.presence === "ready").length;

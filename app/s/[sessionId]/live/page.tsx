@@ -6,6 +6,7 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Doc, Id } from "@/convex/_generated/dataModel";
 import { AlertsPanel } from "@/components/interviewer/AlertsPanel";
+import { Countdown } from "@/components/interviewer/Countdown";
 import { FocusPanel } from "@/components/interviewer/FocusPanel";
 import { ParticipantCard } from "@/components/interviewer/ParticipantCard";
 import { SessionControls } from "@/components/interviewer/SessionControls";
@@ -37,6 +38,7 @@ export default function LivePage({ params }: PageProps<"/s/[sessionId]/live"> ) 
   // Reactivo: el código de los candidatos cambia solo, sin polling.
   const session = useQuery(api.sessions.get, { sessionId });
   const participantes = useQuery(api.participants.listForSession, { sessionId });
+  const challenges = useQuery(api.challenges.listForSession, { sessionId });
   const [enfocado, setEnfocado] = useState<Id<"participants"> | null>(null);
 
   const nombrePorParticipante = new Map(
@@ -49,7 +51,12 @@ export default function LivePage({ params }: PageProps<"/s/[sessionId]/live"> ) 
     <div className="flex flex-1 flex-col">
       <AppHeader
         actions={
-          session && <SessionControls sessionId={sessionId} status={session.status} />
+          session && (
+            <div className="flex items-center gap-4">
+              {session.status === "live" && <Countdown endsAt={session.endsAt} />}
+              <SessionControls sessionId={sessionId} status={session.status} />
+            </div>
+          )
         }
       >
         <div className="flex min-w-0 items-center gap-3">
@@ -60,9 +67,17 @@ export default function LivePage({ params }: PageProps<"/s/[sessionId]/live"> ) 
             Sesiones
           </Link>
           <span className="text-ink-400">/</span>
-          <span className="truncate text-body-sm font-semibold text-ink-900">
-            {session?.title ?? "…"}
-          </span>
+          <div className="min-w-0">
+            <p className="truncate text-body-sm font-semibold text-ink-900">
+              {session?.title ?? "…"}
+            </p>
+            {session && (
+              <p className="tabular truncate font-mono text-meta text-ink-500">
+                {(participantes ?? []).length} candidatos ·{" "}
+                {(challenges ?? []).length} retos · {session.durationMinutes} min
+              </p>
+            )}
+          </div>
           {session && (
             <Chip tone={ESTADO_TONO[session.status]} dot={session.status === "live"}>
               {ESTADO[session.status]}
