@@ -57,7 +57,7 @@ export function SessionCard({ session }: { session: Doc<"sessions"> }) {
       : `/s/${session._id}/setup`;
 
   return (
-    <li className="grid grid-cols-[1fr_140px_180px_120px_170px] items-center gap-4 border-b border-ink-200 px-5 py-4 last:border-b-0 hover:bg-ink-25">
+    <li className="grid grid-cols-[minmax(0,1fr)_140px_180px_120px_170px] items-center gap-4 border-b border-ink-200 px-5 py-4 last:border-b-0 hover:bg-ink-25">
       <div className="min-w-0">
         <h3 className="truncate text-body-sm font-semibold text-ink-900">
           {session.title}

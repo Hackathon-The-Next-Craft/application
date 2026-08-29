@@ -14,7 +14,7 @@ type FieldProps = InputHTMLAttributes<HTMLInputElement> & {
 
 export function Field({ label, labelAside, hint, className, ...props }: FieldProps) {
   return (
-    <label className="flex flex-col gap-1.5">
+    <label className="flex min-w-0 flex-col gap-1.5">
       <span className="flex items-center">
         <span className="flex-1 text-caption font-medium text-ink-900">{label}</span>
         {labelAside}

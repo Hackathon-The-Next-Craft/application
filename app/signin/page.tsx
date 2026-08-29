@@ -39,7 +39,7 @@ export default function SignInPage() {
   }
 
   return (
-    <main className="grid flex-1 lg:grid-cols-[1fr_620px]">
+    <main className="grid flex-1 lg:grid-cols-[minmax(0,1fr)_620px]">
       {/* Formulario */}
       <section className="flex flex-col justify-center border-ink-200 bg-white px-6 py-16 sm:px-16 lg:border-r lg:px-24">
         <div className="w-full max-w-[420px]">

@@ -12,7 +12,7 @@ type SelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
 
 export function Select({ label, hint, className, children, ...props }: SelectProps) {
   return (
-    <label className="flex flex-col gap-1.5">
+    <label className="flex min-w-0 flex-col gap-1.5">
       <span className="text-caption font-medium text-ink-900">{label}</span>
       <span className="relative flex items-center">
         <select

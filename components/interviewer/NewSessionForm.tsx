@@ -68,7 +68,7 @@ export function NewSessionForm({ onCancel }: { onCancel: () => void }) {
         </Select>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-[1fr_180px]">
+      <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_180px]">
         <Field
           label="Tecnologías"
           name="technologies"

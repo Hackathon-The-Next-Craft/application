@@ -7,8 +7,11 @@ import type { Doc } from "@/convex/_generated/dataModel";
 
 type Test = Doc<"challenges">["tests"][number];
 
+// w-full y min-w-0 son necesarios: un <input> trae ancho intrínseco y
+// min-width:auto, así que dentro de un grid no se encoge y empuja al resto
+// fuera del contenedor.
 const CAMPO =
-  "rounded-md border border-ink-200 px-3 py-2 text-body-sm outline-none focus:border-iris-600";
+  "w-full min-w-0 rounded-md border border-ink-200 px-3 py-2 text-body-sm outline-none focus:border-iris-600";
 
 export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> }) {
   const update = useMutation(api.challenges.update);
@@ -206,7 +209,7 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
             {tests.map((test, i) => (
               <div
                 key={i}
-                className="grid gap-2 rounded-md border border-ink-200 p-3 sm:grid-cols-[1fr_1fr_1fr_auto]"
+                className="grid gap-2 rounded-lg border border-ink-200 p-3 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_auto]"
               >
                 <input
                   value={test.name}
@@ -226,12 +229,13 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
                   placeholder="expected (JSON)"
                   className={`${CAMPO} font-mono`}
                 />
-                <div className="flex items-center gap-2">
-                  <label className="flex items-center gap-1 text-meta">
+                <div className="flex shrink-0 items-center justify-end gap-3 sm:pl-1">
+                  <label className="flex items-center gap-1.5 text-meta text-ink-500">
                     <input
                       type="checkbox"
                       checked={test.hidden}
                       onChange={(e) => cambiarTest(i, { hidden: e.target.checked })}
+                      className="h-4 w-4 accent-iris-600"
                     />
                     oculto
                   </label>
