@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { action, internalMutation, mutation, query } from "./_generated/server";
+import { action, internalMutation, internalQuery, mutation, query } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { requireInterviewer } from "./lib/auth";
@@ -58,7 +58,9 @@ export const upsertPending = internalMutation({
   },
 });
 
-export const gatherInput = query({
+/** Interna: junta todo el material del candidato para la IA. Nunca pública —
+ * devuelve notas privadas y el timeline completo. */
+export const gatherInput = internalQuery({
   args: { sessionId: v.id("sessions"), participantId: v.id("participants") },
   handler: async (ctx, { sessionId, participantId }) => {
     const events = await ctx.db
