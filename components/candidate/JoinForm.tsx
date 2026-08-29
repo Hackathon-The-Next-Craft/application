@@ -25,6 +25,9 @@ export function JoinForm({
   const join = useMutation(api.participants.join);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+  // El servidor rechaza el ingreso sin consentimiento de audio; el candidato
+  // tiene que saberlo antes de intentarlo, no después de que lo rechacen.
+  const [consentAudio, setConsentAudio] = useState(false);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -36,7 +39,7 @@ export function JoinForm({
       const { joinToken } = await join({
         joinCode: code,
         displayName: String(formData.get("displayName")).trim(),
-        consentAudio: formData.get("consentAudio") === "on",
+        consentAudio,
         consentTranscript: formData.get("consentTranscript") === "on",
       });
       // Si el guardado falla, el candidato pierde el acceso al recargar.
@@ -101,8 +104,17 @@ export function JoinForm({
         <fieldset className="flex flex-col gap-2 rounded-md border border-zinc-200 p-4">
           <legend className="px-1 text-sm font-medium">Permisos</legend>
           <label className="flex items-start gap-2 text-sm">
-            <input type="checkbox" name="consentAudio" className="mt-1" />
-            <span>Acepto que se capture mi audio durante la entrevista.</span>
+            <input
+              type="checkbox"
+              name="consentAudio"
+              checked={consentAudio}
+              onChange={(e) => setConsentAudio(e.target.checked)}
+              className="mt-1"
+            />
+            <span>
+              Acepto que se capture mi audio durante la entrevista.{" "}
+              <strong className="font-medium">Es obligatorio para participar.</strong>
+            </span>
           </label>
           <label className="flex items-start gap-2 text-sm">
             <input type="checkbox" name="consentTranscript" className="mt-1" />
@@ -120,9 +132,15 @@ export function JoinForm({
           </p>
         )}
 
+        {!consentAudio && (
+          <p className="text-sm text-zinc-500">
+            Sin el consentimiento de audio no es posible entrar a la sesión.
+          </p>
+        )}
+
         <button
           type="submit"
-          disabled={pending}
+          disabled={pending || !consentAudio}
           className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50"
         >
           {pending ? "Entrando…" : "Entrar a la sala de espera"}

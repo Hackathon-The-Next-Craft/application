@@ -58,6 +58,7 @@ export function SessionControls({
   const setStatus = useMutation(api.sessions.setStatus);
   const [confirmando, setConfirmando] = useState<Destino | null>(null);
   const [pendiente, setPendiente] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const acciones = ACCIONES[status];
   if (acciones.length === 0) {
@@ -66,9 +67,18 @@ export function SessionControls({
 
   async function aplicar(destino: Destino) {
     setPendiente(true);
+    setError(null);
     try {
       await setStatus({ sessionId, status: destino });
       setConfirmando(null);
+    } catch (caught) {
+      // setStatus valida el ciclo de vida (api-contract.md). Si otra pestaña
+      // ya cambió el estado, este panel está desactualizado y hay que decirlo.
+      setError(
+        caught instanceof Error
+          ? caught.message
+          : "No se pudo cambiar el estado de la sesión.",
+      );
     } finally {
       setPendiente(false);
     }
@@ -101,7 +111,12 @@ export function SessionControls({
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2">
+      {error && (
+        <p role="alert" className="rounded-md bg-red-50 px-3 py-1.5 text-sm text-red-700">
+          {error}
+        </p>
+      )}
       {acciones.map((accion) => (
         <button
           key={accion.destino}
