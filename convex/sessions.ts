@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { mutation, query } from "./_generated/server";
+import { internalQuery, mutation, query } from "./_generated/server";
+import { internal } from "./_generated/api";
 import { requireInterviewer } from "./lib/auth";
 
 function makeJoinCode() {
@@ -29,6 +30,18 @@ export const create = mutation({
       linkRevoked: false,
       stuckThresholdSec: 90,
     });
+  },
+});
+
+/**
+ * Guard para actions. Una action no tiene ctx.db, pero su identidad sí llega
+ * a runQuery, así que la verificación se hace aquí y la action solo la invoca.
+ */
+export const assertInterviewer = internalQuery({
+  args: { sessionId: v.id("sessions") },
+  handler: async (ctx, { sessionId }) => {
+    await requireInterviewer(ctx, sessionId);
+    return true;
   },
 });
 
@@ -80,7 +93,20 @@ export const setStatus = mutation({
     await ctx.db.insert("events", {
       sessionId, actorId: userId, type: map[status], at: now, payload: { status },
     });
-    // TODO(salim): al pasar a "closing", disparar reports.generateAll
+    // Al cerrar se generan los reportes. Va por el scheduler para no dejar al
+    // entrevistador esperando a que el modelo termine (FR-16).
+    if (status === "closing" || status === "closed") {
+      const participants = await ctx.db
+        .query("participants")
+        .withIndex("by_session", (q) => q.eq("sessionId", sessionId))
+        .collect();
+      for (const p of participants) {
+        await ctx.scheduler.runAfter(0, internal.reports.generateInternal, {
+          sessionId,
+          participantId: p._id,
+        });
+      }
+    }
   },
 });
 
