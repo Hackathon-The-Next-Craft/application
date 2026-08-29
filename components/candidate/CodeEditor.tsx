@@ -73,9 +73,9 @@ export function CodeEditor({
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="flex items-center justify-between border-b border-zinc-200 px-3 py-2">
-        <span className="text-xs font-medium text-zinc-500">{language}</span>
-        <span className="text-xs text-zinc-500">
+      <div className="flex items-center justify-between border-b border-ink-200 px-3 py-2">
+        <span className="text-meta font-medium text-ink-500">{language}</span>
+        <span className="text-meta text-ink-500">
           {bloqueado
             ? "Sesión en pausa: no se guardan cambios"
             : estado === "guardado"
@@ -98,7 +98,7 @@ export function CodeEditor({
           tabSize: 2,
         }}
         loading={
-          <div className="flex h-full items-center justify-center text-sm text-zinc-500">
+          <div className="flex h-full items-center justify-center text-body-sm text-ink-500">
             Cargando el editor…
           </div>
         }

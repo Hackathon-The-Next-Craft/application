@@ -18,16 +18,16 @@ export default function RoomPage({ params }: PageProps<"/join/[code]/room">) {
   return (
     <main className="mx-auto w-full max-w-6xl flex-1 p-6">
       {joinToken === undefined ? (
-        <div className="h-96 animate-pulse rounded-lg border border-zinc-200 bg-white" />
+        <div className="h-96 animate-pulse rounded-2xl border border-ink-200 bg-white" />
       ) : joinToken === null ? (
-        <div className="rounded-lg border border-zinc-200 bg-white p-6">
+        <div className="rounded-2xl border border-ink-200 bg-white p-6">
           <h1 className="font-medium">No tienes acceso a esta sala</h1>
-          <p className="mt-2 text-sm text-zinc-500">
+          <p className="mt-2 text-body-sm text-ink-500">
             Entra primero con tu nombre desde el enlace de la entrevista.
           </p>
           <Link
             href={`/join/${code}`}
-            className="mt-4 inline-block rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700"
+            className="mt-4 inline-block rounded-md bg-iris-600 px-4 py-2 text-body-sm font-medium text-white hover:bg-iris-700"
           >
             Ir a la entrada
           </Link>

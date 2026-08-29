@@ -35,14 +35,14 @@ export function DecisionPanel({
   const [guardando, setGuardando] = useState(false);
 
   return (
-    <section className="rounded-lg border border-zinc-200 bg-white p-5">
+    <section className="rounded-2xl border border-ink-200 bg-white p-5">
       <h2 className="font-medium">Tu decisión</h2>
-      <p className="mt-1 text-sm text-zinc-500">
+      <p className="mt-1 text-body-sm text-ink-500">
         La decides tú, no la IA. Queda registrada con tu nombre y la hora.
       </p>
 
       {decision && (
-        <p className="mt-3 rounded-md bg-zinc-100 px-3 py-2 text-sm">
+        <p className="mt-3 rounded-md bg-ink-100 px-3 py-2 text-body-sm">
           Registrada: <strong>{ETIQUETA[decision.value]}</strong> ·{" "}
           {new Date(decision.at).toLocaleString("es")}
           {decision.comment ? ` · "${decision.comment}"` : ""}
@@ -55,10 +55,10 @@ export function DecisionPanel({
             key={opcion.valor}
             type="button"
             onClick={() => setElegida(opcion.valor)}
-            className={`rounded-md px-3 py-1.5 text-sm font-medium ${
+            className={`rounded-md px-3 py-1.5 text-body-sm font-medium ${
               elegida === opcion.valor
-                ? "bg-zinc-900 text-white"
-                : "border border-zinc-300 hover:bg-zinc-100"
+                ? "bg-iris-600 text-white"
+                : "border border-ink-200 hover:bg-iris-50"
             }`}
           >
             {opcion.label}
@@ -71,7 +71,7 @@ export function DecisionPanel({
         onChange={(e) => setComentario(e.target.value)}
         rows={2}
         placeholder="Por qué (opcional)"
-        className="mt-3 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-900"
+        className="mt-3 w-full rounded-md border border-ink-200 px-3 py-2 text-body-sm outline-none focus:border-iris-600"
       />
 
       <button
@@ -91,7 +91,7 @@ export function DecisionPanel({
             setGuardando(false);
           }
         }}
-        className="mt-3 rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50"
+        className="mt-3 rounded-md bg-iris-600 px-4 py-2 text-body-sm font-medium text-white hover:bg-iris-700 disabled:opacity-50"
       >
         {guardando ? "Guardando…" : decision ? "Actualizar decisión" : "Registrar decisión"}
       </button>

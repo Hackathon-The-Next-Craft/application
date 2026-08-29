@@ -16,9 +16,9 @@ const ESTADO: Record<Doc<"reports">["status"], string> = {
 };
 
 const VEREDICTO: Record<"met" | "partial" | "not_observed", { label: string; clase: string }> = {
-  met: { label: "Cumple", clase: "bg-green-100 text-green-800" },
-  partial: { label: "Parcial", clase: "bg-amber-100 text-amber-900" },
-  not_observed: { label: "No observado", clase: "bg-zinc-100 text-zinc-700" },
+  met: { label: "Cumple", clase: "bg-advance-bg text-advance-text" },
+  partial: { label: "Parcial", clase: "bg-stuck-bg text-stuck-text" },
+  not_observed: { label: "No observado", clase: "bg-ink-100 text-ink-700" },
 };
 
 const CONFIANZA: Record<"low" | "medium" | "high", string> = {
@@ -52,42 +52,42 @@ export default function ReportPage({
     <main className="mx-auto w-full max-w-3xl flex-1 p-6">
       <Link
         href={`/s/${sessionId}/live`}
-        className="text-sm text-zinc-500 underline underline-offset-4 hover:text-zinc-900"
+        className="text-body-sm text-ink-500 underline underline-offset-4 hover:text-iris-600"
       >
         ← Volver a la sesión
       </Link>
 
-      <h1 className="mt-4 text-2xl font-semibold tracking-tight">
+      <h1 className="mt-4 font-display text-title text-ink-900">
         Reporte del candidato
       </h1>
 
       {report === undefined ? (
-        <div className="mt-6 h-48 animate-pulse rounded-lg border border-zinc-200 bg-white" />
+        <div className="mt-6 h-48 animate-pulse rounded-2xl border border-ink-200 bg-white" />
       ) : report === null ? (
-        <div className="mt-6 rounded-lg border border-zinc-200 bg-white p-6">
-          <p className="text-sm text-zinc-500">
+        <div className="mt-6 rounded-2xl border border-ink-200 bg-white p-6">
+          <p className="text-body-sm text-ink-500">
             Todavía no hay reporte para este candidato.
           </p>
           <button
             type="button"
             onClick={generar}
             disabled={generando}
-            className="mt-4 rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50"
+            className="mt-4 rounded-md bg-iris-600 px-4 py-2 text-body-sm font-medium text-white hover:bg-iris-700 disabled:opacity-50"
           >
             {generando ? "Generando…" : "Generar reporte"}
           </button>
         </div>
       ) : (
         <div className="mt-6 flex flex-col gap-6">
-          <section className="rounded-lg border border-zinc-200 bg-white p-5">
+          <section className="rounded-2xl border border-ink-200 bg-white p-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <span
-                className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                className={`rounded-full px-2.5 py-1 text-meta font-medium ${
                   report.status === "done"
-                    ? "bg-green-100 text-green-800"
+                    ? "bg-advance-bg text-advance-text"
                     : report.status === "failed"
-                      ? "bg-red-100 text-red-800"
-                      : "bg-blue-100 text-blue-800"
+                      ? "bg-fail-bg text-fail-text"
+                      : "bg-explore-bg text-explore-text"
                 }`}
               >
                 {ESTADO[report.status]}
@@ -97,7 +97,7 @@ export default function ReportPage({
                   type="button"
                   onClick={generar}
                   disabled={generando}
-                  className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium hover:bg-zinc-100 disabled:opacity-50"
+                  className="rounded-md border border-ink-200 px-3 py-1.5 text-body-sm font-medium hover:bg-iris-50 disabled:opacity-50"
                 >
                   {generando ? "Generando…" : "Regenerar"}
                 </button>
@@ -106,9 +106,9 @@ export default function ReportPage({
 
             {/* La IA escribe por partes; el useQuery lo va mostrando solo. */}
             {report.summary ? (
-              <p className="mt-4 text-sm leading-relaxed">{report.summary}</p>
+              <p className="mt-4 text-body-sm leading-relaxed">{report.summary}</p>
             ) : (
-              <p className="mt-4 text-sm text-zinc-500">
+              <p className="mt-4 text-body-sm text-ink-500">
                 {report.status === "generating"
                   ? "El análisis se está escribiendo. Aparece aquí conforme llega."
                   : "Sin resumen."}
@@ -117,20 +117,20 @@ export default function ReportPage({
           </section>
 
           {report.criteriaResults && report.criteriaResults.length > 0 && (
-            <section className="rounded-lg border border-zinc-200 bg-white p-5">
+            <section className="rounded-2xl border border-ink-200 bg-white p-5">
               <h2 className="font-medium">Criterios</h2>
               <ul className="mt-3 flex flex-col gap-3">
                 {report.criteriaResults.map((criterio, i) => (
                   <li key={i}>
                     <div className="flex items-baseline justify-between gap-3">
-                      <span className="text-sm font-medium">{criterio.criterion}</span>
+                      <span className="text-body-sm font-medium">{criterio.criterion}</span>
                       <span
-                        className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${VEREDICTO[criterio.verdict].clase}`}
+                        className={`shrink-0 rounded-full px-2.5 py-1 text-meta font-medium ${VEREDICTO[criterio.verdict].clase}`}
                       >
                         {VEREDICTO[criterio.verdict].label}
                       </span>
                     </div>
-                    <p className="mt-1 text-sm text-zinc-600">{criterio.rationale}</p>
+                    <p className="mt-1 text-body-sm text-ink-500">{criterio.rationale}</p>
                   </li>
                 ))}
               </ul>
@@ -138,22 +138,22 @@ export default function ReportPage({
           )}
 
           {report.findings && report.findings.length > 0 && (
-            <section className="rounded-lg border border-zinc-200 bg-white p-5">
+            <section className="rounded-2xl border border-ink-200 bg-white p-5">
               <h2 className="font-medium">Hallazgos</h2>
-              <p className="mt-1 text-sm text-zinc-500">
+              <p className="mt-1 text-body-sm text-ink-500">
                 Cada hallazgo enlaza los eventos que lo sostienen. Ábrelo para
                 ver la evidencia real.
               </p>
               <ul className="mt-3 flex flex-col gap-3">
                 {report.findings.map((hallazgo, i) => (
-                  <li key={i} className="rounded-md border border-zinc-200 p-3">
-                    <p className="text-sm">{hallazgo.text}</p>
+                  <li key={i} className="rounded-md border border-ink-200 p-3">
+                    <p className="text-body-sm">{hallazgo.text}</p>
                     <div className="mt-2 flex flex-wrap items-center gap-3">
                       <span
-                        className={`text-xs ${
+                        className={`text-meta ${
                           hallazgo.confidence === "low"
-                            ? "text-amber-800"
-                            : "text-zinc-500"
+                            ? "text-stuck-text"
+                            : "text-ink-500"
                         }`}
                       >
                         {CONFIANZA[hallazgo.confidence]}
@@ -161,7 +161,7 @@ export default function ReportPage({
                       <button
                         type="button"
                         onClick={() => setAbierto(abierto === i ? null : i)}
-                        className="text-xs underline underline-offset-4 hover:text-zinc-500"
+                        className="text-meta underline underline-offset-4 hover:text-iris-600"
                       >
                         {abierto === i
                           ? "Ocultar evidencia"
@@ -181,9 +181,9 @@ export default function ReportPage({
           )}
 
           {report.followUpQuestions && report.followUpQuestions.length > 0 && (
-            <section className="rounded-lg border border-zinc-200 bg-white p-5">
+            <section className="rounded-2xl border border-ink-200 bg-white p-5">
               <h2 className="font-medium">Preguntas de seguimiento</h2>
-              <ul className="mt-3 flex list-disc flex-col gap-2 pl-5 text-sm">
+              <ul className="mt-3 flex list-disc flex-col gap-2 pl-5 text-body-sm">
                 {report.followUpQuestions.map((pregunta, i) => (
                   <li key={i}>{pregunta}</li>
                 ))}
@@ -192,9 +192,9 @@ export default function ReportPage({
           )}
 
           {report.limitations && (
-            <section className="rounded-lg border border-amber-300 bg-amber-50 p-5">
-              <h2 className="font-medium text-amber-900">Límites de este análisis</h2>
-              <p className="mt-2 text-sm text-amber-900">{report.limitations}</p>
+            <section className="rounded-2xl border border-stuck bg-stuck-bg p-5">
+              <h2 className="font-medium text-stuck-text">Límites de este análisis</h2>
+              <p className="mt-2 text-body-sm text-stuck-text">{report.limitations}</p>
             </section>
           )}
 

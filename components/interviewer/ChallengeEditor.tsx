@@ -8,7 +8,7 @@ import type { Doc } from "@/convex/_generated/dataModel";
 type Test = Doc<"challenges">["tests"][number];
 
 const CAMPO =
-  "rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-900";
+  "rounded-md border border-ink-200 px-3 py-2 text-body-sm outline-none focus:border-iris-600";
 
 export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> }) {
   const update = useMutation(api.challenges.update);
@@ -51,21 +51,21 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
   }
 
   return (
-    <section className="rounded-lg border border-zinc-200 bg-white">
-      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-200 p-4">
+    <section className="rounded-2xl border border-ink-200 bg-white">
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-ink-200 p-4">
         <div className="min-w-0">
           <h3 className="truncate font-medium">{challenge.title}</h3>
-          <p className="mt-0.5 text-xs text-zinc-500">
+          <p className="mt-0.5 text-meta text-ink-500">
             {challenge.language} · {challenge.tests.length} tests
             {challenge.generatedBy ? ` · ${challenge.generatedBy}` : ""}
           </p>
         </div>
         <div className="flex items-center gap-2">
           <span
-            className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+            className={`rounded-full px-2.5 py-1 text-meta font-medium ${
               challenge.published
-                ? "bg-green-100 text-green-800"
-                : "bg-zinc-100 text-zinc-700"
+                ? "bg-advance-bg text-advance-text"
+                : "bg-ink-100 text-ink-700"
             }`}
           >
             {challenge.published ? "Publicado" : "Borrador"}
@@ -75,14 +75,14 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
             onClick={() =>
               publish({ challengeId: challenge._id, published: !challenge.published })
             }
-            className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium hover:bg-zinc-100"
+            className="rounded-md border border-ink-200 px-3 py-1.5 text-body-sm font-medium hover:bg-iris-50"
           >
             {challenge.published ? "Despublicar" : "Publicar"}
           </button>
           <button
             type="button"
             onClick={() => setAbierto(!abierto)}
-            className="text-sm text-zinc-500 underline underline-offset-4 hover:text-zinc-900"
+            className="text-body-sm text-ink-500 underline underline-offset-4 hover:text-iris-600"
           >
             {abierto ? "Cerrar" : "Editar"}
           </button>
@@ -92,7 +92,7 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
       {abierto && (
         <div className="flex flex-col gap-4 p-4">
           <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium">Título</span>
+            <span className="text-body-sm font-medium">Título</span>
             <input
               value={titulo}
               onChange={(e) => {
@@ -104,7 +104,7 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
           </label>
 
           <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium">Enunciado (markdown)</span>
+            <span className="text-body-sm font-medium">Enunciado (markdown)</span>
             <textarea
               value={enunciado}
               onChange={(e) => {
@@ -118,7 +118,7 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
 
           <div className="flex flex-wrap gap-4">
             <label className="flex flex-col gap-1.5">
-              <span className="text-sm font-medium">Lenguaje</span>
+              <span className="text-body-sm font-medium">Lenguaje</span>
               <select
                 value={language}
                 onChange={(e) => {
@@ -132,7 +132,7 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
               </select>
             </label>
             <label className="flex flex-col gap-1.5">
-              <span className="text-sm font-medium">Minutos</span>
+              <span className="text-body-sm font-medium">Minutos</span>
               <input
                 type="number"
                 min={5}
@@ -147,7 +147,7 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
           </div>
 
           <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium">Código inicial</span>
+            <span className="text-body-sm font-medium">Código inicial</span>
             <textarea
               value={starterCode}
               onChange={(e) => {
@@ -157,14 +157,14 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
               rows={8}
               className={`${CAMPO} font-mono`}
             />
-            <span className="text-xs text-zinc-500">
+            <span className="text-meta text-ink-500">
               De aquí sale el nombre de la función que ejecutan los tests.
             </span>
           </label>
 
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Tests</span>
+              <span className="text-body-sm font-medium">Tests</span>
               <button
                 type="button"
                 onClick={() => {
@@ -174,12 +174,12 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
                   ]);
                   setGuardado(false);
                 }}
-                className="rounded-md border border-zinc-300 px-2.5 py-1 text-xs font-medium hover:bg-zinc-100"
+                className="rounded-md border border-ink-200 px-2.5 py-1 text-meta font-medium hover:bg-iris-50"
               >
                 Añadir test
               </button>
             </div>
-            <p className="text-xs text-zinc-500">
+            <p className="text-meta text-ink-500">
               El input es el JSON del único argumento; expected, el JSON del
               retorno esperado, o el literal throws.
             </p>
@@ -187,7 +187,7 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
             {tests.map((test, i) => (
               <div
                 key={i}
-                className="grid gap-2 rounded-md border border-zinc-200 p-3 sm:grid-cols-[1fr_1fr_1fr_auto]"
+                className="grid gap-2 rounded-md border border-ink-200 p-3 sm:grid-cols-[1fr_1fr_1fr_auto]"
               >
                 <input
                   value={test.name}
@@ -208,7 +208,7 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
                   className={`${CAMPO} font-mono`}
                 />
                 <div className="flex items-center gap-2">
-                  <label className="flex items-center gap-1 text-xs">
+                  <label className="flex items-center gap-1 text-meta">
                     <input
                       type="checkbox"
                       checked={test.hidden}
@@ -222,7 +222,7 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
                       setTests(tests.filter((_, j) => j !== i));
                       setGuardado(false);
                     }}
-                    className="text-xs text-zinc-500 underline underline-offset-4 hover:text-red-700"
+                    className="text-meta text-ink-500 underline underline-offset-4 hover:text-fail-text"
                   >
                     quitar
                   </button>
@@ -236,13 +236,13 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
               type="button"
               onClick={guardar}
               disabled={guardando}
-              className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50"
+              className="rounded-md bg-iris-600 px-4 py-2 text-body-sm font-medium text-white hover:bg-iris-700 disabled:opacity-50"
             >
               {guardando ? "Guardando…" : "Guardar cambios"}
             </button>
-            {guardado && <span className="text-sm text-green-700">Guardado.</span>}
+            {guardado && <span className="text-body-sm text-advance-text">Guardado.</span>}
             {challenge.published && (
-              <span className="text-sm text-amber-800">
+              <span className="text-body-sm text-stuck-text">
                 Está publicado: lo que guardes lo ven los candidatos al instante.
               </span>
             )}
