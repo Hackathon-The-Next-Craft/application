@@ -46,7 +46,7 @@ es prioridad sobre cualquier otra cosa.
 Detalle en [frontend.md](frontend.md).
 
 - [x] `feature/app-shell` — provider, proxy, login, dashboard
-- [ ] `feature/join-flow` — /join, consentimiento, lobby, preflight
+- [x] `feature/join-flow` — /join, consentimiento, lobby, preflight
 - [ ] `feature/live-mosaic` ⭐ — la pantalla del demo
 - [ ] `feature/candidate-room` — Monaco, autosave, runner en navegador
 - [ ] `feature/setup-and-report` — generar retos, ver reporte con evidencia
