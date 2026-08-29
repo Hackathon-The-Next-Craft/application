@@ -161,9 +161,13 @@ export default defineSchema({
     type: eventType,
     at: v.number(),                       // timestamp de SERVIDOR, no del cliente
     payload: v.any(),                     // TODO: tipar por evento si sobra tiempo
+    // Id del evento en el proveedor externo (Vapi). Permite deduplicar cuando
+    // el webhook reintenta: el mismo trozo de audio no debe entrar dos veces.
+    providerEventId: v.optional(v.string()),
   })
     .index("by_session", ["sessionId", "at"])
-    .index("by_participant", ["participantId", "at"]),
+    .index("by_participant", ["participantId", "at"])
+    .index("by_providerEventId", ["providerEventId"]),
 
   alerts: defineTable({
     sessionId: v.id("sessions"),

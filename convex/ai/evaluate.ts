@@ -50,6 +50,9 @@ Reglas innegociables:
   un aspecto crítico por falta de tiempo no es lo mismo que uno que lo ignoró.
 - Si hubo ayudas del entrevistador o fallos de entorno, tenlo en cuenta y dilo
   explícitamente en las limitaciones.
+- Cuando haya transcripción, úsala como evidencia del razonamiento: explicar
+  bien un enfoque que no se llegó a terminar es una señal real. Cita el
+  contenido de lo que dijo, nunca su forma de hablar, su acento ni su fluidez.
 - Escribe en español, salvo el código y los identificadores.`;
 
 function renderEvent(e: any): string {
@@ -73,6 +76,10 @@ function renderEvent(e: any): string {
       return `nota del entrevistador: ${p.text ?? ""}`;
     case "challenge.submitted":
       return "envió su solución";
+    case "voice.transcript":
+      // Lo que el candidato dijo en voz alta. Es evidencia de su razonamiento,
+      // no una muestra de su voz: se cita el contenido y nada más.
+      return `${p.role === "user" ? "dijo" : "el entrevistador dijo"}: "${p.transcript ?? ""}"`;
     default:
       return e.type;
   }
