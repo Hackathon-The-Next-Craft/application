@@ -4,6 +4,7 @@ import { useAction } from "convex/react";
 import {
   LiveKitRoom,
   VideoTrack,
+  useMaybeRoomContext,
   useTracks,
 } from "@livekit/components-react";
 import { Track } from "livekit-client";
@@ -67,8 +68,23 @@ export function CameraStage({
  * El recuadro de un candidato. Devuelve null si no está publicando —porque no
  * dio consentimiento de cámara, o porque aún no conecta— así que la tarjeta
  * debe seguir siendo legible sin él.
+ *
+ * El guardia de contexto NO es decorativo: useTracks necesita una sala, y
+ * useRoomContext LANZA si no la encuentra. Como CameraStage renderiza a sus
+ * hijos sin sala mientras pide el token —y para siempre si LiveKit no está
+ * configurado— sin este guardia el mosaico entero revienta en el primer
+ * render. La cámara tiene que poder faltar sin llevarse la pantalla.
  */
-export function CandidateVideo({
+export function CandidateVideo(props: {
+  participantId: Id<"participants">;
+  className?: string;
+}) {
+  const room = useMaybeRoomContext();
+  if (!room) return null;
+  return <TrackDeCandidato {...props} />;
+}
+
+function TrackDeCandidato({
   participantId,
   className,
 }: {
