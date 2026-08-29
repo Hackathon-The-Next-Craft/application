@@ -57,7 +57,19 @@ export default function SetupPage({ params }: PageProps<"/s/[sessionId]/setup">)
     <div className="flex flex-1 flex-col">
       <AppHeader
         actions={
-          session && <SessionControls sessionId={sessionId} status={session.status} />
+          session && (
+            <div className="flex items-center gap-3">
+              {/* Desde aquí se prepara la sesión, pero no había forma de llegar
+                  al panel donde se supervisa. */}
+              <Link
+                href={`/s/${sessionId}/live`}
+                className="rounded-md border border-ink-200 px-3 py-1.5 text-body-sm font-medium hover:bg-iris-50"
+              >
+                Ver el panel
+              </Link>
+              <SessionControls sessionId={sessionId} status={session.status} />
+            </div>
+          )
         }
       >
         <div className="flex min-w-0 items-center gap-3">

@@ -102,6 +102,22 @@ export function JoinForm({
     );
   }
 
+  // Antes se colaba a una sesión en borrador: el reto ni siquiera estaba
+  // aprobado. Ahora el servidor lo impide y aquí se explica por qué.
+  if (!info.abierta) {
+    return info.terminada ? (
+      <Aviso
+        title="Esta sesión ya terminó"
+        detail={`"${info.title}" está cerrada. Si crees que es un error, avísale a quien te entrevista.`}
+      />
+    ) : (
+      <Aviso
+        title="La sesión todavía no está abierta"
+        detail={`Quien te entrevista aún está preparando "${info.title}". Deja esta página abierta: se actualiza sola en cuanto abran la sala de espera.`}
+      />
+    );
+  }
+
   if (info.full) {
     return (
       <Aviso

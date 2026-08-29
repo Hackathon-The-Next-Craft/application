@@ -132,6 +132,13 @@ export const setStatus = mutation({
   },
 });
 
+/**
+ * Estados en los que el enlace admite candidatos. "draft" NO esta: el PRD §5.3
+ * dice que en borrador no hay acceso de candidatos, y sin esto "Abrir la sala
+ * de espera" no hacia absolutamente nada visible.
+ */
+export const ESTADOS_QUE_ADMITEN = ["ready", "live", "paused"];
+
 /** FR-02. Un link revocado no admite ingresos nuevos. */
 export const setLinkRevoked = mutation({
   args: { sessionId: v.id("sessions"), revoked: v.boolean() },
@@ -187,6 +194,8 @@ export const publicInfo = query({
       .query("sessions")
       .withIndex("by_joinCode", (q) => q.eq("joinCode", joinCode))
       .unique();
+    // null significa "este enlace no existe". Que la sesión aún no esté abierta
+    // es otra cosa, y el candidato merece que se lo digan distinto.
     if (!session || session.linkRevoked) return null;
     // Los retirados no ocupan cupo. Si se cuentan aquí, el candidato ve
     // "sala llena" aunque join sí lo dejaría entrar.
@@ -198,6 +207,8 @@ export const publicInfo = query({
       durationMinutes: session.durationMinutes,
       status: session.status,
       full: count >= session.maxCandidates,
+      abierta: ESTADOS_QUE_ADMITEN.includes(session.status),
+      terminada: session.status === "closing" || session.status === "closed",
     };
   },
 });

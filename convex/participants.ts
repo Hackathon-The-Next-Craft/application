@@ -2,6 +2,7 @@ import { v } from "convex/values";
 import { internalQuery, mutation, query } from "./_generated/server";
 import { requireCandidate, requireInterviewer, resolveCandidate } from "./lib/auth";
 import { activeParticipants } from "./lib/participants";
+import { ESTADOS_QUE_ADMITEN } from "./sessions";
 
 const NOTICE_VERSION = "2026-08-29";
 
@@ -20,6 +21,16 @@ export const join = mutation({
       .withIndex("by_joinCode", (q) => q.eq("joinCode", args.joinCode))
       .unique();
     if (!session || session.linkRevoked) throw new Error("Enlace no válido");
+
+    // Sin esto, un candidato entraba a una sesión en borrador: el reto todavía
+    // no estaba aprobado y el entrevistador ni sabía que había alguien dentro.
+    if (!ESTADOS_QUE_ADMITEN.includes(session.status)) {
+      throw new Error(
+        session.status === "draft"
+          ? "La sesión todavía no está abierta. Espera a que el entrevistador te avise."
+          : "Esta sesión ya terminó.",
+      );
+    }
 
     // PRD §13.3: el audio es parte de la dinámica de la entrevista, así que su
     // consentimiento es obligatorio. La transcripción sigue siendo opt-in.
