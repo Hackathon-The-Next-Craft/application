@@ -144,6 +144,42 @@ export const setLinkRevoked = mutation({
   },
 });
 
+/**
+ * Borra la sesión y todo lo que cuelga de ella. No hay papelera: los eventos,
+ * el código y los informes se van con ella, así que la UI confirma antes.
+ *
+ * Se bloquea mientras está en vivo o pausada: hay candidatos dentro y
+ * quedarían con la pantalla rota a media prueba. Hay que cerrarla primero.
+ */
+export const remove = mutation({
+  args: { sessionId: v.id("sessions") },
+  handler: async (ctx, { sessionId }) => {
+    const { session } = await requireInterviewer(ctx, sessionId);
+    if (session.status === "live" || session.status === "paused") {
+      throw new Error("Cierra la sesión antes de eliminarla");
+    }
+
+    // Mismo barrido que seed.clear: primero los hijos, la sesión al final.
+    for (const table of [
+      "participants",
+      "challenges",
+      "workspaces",
+      "events",
+      "alerts",
+      "notes",
+      "reports",
+    ] as const) {
+      const rows = await ctx.db
+        .query(table)
+        .filter((q) => q.eq(q.field("sessionId"), sessionId))
+        .collect();
+      for (const row of rows) await ctx.db.delete(row._id);
+    }
+
+    await ctx.db.delete(sessionId);
+  },
+});
+
 // ── Candidato (público, sin auth) ────────────────────────────────────────────
 
 /** Lo que ve la página /join/[code] antes de que exista un participante. */
