@@ -28,11 +28,9 @@ export function RunPanel({
 }) {
   const recordRun = useMutation(api.workspaces.recordRun);
   const submit = useMutation(api.workspaces.submit);
-  const requestHelp = useMutation(api.participants.requestHelp);
 
   const [resultado, setResultado] = useState<ResultadoDeEjecucion | null>(null);
   const [ejecutando, setEjecutando] = useState(false);
-  const [ayudaPedida, setAyudaPedida] = useState(false);
   const [confirmandoEnvio, setConfirmandoEnvio] = useState(false);
 
   async function ejecutar() {
@@ -97,17 +95,6 @@ export function RunPanel({
             Enviar
           </button>
         )}
-
-        <button
-          type="button"
-          onClick={async () => {
-            await requestHelp({ joinToken });
-            setAyudaPedida(true);
-          }}
-          className="ml-auto rounded-md border border-stuck bg-stuck-bg px-4 py-2 text-body-sm font-medium text-stuck-text hover:bg-stuck-bg"
-        >
-          {ayudaPedida ? "Ayuda pedida ✓" : "Pedir ayuda"}
-        </button>
       </div>
 
       {resultado && (
