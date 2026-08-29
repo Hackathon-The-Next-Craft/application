@@ -21,6 +21,7 @@ import type * as lib_progress from "../lib/progress.js";
 import type * as notes from "../notes.js";
 import type * as participants from "../participants.js";
 import type * as reports from "../reports.js";
+import type * as seed from "../seed.js";
 import type * as sessions from "../sessions.js";
 import type * as workspaces from "../workspaces.js";
 
@@ -44,6 +45,7 @@ declare const fullApi: ApiFromModules<{
   notes: typeof notes;
   participants: typeof participants;
   reports: typeof reports;
+  seed: typeof seed;
   sessions: typeof sessions;
   workspaces: typeof workspaces;
 }>;
