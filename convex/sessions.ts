@@ -1,7 +1,22 @@
 import { v } from "convex/values";
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { mutation, query } from "./_generated/server";
+import { internalQuery, mutation, query } from "./_generated/server";
+import { internal } from "./_generated/api";
 import { requireInterviewer } from "./lib/auth";
+
+/**
+ * Ciclo de vida del PRD §5.3. Sin esto setStatus aceptaba cualquier salto —
+ * de borrador a cerrada, o de cerrada de vuelta a en vivo— y una UI con el
+ * estado desactualizado podía cerrar una sesión sin querer.
+ */
+const TRANSICIONES: Record<string, string[]> = {
+  draft: ["ready", "closed"],
+  ready: ["live", "closed"],
+  live: ["paused", "closing"],
+  paused: ["live", "closing"],
+  closing: ["closed"],
+  closed: [],
+};
 
 function makeJoinCode() {
   return Math.random().toString(36).slice(2, 10);
@@ -29,6 +44,18 @@ export const create = mutation({
       linkRevoked: false,
       stuckThresholdSec: 90,
     });
+  },
+});
+
+/**
+ * Guard para actions. Una action no tiene ctx.db, pero su identidad sí llega
+ * a runQuery, así que la verificación se hace aquí y la action solo la invoca.
+ */
+export const assertInterviewer = internalQuery({
+  args: { sessionId: v.id("sessions") },
+  handler: async (ctx, { sessionId }) => {
+    await requireInterviewer(ctx, sessionId);
+    return true;
   },
 });
 
@@ -64,6 +91,13 @@ export const setStatus = mutation({
   },
   handler: async (ctx, { sessionId, status }) => {
     const { userId, session } = await requireInterviewer(ctx, sessionId);
+
+    if (!TRANSICIONES[session.status].includes(status)) {
+      throw new Error(
+        `Transición no permitida: ${session.status} -> ${status}`,
+      );
+    }
+
     const now = Date.now();
     await ctx.db.patch(sessionId, {
       status,
@@ -80,7 +114,24 @@ export const setStatus = mutation({
     await ctx.db.insert("events", {
       sessionId, actorId: userId, type: map[status], at: now, payload: { status },
     });
-    // TODO(salim): al pasar a "closing", disparar reports.generateAll
+    // Solo en "closing": es el estado que el PRD §5.3 define como "se bloquean
+    // cambios, se consolidan eventos y comienza el análisis". Disparar también
+    // en "closed" duplicaba todo, porque cerrar pasa por los dos estados: eran
+    // dos generaciones por candidato compitiendo por la misma fila, al doble de
+    // costo. Como la tabla de transiciones obliga a pasar por "closing" antes
+    // de "closed", aquí no se pierde ningún caso.
+    if (status === "closing") {
+      const participants = await ctx.db
+        .query("participants")
+        .withIndex("by_session", (q) => q.eq("sessionId", sessionId))
+        .collect();
+      for (const p of participants.filter((x) => x.presence !== "removed")) {
+        await ctx.scheduler.runAfter(0, internal.reports.generateInternal, {
+          sessionId,
+          participantId: p._id,
+        });
+      }
+    }
   },
 });
 

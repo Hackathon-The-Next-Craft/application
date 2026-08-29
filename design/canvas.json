@@ -1,0 +1,78 @@
+{
+  "pages": [
+    { "id": "page-1", "name": "Entrevistador" },
+    { "id": "page-2", "name": "Candidato" },
+    { "id": "page-3", "name": "Estados y sistema" }
+  ],
+  "artboards": [
+    { "file": "Login.dc.html", "title": "1 · Acceso", "page": "page-1", "x": 0, "y": 0, "w": 1440, "h": 900 },
+    { "file": "Sesiones.dc.html", "title": "2 · Sesiones", "page": "page-1", "x": 1520, "y": 0, "w": 1440, "h": 1000 },
+    { "file": "CrearSesion.dc.html", "title": "3 · Crear sesión", "page": "page-1", "x": 3040, "y": 0, "w": 1440, "h": 1100 },
+
+    { "file": "GenerarPrueba.dc.html", "title": "4 · Generar la prueba", "page": "page-1", "x": 0, "y": 1260, "w": 1440, "h": 1200 },
+    { "file": "RevisarReto.dc.html", "title": "5 · Revisar y publicar", "page": "page-1", "x": 1520, "y": 1260, "w": 1440, "h": 1300 },
+    { "file": "SalaEspera.dc.html", "title": "6 · Sala de espera", "page": "page-1", "x": 3040, "y": 1260, "w": 1440, "h": 900 },
+
+    { "file": "Main.dc.html", "title": "7 · Panel en vivo · mosaico", "page": "page-1", "x": 0, "y": 2720, "w": 1440, "h": 950 },
+    { "file": "FocoCandidato.dc.html", "title": "8 · Foco en un candidato", "page": "page-1", "x": 1520, "y": 2720, "w": 1440, "h": 950 },
+    { "file": "SesionPausada.dc.html", "title": "9 · Pausada y finalizando", "page": "page-1", "x": 3040, "y": 2720, "w": 1440, "h": 900 },
+
+    { "file": "Reporte.dc.html", "title": "10 · Informe con evidencia", "page": "page-1", "x": 0, "y": 3830, "w": 1440, "h": 1200 },
+    { "file": "DecisionFinal.dc.html", "title": "11 · Decisión y exportación", "page": "page-1", "x": 1520, "y": 3830, "w": 1440, "h": 1000 },
+    { "file": "Comparativa.dc.html", "title": "12 · Comparar candidatos", "page": "page-1", "x": 3040, "y": 3830, "w": 1440, "h": 1000 },
+
+    { "file": "Consentimiento.dc.html", "title": "13 · Entrada y consentimiento", "page": "page-2", "x": 0, "y": 0, "w": 1440, "h": 1100 },
+    { "file": "Preflight.dc.html", "title": "14 · Prueba de dispositivos", "page": "page-2", "x": 1520, "y": 0, "w": 1440, "h": 900 },
+    { "file": "Lobby.dc.html", "title": "15 · Lobby de espera", "page": "page-2", "x": 3040, "y": 0, "w": 1440, "h": 900 },
+
+    { "file": "Workspace.dc.html", "title": "16 · Workspace del candidato", "page": "page-2", "x": 0, "y": 1260, "w": 1440, "h": 950 },
+    { "file": "CandidatoPausado.dc.html", "title": "17 · Prueba pausada", "page": "page-2", "x": 1520, "y": 1260, "w": 1440, "h": 900 },
+    { "file": "Finalizado.dc.html", "title": "18 · Entrega confirmada", "page": "page-2", "x": 3040, "y": 1260, "w": 1440, "h": 900 },
+
+    { "file": "Reconexion.dc.html", "title": "19 · Desconexión y reconexión", "page": "page-3", "x": 0, "y": 0, "w": 1440, "h": 900 },
+    { "file": "EnlaceNoDisponible.dc.html", "title": "20 · Enlace no disponible", "page": "page-3", "x": 1520, "y": 0, "w": 1440, "h": 800 }
+  ],
+  "annotations": [
+    {
+      "id": "duda-login-home",
+      "page": "page-1",
+      "x": 0,
+      "y": -230,
+      "w": 620,
+      "text": "PENDIENTE DE VALIDAR\nEl acceso (1) y la lista de sesiones (2) no están en el PRD: los deduje porque sin ellos no hay forma de llegar a una sesión ni de volver a un informe.\n¿Entran en el MVP o se resuelven de otra manera?"
+    },
+    {
+      "id": "duda-camara-mosaico",
+      "page": "page-1",
+      "x": 0,
+      "y": 2480,
+      "w": 620,
+      "text": "DECISIÓN APLICADA\nCámara pequeña sobre cada editor, según lo que elegiste.\nComo §13.3 la deja abierta, la celda está diseñada para funcionar igual sin ella: Carla aparece sin cámara y no se pierde ninguna señal."
+    },
+    {
+      "id": "duda-comparativa",
+      "page": "page-1",
+      "x": 3040,
+      "y": 3600,
+      "w": 620,
+      "text": "PENDIENTE DE VALIDAR\nLa comparativa (12) se deduce de §3 «comparar resultados», pero no tiene requisito funcional propio.\n¿MVP o V1? Deliberadamente no ordena ni puntúa a nadie."
+    },
+    {
+      "id": "nota-consentimiento",
+      "page": "page-2",
+      "x": 0,
+      "y": -230,
+      "w": 620,
+      "text": "El consentimiento (13) es granular: código obligatorio, audio requerido por la empresa, transcripción y cámara opcionales.\nDecir que no a la transcripción deja un criterio como «no observado» en el informe, nunca como algo en contra del candidato."
+    },
+    {
+      "id": "nota-estados",
+      "page": "page-3",
+      "x": 0,
+      "y": -200,
+      "w": 620,
+      "text": "Estos dos no son pantallas de un flujo: son los momentos en que algo falla.\nLa clave de (19) es que los canales se degradan por separado — perder el audio no detiene el editor, según §8.1."
+    }
+  ],
+  "launch": { "view": "canvas", "page": "page-1" }
+}

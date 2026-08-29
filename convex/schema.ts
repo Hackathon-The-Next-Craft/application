@@ -25,6 +25,7 @@ export const progressState = v.union(
 export const eventType = v.union(
   v.literal("participant.joined"),
   v.literal("participant.left"),
+  v.literal("participant.removed"),
   v.literal("participant.ready"),
   v.literal("session.started"),
   v.literal("session.paused"),
@@ -76,6 +77,9 @@ export default defineSchema({
       v.literal("ready"),
       v.literal("live"),
       v.literal("disconnected"),
+      // El entrevistador lo sacó. No se borra la fila: sus eventos son la
+      // evidencia del reporte. Deja de contar para el cupo y sale del mosaico.
+      v.literal("removed"),
     ),
     consent: v.object({
       audio: v.boolean(),
@@ -102,6 +106,10 @@ export default defineSchema({
     statement: v.string(),         // markdown
     language: v.union(v.literal("python"), v.literal("javascript")),
     starterCode: v.string(),
+    // Nombre de la función que el runner debe invocar. Es un contrato con
+    // lib/runner: sin esto, el frontend tiene que adivinarlo leyendo el
+    // starterCode con una regex, y un cambio de prompt lo rompe en silencio.
+    entryPoint: v.string(),
     timeLimitMinutes: v.number(),
     rubric: v.array(v.object({
       criterion: v.string(),

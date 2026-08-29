@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { FunctionReturnType } from "convex/server";
 import type { api } from "@/convex/_generated/api";
 import type { Doc } from "@/convex/_generated/dataModel";
@@ -17,6 +18,8 @@ const PRESENCIA: Record<Doc<"participants">["presence"], string> = {
   ready: "Listo",
   live: "Conectado",
   disconnected: "Desconectado",
+  // No debería verse en el mosaico: listForSession filtra a los retirados.
+  removed: "Retirado de la sesión",
 };
 
 // §4: el estado va en el filete izquierdo de 3 px, nunca como fondo de la
@@ -83,14 +86,17 @@ export function ParticipantCard({
         {participante.currentCode || "// sin código todavía"}
       </pre>
 
-      <Button
-        type="button"
-        variant="ghost"
-        onClick={onEnfocar}
-        className="mt-3 self-start"
-      >
-        {enfocado ? "Enfocado" : "Enfocar"}
-      </Button>
+      <div className="mt-3 flex items-center gap-3">
+        <Button type="button" variant="ghost" onClick={onEnfocar}>
+          {enfocado ? "Enfocado" : "Enfocar"}
+        </Button>
+        <Link
+          href={`/s/${participante.sessionId}/report/${participante._id}`}
+          className="text-body-sm text-ink-500 underline underline-offset-4 hover:text-iris-600"
+        >
+          Reporte
+        </Link>
+      </div>
     </li>
   );
 }

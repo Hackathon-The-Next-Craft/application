@@ -1,21 +1,48 @@
 "use client";
 
-import { use } from "react";
+import Link from "next/link";
+import { use, useEffect, useState } from "react";
+import { InvalidTokenBoundary } from "@/components/candidate/InvalidTokenBoundary";
+import { Room } from "@/components/candidate/Room";
+import { clearToken, readToken } from "@/lib/candidateToken";
 
-// Placeholder de la rama 2: el lobby redirige aquí cuando la sesión pasa a
-// "live". La sala real (Monaco, autosave, runner) es la rama 4.
 export default function RoomPage({ params }: PageProps<"/join/[code]/room">) {
   const { code } = use(params);
 
+  // Mismo patrón que el lobby: localStorage no existe en el servidor.
+  const [joinToken, setJoinToken] = useState<string | null | undefined>(undefined);
+  useEffect(() => {
+    setJoinToken(readToken(code));
+  }, [code]);
+
   return (
-    <main className="mx-auto w-full max-w-lg flex-1 p-8">
-      <div className="rounded-2xl border border-ink-200 bg-white p-8">
-        <h1 className="font-display text-title text-ink-900">La sesión empezó</h1>
-        <p className="mt-2 text-body-sm text-ink-500">
-          Sala del candidato: rama 4. Código de acceso{" "}
-          <span className="font-mono text-code text-ink-900">{code}</span>.
-        </p>
-      </div>
+    <main className="mx-auto w-full max-w-6xl flex-1 p-6">
+      {joinToken === undefined ? (
+        <div className="h-96 animate-pulse rounded-lg border border-zinc-200 bg-white" />
+      ) : joinToken === null ? (
+        <div className="rounded-lg border border-zinc-200 bg-white p-6">
+          <h1 className="font-medium">No tienes acceso a esta sala</h1>
+          <p className="mt-2 text-sm text-zinc-500">
+            Entra primero con tu nombre desde el enlace de la entrevista.
+          </p>
+          <Link
+            href={`/join/${code}`}
+            className="mt-4 inline-block rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700"
+          >
+            Ir a la entrada
+          </Link>
+        </div>
+      ) : (
+        <InvalidTokenBoundary
+          key={joinToken}
+          onDiscardToken={() => {
+            clearToken(code);
+            setJoinToken(null);
+          }}
+        >
+          <Room code={code} joinToken={joinToken} />
+        </InvalidTokenBoundary>
+      )}
     </main>
   );
 }

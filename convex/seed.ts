@@ -136,6 +136,7 @@ export const demo = mutation({
       ].join("\n"),
       language: "javascript",
       starterCode: STARTER,
+      entryPoint: "groupByDay",
       timeLimitMinutes: 30,
       rubric: [
         {

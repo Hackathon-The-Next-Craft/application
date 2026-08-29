@@ -1,6 +1,7 @@
 import { v } from "convex/values";
-import { action, internalMutation, internalQuery, mutation, query } from "./_generated/server";
+import { action, internalAction, internalMutation, internalQuery, mutation, query } from "./_generated/server";
 import { internal } from "./_generated/api";
+import { Id } from "./_generated/dataModel";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { requireInterviewer } from "./lib/auth";
 
@@ -25,18 +26,52 @@ export const evidence = query({
   },
 });
 
-/** Se dispara al cerrar la sesión. Escribe por partes -> la UI lo ve "streamear". */
-export const generate = action({
-  args: { sessionId: v.id("sessions"), participantId: v.id("participants") },
-  handler: async (ctx, { sessionId, participantId }): Promise<null> => {
-    const reportId = await ctx.runMutation(internal.reports.upsertPending, {
-      sessionId, participantId,
-    });
+/**
+ * Generación del reporte. Escribe por partes (pending -> generating -> done),
+ * así la UI lo ve aparecer con un useQuery normal, sin streaming.
+ */
+async function generateFor(
+  ctx: any,
+  sessionId: Id<"sessions">,
+  participantId: Id<"participants">,
+) {
+  const reportId = await ctx.runMutation(internal.reports.upsertPending, {
+    sessionId,
+    participantId,
+  });
+  try {
     const input = await ctx.runQuery(internal.reports.gatherInput, {
-      sessionId, participantId,
+      sessionId,
+      participantId,
     });
     const result = await ctx.runAction(internal.ai.evaluate.run, input);
     await ctx.runMutation(internal.reports.finish, { reportId, result });
+  } catch (error) {
+    // Un reporte fallido no puede quedarse en "generating" para siempre: el
+    // entrevistador tiene que ver que algo salió mal y poder reintentar.
+    await ctx.runMutation(internal.reports.fail, {
+      reportId,
+      message: error instanceof Error ? error.message : String(error),
+    });
+    throw error;
+  }
+}
+
+/** La dispara el scheduler al cerrar la sesión: corre sin usuario autenticado. */
+export const generateInternal = internalAction({
+  args: { sessionId: v.id("sessions"), participantId: v.id("participants") },
+  handler: async (ctx, { sessionId, participantId }): Promise<null> => {
+    await generateFor(ctx, sessionId, participantId);
+    return null;
+  },
+});
+
+/** Reintento manual desde la UI. Aquí sí hay usuario, así que se verifica. */
+export const generate = action({
+  args: { sessionId: v.id("sessions"), participantId: v.id("participants") },
+  handler: async (ctx, { sessionId, participantId }): Promise<null> => {
+    await ctx.runQuery(internal.sessions.assertInterviewer, { sessionId });
+    await generateFor(ctx, sessionId, participantId);
     return null;
   },
 });
@@ -87,6 +122,16 @@ export const finish = internalMutation({
   args: { reportId: v.id("reports"), result: v.any() },
   handler: async (ctx, { reportId, result }) => {
     await ctx.db.patch(reportId, { status: "done", ...result });
+  },
+});
+
+export const fail = internalMutation({
+  args: { reportId: v.id("reports"), message: v.string() },
+  handler: async (ctx, { reportId, message }) => {
+    await ctx.db.patch(reportId, {
+      status: "failed",
+      limitations: `No se pudo generar el reporte: ${message}`,
+    });
   },
 });
 

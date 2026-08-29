@@ -1,0 +1,150 @@
+<div style="width:1440px;height:1000px;background:var(--bg-grad);display:flex;flex-direction:column;font-family:var(--sans);">
+
+  <header style="height:56px;flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:24px;padding:0 24px;">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <svg width="24" height="24" viewBox="0 0 40 40" fill="none" aria-label="Multix"><path d="M5 10H17C23.5 10 24 20 30 20" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><path d="M5 20H30" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><path d="M5 30H17C23.5 30 24 20 30 20" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><circle cx="31.5" cy="20" r="4.5" fill="var(--mx-iris-600)"></circle></svg>
+      <span style="font-family:var(--display);font-size:18px;font-weight:800;letter-spacing:-0.03em;">Multix</span>
+    </div>
+    <nav style="display:flex;align-items:center;gap:4px;">
+      <a href="#" style="font-size:14px;color:var(--text);font-weight:500;background:var(--surface-2);padding:8px 12px;border-radius:6px;text-decoration:none;">Sesiones</a>
+      <span style="font-size:14px;color:var(--text-3);padding:8px 12px;">Plantillas <span style="font-size:11px;font-weight:600;border:1px solid var(--border);border-radius:4px;padding:1px 6px;margin-left:4px;">V1</span></span>
+    </nav>
+    <div style="flex-grow:1;"></div>
+    <div style="display:flex;align-items:center;gap:9px;">
+      <span style="width:30px;height:30px;border-radius:50%;background:var(--accent-bg);border:1px solid var(--accent-bd);color:var(--accent-2);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;">MT</span>
+      <span style="font-size:14px;">Marta Toledo</span>
+    </div>
+  </header>
+
+  <div style="flex-grow:1;padding:32px 40px;display:flex;flex-direction:column;gap:20px;min-height:0;">
+
+    <div style="display:flex;align-items:flex-end;gap:16px;">
+      <div style="flex-grow:1;">
+        <h1 style="font-size:26px;font-weight:600;letter-spacing:-0.02em;">Sesiones</h1>
+        <p style="font-size:14px;color:var(--text-2);margin-top:5px;">Una sesión reúne hasta tres candidatos, sus retos y sus informes.</p>
+      </div>
+      <button style="height:36px;padding:0 14px;border:1px solid transparent;background:var(--grad-accent);box-shadow:var(--shadow-accent);border-radius:8px;font-family:var(--sans);font-size:13px;font-weight:600;color:#fff;cursor:pointer;display:flex;align-items:center;gap:8px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 3v10M3 8h10"></path></svg>
+        Nueva sesión
+      </button>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);">
+      <span style="font-size:14px;font-weight:600;padding:10px 4px;border-bottom:2px solid var(--accent);margin-bottom:-1px;">Todas <span class="num" style="color:var(--text-2);font-weight:400;">7</span></span>
+      <span style="font-size:14px;color:var(--text-2);padding:10px 12px;">Borrador <span class="num">2</span></span>
+      <span style="font-size:14px;color:var(--text-2);padding:10px 12px;">Listas <span class="num">1</span></span>
+      <span style="font-size:14px;color:var(--text-2);padding:10px 12px;">En vivo <span class="num">1</span></span>
+      <span style="font-size:14px;color:var(--text-2);padding:10px 12px;">Cerradas <span class="num">3</span></span>
+      <div style="flex-grow:1;"></div>
+      <div style="height:38px;border:1px solid var(--border-2);border-radius:6px;background:var(--surface);display:flex;align-items:center;gap:9px;padding:0 12px;margin-bottom:8px;width:260px;">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="var(--text-3)" stroke-width="1.6" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5L14 14"></path></svg>
+        <span style="font-size:13px;color:var(--text-3);">Buscar por rol o candidato</span>
+      </div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+      <div style="display:grid;grid-template-columns:1fr 150px 190px 130px 190px;gap:16px;padding:11px 20px;background:var(--grad-subtle);border-bottom:1px solid var(--border);">
+        <span style="font-family:var(--mono);font-size:11px;line-height:12px;font-weight:700;letter-spacing:0.14em;color:var(--text-2);">SESIÓN</span>
+        <span style="font-family:var(--mono);font-size:11px;line-height:12px;font-weight:700;letter-spacing:0.14em;color:var(--text-2);">ESTADO</span>
+        <span style="font-family:var(--mono);font-size:11px;line-height:12px;font-weight:700;letter-spacing:0.14em;color:var(--text-2);">CANDIDATOS</span>
+        <span style="font-family:var(--mono);font-size:11px;line-height:12px;font-weight:700;letter-spacing:0.14em;color:var(--text-2);">FECHA</span>
+        <span style="font-family:var(--mono);font-size:11px;line-height:12px;font-weight:700;letter-spacing:0.14em;color:var(--text-2);"></span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 150px 190px 130px 190px;gap:16px;padding:16px 20px;border-bottom:1px solid var(--border);align-items:center;background:var(--fail-bg);">
+        <div>
+          <p style="font-size:14px;font-weight:600;">Backend Junior · Python</p>
+          <p style="font-size:12px;color:var(--text-2);margin-top:2px;">2 retos · 60 min</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--fail);"></span>
+          <span style="font-size:13px;font-weight:600;color:var(--fail);">En vivo</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:-6px;">
+          <span style="width:28px;height:28px;border-radius:50%;background:var(--surface);border:1px solid var(--accent-bd);font-size:10px;font-weight:600;color:var(--accent-2);display:flex;align-items:center;justify-content:center;">AR</span>
+          <span style="width:28px;height:28px;border-radius:50%;background:var(--surface);border:1px solid var(--accent-bd);font-size:10px;font-weight:600;color:var(--accent-2);display:flex;align-items:center;justify-content:center;margin-left:-7px;">BM</span>
+          <span style="width:28px;height:28px;border-radius:50%;background:var(--surface);border:1px solid var(--accent-bd);font-size:10px;font-weight:600;color:var(--accent-2);display:flex;align-items:center;justify-content:center;margin-left:-7px;">CY</span>
+          <span class="num" style="font-size:12px;color:var(--text-2);margin-left:8px;">3 de 3</span>
+        </div>
+        <span class="num" style="font-size:13px;color:var(--text-2);">Hoy, 14:02</span>
+        <button style="height:36px;border:1px solid transparent;background:var(--grad-accent);box-shadow:var(--shadow-accent);border-radius:8px;font-family:var(--sans);font-size:13px;font-weight:600;color:#fff;cursor:pointer;">Volver al panel</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 150px 190px 130px 190px;gap:16px;padding:16px 20px;border-bottom:1px solid var(--border);align-items:center;">
+        <div>
+          <p style="font-size:14px;font-weight:600;">Frontend Semi Senior · TypeScript</p>
+          <p style="font-size:12px;color:var(--text-2);margin-top:2px;">1 reto · 45 min</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--ok);"></span>
+          <span style="font-size:13px;font-weight:500;">Lista</span>
+        </div>
+        <span style="font-size:13px;color:var(--text-2);">Enlace enviado a 2</span>
+        <span class="num" style="font-size:13px;color:var(--text-2);">Mañana, 10:00</span>
+        <button style="height:36px;border:1px solid var(--border-2);background:var(--surface);border-radius:8px;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);cursor:pointer;">Abrir sala</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 150px 190px 130px 190px;gap:16px;padding:16px 20px;border-bottom:1px solid var(--border);align-items:center;">
+        <div>
+          <p style="font-size:14px;font-weight:600;">Data Engineer Junior · Python</p>
+          <p style="font-size:12px;color:var(--text-2);margin-top:2px;">Prueba sin generar</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--text-3);"></span>
+          <span style="font-size:13px;font-weight:500;color:var(--text-2);">Borrador</span>
+        </div>
+        <span style="font-size:13px;color:var(--text-3);">—</span>
+        <span class="num" style="font-size:13px;color:var(--text-2);">27 ago</span>
+        <button style="height:36px;border:1px solid var(--border-2);background:var(--surface);border-radius:8px;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);cursor:pointer;">Continuar</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 150px 190px 130px 190px;gap:16px;padding:16px 20px;border-bottom:1px solid var(--border);align-items:center;">
+        <div>
+          <p style="font-size:14px;font-weight:600;">Backend Junior · Python</p>
+          <p style="font-size:12px;color:var(--text-2);margin-top:2px;">2 retos · 60 min</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--border-2);"></span>
+          <span style="font-size:13px;font-weight:500;color:var(--text-2);">Cerrada</span>
+        </div>
+        <span style="font-size:13px;color:var(--text-2);">3 informes listos</span>
+        <span class="num" style="font-size:13px;color:var(--text-2);">21 ago</span>
+        <button style="height:36px;border:1px solid var(--border-2);background:var(--surface);border-radius:8px;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);cursor:pointer;">Ver informes</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 150px 190px 130px 190px;gap:16px;padding:16px 20px;border-bottom:1px solid var(--border);align-items:center;">
+        <div>
+          <p style="font-size:14px;font-weight:600;">QA Automation · Python</p>
+          <p style="font-size:12px;color:var(--text-2);margin-top:2px;">1 reto · 40 min</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--border-2);"></span>
+          <span style="font-size:13px;font-weight:500;color:var(--text-2);">Cerrada</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;">
+          <span style="font-size:13px;color:var(--text-2);">2 informes ·</span>
+          <span style="font-size:11px;font-weight:600;color:var(--explore);background:var(--explore-bg);border-radius:4px;padding:2px 7px;">1 sin decidir</span>
+        </div>
+        <span class="num" style="font-size:13px;color:var(--text-2);">18 ago</span>
+        <button style="height:36px;border:1px solid var(--border-2);background:var(--surface);border-radius:8px;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);cursor:pointer;">Ver informes</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 150px 190px 130px 190px;gap:16px;padding:16px 20px;align-items:center;">
+        <div>
+          <p style="font-size:14px;font-weight:600;">Backend Senior · Python</p>
+          <p style="font-size:12px;color:var(--text-2);margin-top:2px;">Prueba en revisión</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--text-3);"></span>
+          <span style="font-size:13px;font-weight:500;color:var(--text-2);">Borrador</span>
+        </div>
+        <span style="font-size:13px;color:var(--text-3);">—</span>
+        <span class="num" style="font-size:13px;color:var(--text-2);">15 ago</span>
+        <button style="height:36px;border:1px solid var(--border-2);background:var(--surface);border-radius:8px;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);cursor:pointer;">Continuar</button>
+      </div>
+    </div>
+
+    <div style="flex-grow:1;"></div>
+    <p style="font-size:12px;color:var(--text-3);">Los informes de sesiones cerradas se conservan según la política de retención de tu organización.</p>
+  </div>
+</div>
