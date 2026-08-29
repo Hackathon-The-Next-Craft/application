@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Button } from "@/components/ui/Button";
 
 // Todas las funciones de entrevistador pasan por requireInterviewer, que hace
 // throw ("No autenticado" / "No autorizado" / "Sesión no encontrada"), y
@@ -20,31 +21,27 @@ export default function SessionError({
     error.message.includes("Sesión no encontrada");
 
   return (
-    <main className="mx-auto w-full max-w-lg flex-1 p-6">
-      <div className="rounded-lg border border-zinc-200 bg-white p-6">
-        <h1 className="font-medium">
+    <main className="mx-auto w-full max-w-lg flex-1 p-8">
+      <div className="rounded-2xl border border-ink-200 bg-white p-6">
+        <h1 className="font-display text-subtitle text-ink-900">
           {sinAcceso ? "No puedes ver esta sesión" : "Algo salió mal"}
         </h1>
-        <p className="mt-2 text-sm text-zinc-500">
+        <p className="mt-2 text-body-sm text-ink-500">
           {sinAcceso
             ? "La sesión no existe, o pertenece a otra cuenta de entrevistador."
             : error.message}
         </p>
-        <div className="mt-4 flex gap-2">
+        <div className="mt-5 flex gap-2">
           <Link
             href="/dashboard"
-            className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700"
+            className="inline-flex h-11 items-center justify-center rounded-lg bg-iris-600 px-5 font-sans text-[15px] font-semibold leading-[18px] text-white transition-colors duration-[120ms] hover:bg-iris-700"
           >
             Mis sesiones
           </Link>
           {!sinAcceso && (
-            <button
-              type="button"
-              onClick={retry}
-              className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-100"
-            >
+            <Button type="button" variant="ghost" size="lg" onClick={retry}>
               Reintentar
-            </button>
+            </Button>
           )}
         </div>
       </div>

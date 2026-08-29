@@ -4,12 +4,15 @@ import { useMutation, useQuery } from "convex/react";
 import { useState } from "react";
 import { api } from "@/convex/_generated/api";
 import { saveToken } from "@/lib/candidateToken";
+import { Button } from "@/components/ui/Button";
+import { Field } from "@/components/ui/Field";
+import { Logo } from "@/components/ui/Logo";
 
 function Aviso({ title, detail }: { title: string; detail: string }) {
   return (
-    <div className="rounded-lg border border-zinc-200 bg-white p-6">
-      <h2 className="font-medium">{title}</h2>
-      <p className="mt-2 text-sm text-zinc-500">{detail}</p>
+    <div className="rounded-2xl border border-ink-200 bg-white p-6">
+      <h2 className="font-display text-subtitle text-ink-900">{title}</h2>
+      <p className="mt-2 text-body-sm text-ink-500">{detail}</p>
     </div>
   );
 }
@@ -56,7 +59,7 @@ export function JoinForm({
   }
 
   if (info === undefined) {
-    return <div className="h-48 animate-pulse rounded-lg border border-zinc-200 bg-white" />;
+    return <div className="h-48 animate-pulse rounded-2xl border border-ink-200 bg-white" />;
   }
 
   if (info === null) {
@@ -78,55 +81,61 @@ export function JoinForm({
   }
 
   return (
-    <div className="rounded-lg border border-zinc-200 bg-white p-6">
-      <h1 className="text-2xl font-semibold tracking-tight">{info.title}</h1>
-      <p className="mt-1 text-sm text-zinc-500">
+    <div className="rounded-2xl border border-ink-200 bg-white p-8">
+      <Logo size={24} className="mb-8 text-ink-900" />
+
+      <h1 className="font-display text-title text-ink-900">{info.title}</h1>
+      <p className="tabular mt-1 font-mono text-meta text-ink-500">
         {info.role} · {info.durationMinutes} minutos
       </p>
 
-      <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
-        <label className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium">Tu nombre</span>
-          <input
-            name="displayName"
-            required
-            autoComplete="name"
-            className="rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-900"
-          />
-          <span className="text-xs text-zinc-500">
-            Es el nombre que verá quien te entrevista.
-          </span>
-        </label>
+      <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-5">
+        <Field
+          label="Tu nombre"
+          name="displayName"
+          required
+          autoComplete="name"
+          hint="Es el nombre que verá quien te entrevista."
+        />
 
-        <fieldset className="flex flex-col gap-2 rounded-md border border-zinc-200 p-4">
-          <legend className="px-1 text-sm font-medium">Permisos</legend>
-          <label className="flex items-start gap-2 text-sm">
-            <input type="checkbox" name="consentAudio" className="mt-1" />
+        <fieldset className="flex flex-col gap-3 rounded-lg border border-ink-200 p-4">
+          <legend className="px-1 font-mono text-label uppercase text-ink-500">
+            Permisos
+          </legend>
+          <label className="flex items-start gap-2.5 text-body-sm text-ink-900">
+            <input
+              type="checkbox"
+              name="consentAudio"
+              className="mt-0.5 h-4 w-4 shrink-0 accent-iris-600"
+            />
             <span>Acepto que se capture mi audio durante la entrevista.</span>
           </label>
-          <label className="flex items-start gap-2 text-sm">
-            <input type="checkbox" name="consentTranscript" className="mt-1" />
+          <label className="flex items-start gap-2.5 text-body-sm text-ink-900">
+            <input
+              type="checkbox"
+              name="consentTranscript"
+              className="mt-0.5 h-4 w-4 shrink-0 accent-iris-600"
+            />
             <span>Acepto que se genere una transcripción de lo que diga.</span>
           </label>
-          <p className="mt-1 text-xs text-zinc-500">
+          <p className="text-caption text-ink-500">
             Tu código y tus ejecuciones se registran de todas formas: son el objeto
             de la evaluación.
           </p>
         </fieldset>
 
         {error && (
-          <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+          <p
+            role="alert"
+            className="rounded-lg border border-fail-bg bg-fail-bg px-3 py-2.5 text-body-sm text-fail-text"
+          >
             {error}
           </p>
         )}
 
-        <button
-          type="submit"
-          disabled={pending}
-          className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50"
-        >
+        <Button type="submit" size="lg" disabled={pending}>
           {pending ? "Entrando…" : "Entrar a la sala de espera"}
-        </button>
+        </Button>
       </form>
     </div>
   );

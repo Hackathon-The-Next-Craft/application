@@ -8,12 +8,12 @@ export default function RoomPage({ params }: PageProps<"/join/[code]/room">) {
   const { code } = use(params);
 
   return (
-    <main className="mx-auto w-full max-w-lg flex-1 p-6">
-      <div className="rounded-lg border border-zinc-200 bg-white p-6">
-        <h1 className="text-2xl font-semibold tracking-tight">La sesión empezó</h1>
-        <p className="mt-2 text-sm text-zinc-500">
+    <main className="mx-auto w-full max-w-lg flex-1 p-8">
+      <div className="rounded-2xl border border-ink-200 bg-white p-8">
+        <h1 className="font-display text-title text-ink-900">La sesión empezó</h1>
+        <p className="mt-2 text-body-sm text-ink-500">
           Sala del candidato: rama 4. Código de acceso{" "}
-          <span className="font-mono">{code}</span>.
+          <span className="font-mono text-code text-ink-900">{code}</span>.
         </p>
       </div>
     </main>

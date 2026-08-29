@@ -32,13 +32,13 @@ export class InvalidTokenBoundary extends Component<Props, State> {
 
     const isInvalidToken = message.includes(INVALID_TOKEN);
     return (
-      <div className="rounded-lg border border-zinc-200 bg-white p-6">
-        <h2 className="font-medium">
+      <div className="rounded-2xl border border-ink-200 bg-white p-6">
+        <h2 className="font-display text-subtitle text-ink-900">
           {isInvalidToken
             ? "Tu acceso a esta sesión ya no es válido"
             : "Algo salió mal"}
         </h2>
-        <p className="mt-2 text-sm text-zinc-500">
+        <p className="mt-2 text-body-sm text-ink-500">
           {isInvalidToken
             ? "Puede que hayas limpiado los datos del navegador, o que estés entrando desde otro dispositivo. Vuelve a entrar con tu nombre; avísale al entrevistador de que reingresaste."
             : message}
@@ -53,7 +53,7 @@ export class InvalidTokenBoundary extends Component<Props, State> {
               window.location.reload();
             }
           }}
-          className="mt-4 rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700"
+          className="mt-5 inline-flex h-11 items-center justify-center rounded-lg bg-iris-600 px-5 font-sans text-[15px] font-semibold leading-[18px] text-white transition-colors duration-[120ms] hover:bg-iris-700"
         >
           {isInvalidToken ? "Volver a entrar" : "Reintentar"}
         </button>

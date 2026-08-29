@@ -4,6 +4,8 @@ import { useMutation } from "convex/react";
 import { useState } from "react";
 import { api } from "@/convex/_generated/api";
 import type { Doc } from "@/convex/_generated/dataModel";
+import { Button } from "@/components/ui/Button";
+import { Chip } from "@/components/ui/Chip";
 
 type Status = "idle" | "testing" | "ok" | "error";
 
@@ -40,36 +42,49 @@ export function MicCheck({
     }
   }
 
+  // §4: el estado va en el filete izquierdo, no como fondo de todo el bloque.
+  const filete =
+    status === "ok"
+      ? "border-l-advance"
+      : status === "error"
+        ? "border-l-fail"
+        : "border-l-ink-300";
+
   return (
-    <div className="rounded-md border border-zinc-200 p-4">
-      <h3 className="text-sm font-medium">Micrófono</h3>
+    <div className={`rounded-lg border border-l-[3px] border-ink-200 bg-white p-4 ${filete}`}>
+      <div className="flex items-center gap-3">
+        <h3 className="flex-1 text-body-sm font-semibold text-ink-900">Micrófono</h3>
+        {status === "ok" && <Chip tone="advance">Listo</Chip>}
+        {status === "error" && <Chip tone="fail">No disponible</Chip>}
+      </div>
 
       {status === "ok" ? (
-        <p className="mt-1 text-sm text-green-700">
+        <p className="mt-1.5 text-body-sm text-advance-text">
           Listo. Tu micrófono responde.
         </p>
       ) : status === "error" ? (
-        <p className="mt-1 text-sm text-red-700">
+        <p className="mt-1.5 text-body-sm text-fail-text">
           No pudimos usar tu micrófono. {detail}
         </p>
       ) : (
-        <p className="mt-1 text-sm text-zinc-500">
+        <p className="mt-1.5 text-body-sm text-ink-500">
           Compruébalo antes de que empiece la entrevista.
         </p>
       )}
 
-      <button
+      <Button
         type="button"
+        variant="ghost"
         onClick={probar}
         disabled={status === "testing"}
-        className="mt-3 rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium hover:bg-zinc-100 disabled:opacity-50"
+        className="mt-3"
       >
         {status === "testing"
           ? "Comprobando…"
           : status === "idle"
             ? "Probar micrófono"
             : "Probar de nuevo"}
-      </button>
+      </Button>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useMutation } from "convex/react";
 import { useState } from "react";
 import { api } from "@/convex/_generated/api";
 import type { Doc, Id } from "@/convex/_generated/dataModel";
+import { Button } from "@/components/ui/Button";
 
 type Status = Doc<"sessions">["status"];
 // setStatus no acepta "draft": una sesión no vuelve a borrador.
@@ -61,7 +62,7 @@ export function SessionControls({
 
   const acciones = ACCIONES[status];
   if (acciones.length === 0) {
-    return <p className="text-sm text-zinc-500">La sesión está cerrada.</p>;
+    return <p className="text-body-sm text-ink-500">La sesión está cerrada.</p>;
   }
 
   async function aplicar(destino: Destino) {
@@ -77,25 +78,21 @@ export function SessionControls({
   const enConfirmacion = acciones.find((a) => a.destino === confirmando);
   if (enConfirmacion) {
     return (
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-zinc-700">
+      <div className="flex items-center gap-3 rounded-lg border border-ink-200 border-l-[3px] border-l-fail bg-white px-4 py-2.5">
+        <span className="text-body-sm text-ink-900">
           {enConfirmacion.confirmar?.pregunta}
         </span>
-        <button
+        <Button
           type="button"
+          variant="danger"
           disabled={pendiente}
           onClick={() => aplicar(enConfirmacion.destino)}
-          className="rounded-md bg-red-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-800 disabled:opacity-50"
         >
           {enConfirmacion.confirmar?.boton}
-        </button>
-        <button
-          type="button"
-          onClick={() => setConfirmando(null)}
-          className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium hover:bg-zinc-100"
-        >
+        </Button>
+        <Button type="button" variant="ghost" onClick={() => setConfirmando(null)}>
           Cancelar
-        </button>
+        </Button>
       </div>
     );
   }
@@ -103,23 +100,19 @@ export function SessionControls({
   return (
     <div className="flex items-center gap-2">
       {acciones.map((accion) => (
-        <button
+        <Button
           key={accion.destino}
           type="button"
+          variant={accion.confirmar ? "ghost" : "primary"}
           disabled={pendiente}
           onClick={() =>
             accion.confirmar
               ? setConfirmando(accion.destino)
               : aplicar(accion.destino)
           }
-          className={
-            accion.confirmar
-              ? "rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium hover:bg-zinc-100 disabled:opacity-50"
-              : "rounded-md bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50"
-          }
         >
           {accion.label}
-        </button>
+        </Button>
       ))}
     </div>
   );

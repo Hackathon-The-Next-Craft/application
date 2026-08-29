@@ -9,6 +9,8 @@ import { AlertsPanel } from "@/components/interviewer/AlertsPanel";
 import { FocusPanel } from "@/components/interviewer/FocusPanel";
 import { ParticipantCard } from "@/components/interviewer/ParticipantCard";
 import { SessionControls } from "@/components/interviewer/SessionControls";
+import { AppHeader } from "@/components/ui/AppHeader";
+import { Chip, type Tone } from "@/components/ui/Chip";
 
 const ESTADO: Record<Doc<"sessions">["status"], string> = {
   draft: "Borrador",
@@ -17,6 +19,15 @@ const ESTADO: Record<Doc<"sessions">["status"], string> = {
   paused: "Pausada",
   closing: "Finalizando",
   closed: "Cerrada",
+};
+
+const ESTADO_TONO: Record<Doc<"sessions">["status"], Tone> = {
+  draft: "neutral",
+  ready: "advance",
+  live: "fail",
+  paused: "stuck",
+  closing: "explore",
+  closed: "neutral",
 };
 
 export default function LivePage({ params }: PageProps<"/s/[sessionId]/live"> ) {
@@ -36,45 +47,54 @@ export default function LivePage({ params }: PageProps<"/s/[sessionId]/live"> ) 
 
   return (
     <div className="flex flex-1 flex-col">
-      <header className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-200 bg-white px-6 py-4">
-        <div className="min-w-0">
+      <AppHeader
+        actions={
+          session && <SessionControls sessionId={sessionId} status={session.status} />
+        }
+      >
+        <div className="flex min-w-0 items-center gap-3">
           <Link
             href="/dashboard"
-            className="text-sm text-zinc-500 underline underline-offset-4 hover:text-zinc-900"
+            className="shrink-0 text-body-sm text-ink-500 underline underline-offset-4 hover:text-iris-600"
           >
-            ← Mis sesiones
+            Sesiones
           </Link>
-          <h1 className="mt-1 truncate text-xl font-semibold tracking-tight">
+          <span className="text-ink-400">/</span>
+          <span className="truncate text-body-sm font-semibold text-ink-900">
             {session?.title ?? "…"}
-          </h1>
-        </div>
-
-        {session && (
-          <div className="flex items-center gap-4">
-            <span className="rounded-full bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-700">
+          </span>
+          {session && (
+            <Chip tone={ESTADO_TONO[session.status]} dot={session.status === "live"}>
               {ESTADO[session.status]}
-            </span>
-            <SessionControls sessionId={sessionId} status={session.status} />
-          </div>
-        )}
-      </header>
+            </Chip>
+          )}
+        </div>
+      </AppHeader>
 
-      <div className="grid flex-1 gap-6 p-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="grid flex-1 gap-6 p-8 lg:grid-cols-[minmax(0,1fr)_340px]">
         <main className="flex flex-col gap-6">
           {participantes === undefined ? (
             <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {[0, 1, 2].map((i) => (
                 <li
                   key={i}
-                  className="h-80 animate-pulse rounded-lg border border-zinc-200 bg-white"
+                  className="h-80 animate-pulse rounded-2xl border border-ink-200 bg-white"
                 />
               ))}
             </ul>
           ) : participantes.length === 0 ? (
-            <p className="rounded-lg border border-dashed border-zinc-300 p-8 text-center text-sm text-zinc-500">
-              Todavía no ha entrado nadie. Comparte el link{" "}
-              <span className="font-mono">/join/{session?.joinCode ?? "…"}</span>.
-            </p>
+            <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-ink-300 bg-white px-8 py-16 text-center">
+              <h2 className="font-display text-subtitle text-ink-900">
+                Todavía no ha entrado nadie
+              </h2>
+              <p className="max-w-[46ch] text-body-sm text-ink-500">
+                Comparte este enlace con los candidatos. Cada uno entra a su
+                propio entorno, aislado de los demás.
+              </p>
+              <p className="tabular mt-1 rounded-md border border-ink-200 bg-ink-25 px-3 py-2 font-mono text-code text-ink-900">
+                /join/{session?.joinCode ?? "…"}
+              </p>
+            </div>
           ) : (
             <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {participantes.map((participante) => (

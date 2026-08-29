@@ -18,9 +18,9 @@ export default function JoinPage({ params }: PageProps<"/join/[code]">) {
   }, [code]);
 
   return (
-    <main className="mx-auto w-full max-w-lg flex-1 p-6">
+    <main className="mx-auto w-full max-w-lg flex-1 p-8">
       {joinToken === undefined ? (
-        <div className="h-48 animate-pulse rounded-lg border border-zinc-200 bg-white" />
+        <div className="h-48 animate-pulse rounded-2xl border border-ink-200 bg-white" />
       ) : joinToken === null ? (
         <JoinForm code={code} onJoined={setJoinToken} />
       ) : (
