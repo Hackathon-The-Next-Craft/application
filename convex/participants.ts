@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { requireCandidate, requireInterviewer, resolveCandidate } from "./lib/auth";
+import { activeParticipants } from "./lib/participants";
 
 const NOTICE_VERSION = "2026-08-29";
 
@@ -29,12 +30,7 @@ export const join = mutation({
 
     // Los retirados no ocupan cupo: si no, un candidato que limpió su navegador
     // dejaría la sala llena de fantasmas y sin forma de recuperarla.
-    const active = (
-      await ctx.db
-        .query("participants")
-        .withIndex("by_session", (q) => q.eq("sessionId", session._id))
-        .collect()
-    ).filter((p) => p.presence !== "removed");
+    const active = await activeParticipants(ctx, session._id);
     if (active.length >= session.maxCandidates) throw new Error("Sesión llena");
 
     const joinToken = crypto.randomUUID();
@@ -115,12 +111,7 @@ export const listForSession = query({
   args: { sessionId: v.id("sessions") },
   handler: async (ctx, { sessionId }) => {
     await requireInterviewer(ctx, sessionId);
-    const participants = (
-      await ctx.db
-        .query("participants")
-        .withIndex("by_session", (q) => q.eq("sessionId", sessionId))
-        .collect()
-    ).filter((p) => p.presence !== "removed");
+    const participants = await activeParticipants(ctx, sessionId);
     return await Promise.all(
       participants.map(async (p) => {
         const workspaces = await ctx.db
