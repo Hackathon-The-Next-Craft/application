@@ -79,7 +79,11 @@ export default function SetupPage({ params }: PageProps<"/s/[sessionId]/setup">)
               >
                 Ver el panel
               </Link>
-              <SessionControls sessionId={sessionId} status={session.status} />
+              <SessionControls
+                sessionId={sessionId}
+                status={session.status}
+                retosPublicados={challenges === undefined ? undefined : publicados}
+              />
             </div>
           )
         }

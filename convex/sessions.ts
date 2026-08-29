@@ -99,6 +99,22 @@ export const setStatus = mutation({
       );
     }
 
+    // Sin esto "Comenzar la prueba" podía arrancar una sesión con la sala de
+    // espera vacía de retos: los candidatos entrarían y no encontrarían nada
+    // publicado que resolver.
+    if (status === "live") {
+      const publicado = await ctx.db
+        .query("challenges")
+        .withIndex("by_session", (q) => q.eq("sessionId", sessionId))
+        .filter((q) => q.eq(q.field("published"), true))
+        .take(1);
+      if (publicado.length === 0) {
+        throw new Error(
+          "Publica al menos un reto antes de comenzar la prueba",
+        );
+      }
+    }
+
     const now = Date.now();
     await ctx.db.patch(sessionId, {
       status,

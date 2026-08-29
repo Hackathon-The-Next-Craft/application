@@ -45,9 +45,17 @@ const ACCIONES: Record<Status, Accion[]> = {
 export function SessionControls({
   sessionId,
   status,
+  retosPublicados,
 }: {
   sessionId: Id<"sessions">;
   status: Status;
+  /**
+   * Retos publicados de la sesión. Bloquea "Comenzar la prueba" en 0 — el
+   * backend igual lo rechaza (convex/sessions.ts), pero sin esto el botón
+   * dejaba entrar a un candidato a una sala sin nada que resolver.
+   * `undefined` (todavía cargando) no bloquea, para no parpadear.
+   */
+  retosPublicados?: number;
 }) {
   const setStatus = useMutation(api.sessions.setStatus);
   const [confirmando, setConfirmando] = useState<Destino | null>(null);
@@ -85,6 +93,8 @@ export function SessionControls({
   }
 
   const enConfirmacion = acciones.find((a) => a.destino === confirmando);
+  const bloqueaComenzar =
+    status === "ready" && retosPublicados !== undefined && retosPublicados === 0;
 
   return (
     <>
@@ -140,21 +150,29 @@ export function SessionControls({
           {error}
         </p>
       )}
-      {acciones.map((accion) => (
-        <Button
-          key={accion.destino}
-          type="button"
-          variant={accion.confirmar ? "ghost" : "primary"}
-          disabled={pendiente}
-          onClick={() =>
-            accion.confirmar
-              ? setConfirmando(accion.destino)
-              : aplicar(accion.destino)
-          }
-        >
-          {accion.label}
-        </Button>
-      ))}
+      {acciones.map((accion) => {
+        const bloqueada = accion.destino === "live" && bloqueaComenzar;
+        return (
+          <Button
+            key={accion.destino}
+            type="button"
+            variant={accion.confirmar ? "ghost" : "primary"}
+            disabled={pendiente || bloqueada}
+            title={
+              bloqueada
+                ? "Publica al menos un reto para poder comenzar la prueba"
+                : undefined
+            }
+            onClick={() =>
+              accion.confirmar
+                ? setConfirmando(accion.destino)
+                : aplicar(accion.destino)
+            }
+          >
+            {accion.label}
+          </Button>
+        );
+      })}
     </div>
     </>
   );
