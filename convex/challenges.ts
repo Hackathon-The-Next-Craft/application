@@ -45,6 +45,7 @@ export const insertDrafts = internalMutation({
         statement: d.statement,
         language: d.language,
         starterCode: d.starterCode,
+        entryPoint: d.entryPoint,
         timeLimitMinutes: d.timeLimitMinutes ?? 30,
         rubric: d.rubric ?? [],
         criticalAspects: d.criticalAspects ?? [],
