@@ -1,11 +1,142 @@
 @import "tailwindcss";
 
-@theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ============================================================
+   Sistema de diseño Multix v1.0
+   Fuente de verdad: multix-design-system.md (rama feat/design).
+   Los nombres siguen los namespaces de Tailwind v4, así que cada
+   token genera su utilidad: bg-iris-600, text-ink-500, rounded-2xl…
+   ============================================================ */
+@theme {
+  /* ---------- marca ---------- */
+  --color-iris-50: #f0effc;
+  --color-iris-100: #e7e5fb;
+  --color-iris-200: #cdc8f7;
+  --color-iris-300: #a9a1f0;
+  --color-iris-400: #7d72e8;
+  --color-iris-500: #4f42e3;
+  --color-iris-600: #3b2fd8;
+  --color-iris-700: #2e24ae;
+  --color-iris-800: #241c87;
+  --color-iris-900: #1a1463;
+  --color-iris-lift: #5a50ee;
+
+  /* ---------- neutrales (gris frío, sesgo azul) ---------- */
+  --color-ink-0: #ffffff;
+  --color-ink-25: #f7f8fa;
+  --color-ink-50: #edeff4;
+  --color-ink-100: #e2e5ec;
+  --color-ink-200: #d8dce5;
+  --color-ink-300: #c0c6d2;
+  --color-ink-400: #9aa2b1;
+  --color-ink-500: #5c6577;
+  --color-ink-600: #454d5e;
+  --color-ink-700: #252c3b;
+  --color-ink-800: #191e29;
+  --color-ink-900: #0f1219;
+
+  /* ---------- estados operativos (solo producto, nunca marca) ---------- */
+  --color-advance: #1d9a6c;
+  --color-advance-bg: #e6f3ec;
+  --color-advance-text: #14704f;
+  --color-explore: #2e86c8;
+  --color-explore-bg: #e6f0f9;
+  --color-explore-text: #1f6296;
+  --color-stuck: #c97a12;
+  --color-stuck-bg: #fbf0df;
+  --color-stuck-text: #94590d;
+  --color-fail: #d6423f;
+  --color-fail-bg: #fbebea;
+  --color-fail-text: #a32f2d;
+  --color-done: #14807e;
+  --color-done-bg: #e3f1f1;
+  --color-done-text: #0e5f5d;
+
+  /* ---------- radios ---------- */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 14px;
+  --radius-3xl: 18px;
+
+  /* ---------- sombras ---------- */
+  --shadow-sm: 0 1px 2px rgba(15, 18, 25, 0.06);
+  --shadow-md: 0 4px 12px -2px rgba(15, 18, 25, 0.1);
+  --shadow-lg: 0 12px 32px -8px rgba(15, 18, 25, 0.18);
+  --shadow-panel: 0 24px 60px -28px rgba(15, 18, 25, 0.55);
+
+  /* ---------- escala tipográfica ---------- */
+  --text-display-sm: 32px;
+  --text-display-sm--line-height: 36px;
+  --text-display-sm--letter-spacing: -0.03em;
+  --text-display-sm--font-weight: 800;
+
+  --text-title: 24px;
+  --text-title--line-height: 30px;
+  --text-title--letter-spacing: -0.025em;
+  --text-title--font-weight: 700;
+
+  --text-subtitle: 20px;
+  --text-subtitle--line-height: 26px;
+  --text-subtitle--letter-spacing: -0.02em;
+  --text-subtitle--font-weight: 700;
+
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 28px;
+  --text-body-lg--letter-spacing: -0.005em;
+
+  --text-body: 16px;
+  --text-body--line-height: 24px;
+
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 20px;
+
+  --text-caption: 13px;
+  --text-caption--line-height: 18px;
+
+  --text-code: 13px;
+  --text-code--line-height: 22px;
+
+  --text-meta: 12px;
+  --text-meta--line-height: 18px;
+  --text-meta--letter-spacing: 0.02em;
+
+  --text-label: 11px;
+  --text-label--line-height: 12px;
+  --text-label--letter-spacing: 0.14em;
+  --text-label--font-weight: 700;
+
+  --text-chip: 10px;
+  --text-chip--line-height: 10px;
+  --text-chip--letter-spacing: 0.1em;
+  --text-chip--font-weight: 700;
 }
 
-/* Tema claro fijo. El diseño de Gael entra después por components/ui/. */
+/* Las familias referencian las variables que inyecta next/font, así que
+   van en un bloque inline para que se resuelvan en el punto de uso. */
+@theme inline {
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Tema claro fijo: el equipo descartó las superficies oscuras del sistema. */
 body {
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* §8: anillo de foco visible en todo elemento interactivo, sin excepción. */
+@layer base {
+  :focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--color-ink-0),
+      0 0 0 4px var(--color-iris-600);
+  }
+}
+
+/* Cifras que el usuario debe poder comparar: reloj, contadores, tablas. */
+.tabular {
+  font-variant-numeric: tabular-nums;
 }
