@@ -7,12 +7,9 @@ import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
 import { Logo } from "@/components/ui/Logo";
 
-type Flow = "signUp" | "signIn";
-
 export default function SignInPage() {
   const { signIn } = useAuthActions();
   const router = useRouter();
-  const [flow, setFlow] = useState<Flow>("signUp");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -20,19 +17,27 @@ export default function SignInPage() {
     event.preventDefault();
     // Hay que capturar el FormData antes del await: después currentTarget es null.
     const formData = new FormData(event.currentTarget);
-    formData.set("flow", flow);
 
     setError(null);
     setPending(true);
     try {
-      await signIn("password", formData);
+      // Un solo panel: primero se intenta entrar y, si esa cuenta no existe,
+      // se crea. El orden importa — al revés, quien ya tiene cuenta chocaría
+      // siempre contra el error de correo duplicado.
+      try {
+        formData.set("flow", "signIn");
+        await signIn("password", formData);
+      } catch {
+        formData.set("flow", "signUp");
+        await signIn("password", formData);
+      }
       router.push("/dashboard");
     } catch {
-      // El backend no distingue causas por diseño (no filtra si el correo existe).
+      // Si fallan los dos intentos, la causa es una de dos: la contraseña no
+      // corresponde a ese correo, o no llega al mínimo. El backend no
+      // distingue cuál por diseño, para no revelar qué correos existen.
       setError(
-        flow === "signUp"
-          ? "No se pudo crear la cuenta. Puede que ese correo ya esté registrado, o que la contraseña tenga menos de 8 caracteres."
-          : "Correo o contraseña incorrectos.",
+        "No pudimos continuar. Revisa el correo y la contraseña: si ya tienes cuenta, la contraseña debe coincidir; si es nueva, necesita al menos 8 caracteres.",
       );
       setPending(false);
     }
@@ -49,8 +54,9 @@ export default function SignInPage() {
             Entra a tus entrevistas
           </h1>
           <p className="mt-2.5 max-w-[62ch] text-body text-ink-500 text-pretty">
-            El acceso es solo para entrevistadores. Los candidatos entran con el
-            enlace de la sesión, sin crear cuenta.
+            Un solo paso: si ya tienes cuenta entras, y si no, se crea con este
+            correo. El acceso es solo para entrevistadores; los candidatos usan
+            el enlace de la sesión, sin crear cuenta.
           </p>
 
           <form onSubmit={handleSubmit} className="mt-9 flex flex-col gap-4">
@@ -69,8 +75,11 @@ export default function SignInPage() {
               type="password"
               required
               minLength={8}
-              autoComplete={flow === "signUp" ? "new-password" : "current-password"}
-              hint={flow === "signUp" ? "Mínimo 8 caracteres." : undefined}
+              // El panel no sabe de antemano si es alta o entrada; current-password
+              // deja que el gestor de contraseñas ofrezca la guardada, que es el
+              // caso frecuente.
+              autoComplete="current-password"
+              hint="Si es tu primera vez, con 8 caracteres o más basta."
             />
 
             {error && (
@@ -83,29 +92,9 @@ export default function SignInPage() {
             )}
 
             <Button type="submit" size="lg" disabled={pending} className="mt-1 w-full">
-              {pending
-                ? "Un momento…"
-                : flow === "signUp"
-                  ? "Crear cuenta"
-                  : "Entrar"}
+              {pending ? "Un momento…" : "Continuar"}
             </Button>
           </form>
-
-          {/* Cambiar entre crear cuenta y entrar: es la única forma de llegar
-              al flujo de inicio de sesión, así que no puede desaparecer. */}
-          <p className="mt-6 text-body-sm text-ink-500">
-            {flow === "signUp" ? "¿Ya tienes cuenta?" : "¿No tienes cuenta?"}{" "}
-            <button
-              type="button"
-              onClick={() => {
-                setFlow(flow === "signUp" ? "signIn" : "signUp");
-                setError(null);
-              }}
-              className="font-semibold text-iris-600 underline underline-offset-4 hover:text-iris-700"
-            >
-              {flow === "signUp" ? "Entra" : "Créala"}
-            </button>
-          </p>
         </div>
       </section>
 
