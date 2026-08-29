@@ -3,6 +3,7 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 import { internalQuery, mutation, query } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { requireInterviewer } from "./lib/auth";
+import { activeParticipants } from "./lib/participants";
 
 /**
  * Ciclo de vida del PRD §5.3. Sin esto setStatus aceptaba cualquier salto —
@@ -121,11 +122,7 @@ export const setStatus = mutation({
     // costo. Como la tabla de transiciones obliga a pasar por "closing" antes
     // de "closed", aquí no se pierde ningún caso.
     if (status === "closing") {
-      const participants = await ctx.db
-        .query("participants")
-        .withIndex("by_session", (q) => q.eq("sessionId", sessionId))
-        .collect();
-      for (const p of participants.filter((x) => x.presence !== "removed")) {
+      for (const p of await activeParticipants(ctx, sessionId)) {
         await ctx.scheduler.runAfter(0, internal.reports.generateInternal, {
           sessionId,
           participantId: p._id,
@@ -155,10 +152,9 @@ export const publicInfo = query({
       .withIndex("by_joinCode", (q) => q.eq("joinCode", joinCode))
       .unique();
     if (!session || session.linkRevoked) return null;
-    const count = (
-      await ctx.db.query("participants")
-        .withIndex("by_session", (q) => q.eq("sessionId", session._id)).collect()
-    ).length;
+    // Los retirados no ocupan cupo. Si se cuentan aquí, el candidato ve
+    // "sala llena" aunque join sí lo dejaría entrar.
+    const count = (await activeParticipants(ctx, session._id)).length;
     // Nunca exponer interviewerId, retos sin publicar ni otros candidatos.
     return {
       title: session.title,
