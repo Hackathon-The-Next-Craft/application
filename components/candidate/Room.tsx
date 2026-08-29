@@ -59,9 +59,7 @@ export function Room({ code, joinToken }: { code: string; joinToken: string }) {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* No dibuja nada: solo publica la cámara si el candidato la aceptó.
-          El micrófono no es suyo — ese lo lleva Vapi. */}
-      <CameraPublisher joinToken={joinToken} />
+
       {datos.paused && (
         <p className="rounded-md bg-stuck-bg px-4 py-3 text-body-sm text-stuck-text">
           El entrevistador puso la sesión en pausa. Tus cambios no se guardan
@@ -89,6 +87,10 @@ export function Room({ code, joinToken }: { code: string; joinToken: string }) {
       )}
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,360px)_minmax(0,1fr)]">
+        <div className="flex flex-col gap-4">
+        {/* Publica su cámara si la aceptó, y le muestra su propia imagen.
+            El micrófono no es suyo — ese lo lleva Vapi. */}
+        <CameraPublisher joinToken={joinToken} />
         <section className="rounded-2xl border border-ink-200 bg-white p-5">
           <h1 className="font-display text-subtitle text-ink-900">{reto.title}</h1>
           <p className="mt-1 text-meta text-ink-500">
@@ -114,6 +116,7 @@ export function Room({ code, joinToken }: { code: string; joinToken: string }) {
             </div>
           )}
         </section>
+        </div>
 
         <section className="flex flex-col rounded-2xl border border-ink-200 bg-white">
           {workspace === null ? (
