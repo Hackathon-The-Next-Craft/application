@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
+import { Markdown } from "@/components/ui/Markdown";
 import { CodeEditor } from "./CodeEditor";
 import { RunPanel } from "./RunPanel";
 
@@ -89,10 +90,9 @@ export function Room({ code, joinToken }: { code: string; joinToken: string }) {
           <p className="mt-1 text-meta text-ink-500">
             {reto.timeLimitMinutes} minutos sugeridos
           </p>
-          {/* El enunciado viene en markdown; se muestra tal cual, sin librería. */}
-          <pre className="mt-4 whitespace-pre-wrap font-sans text-body-sm leading-relaxed text-ink-800">
-            {reto.statement}
-          </pre>
+          <div className="mt-4">
+            <Markdown>{reto.statement}</Markdown>
+          </div>
 
           {reto.tests.length > 0 && (
             <div className="mt-5 border-t border-ink-200 pt-4">
