@@ -40,6 +40,10 @@ export const eventType = v.union(
   v.literal("help.given"),        // el entrevistador registra una ayuda
   v.literal("note.added"),
   v.literal("state.changed"),     // cambio de progressState, con razón legible
+  // Transcripción de voz que emite el cliente de Vapi. Es la señal que le
+  // faltaba al reporte: sin ella el razonamiento hablado del candidato no
+  // cuenta como evidencia y el criterio de comunicación queda "no observado".
+  v.literal("voice.transcript"),
 );
 
 export default defineSchema({

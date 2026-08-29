@@ -19,4 +19,5 @@ export const EVENT_LABEL: Record<Doc<"events">["type"], string> = {
   "help.given": "Se le dio ayuda",
   "note.added": "Nota del entrevistador",
   "state.changed": "Cambio de estado",
+  "voice.transcript": "Dijo en voz alta",
 };
