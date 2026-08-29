@@ -205,7 +205,9 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
                   }}
                 >
                   <option value="javascript">javascript</option>
-                  <option value="python">python</option>
+                  {challenge.language === "python" && (
+                    <option value="python">python (obsoleto)</option>
+                  )}
                 </Select>
                 <Field
                   label="Minutos"
