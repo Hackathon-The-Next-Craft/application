@@ -27,8 +27,6 @@ export default function SetupPage({
 
       {session === undefined ? (
         <div className="mt-6 h-32 animate-pulse rounded-lg border border-zinc-200 bg-white" />
-      ) : session === null ? (
-        <p className="mt-6 text-sm text-zinc-500">Esa sesión no existe.</p>
       ) : (
         <div className="mt-6 rounded-lg border border-zinc-200 bg-white p-6">
           <h1 className="text-2xl font-semibold tracking-tight">
@@ -41,6 +39,12 @@ export default function SetupPage({
             Código de acceso:{" "}
             <span className="font-mono text-zinc-600">{session.joinCode}</span>
           </p>
+          <Link
+            href={`/s/${sessionId}/live`}
+            className="mt-4 inline-block text-sm underline underline-offset-4 hover:text-zinc-500"
+          >
+            Ver la sesión en vivo →
+          </Link>
           <p className="mt-6 border-t border-zinc-200 pt-4 text-sm text-zinc-500">
             Preparación de retos: rama 5.
           </p>
