@@ -25,6 +25,7 @@ export const progressState = v.union(
 export const eventType = v.union(
   v.literal("participant.joined"),
   v.literal("participant.left"),
+  v.literal("participant.removed"),
   v.literal("participant.ready"),
   v.literal("session.started"),
   v.literal("session.paused"),
@@ -76,6 +77,9 @@ export default defineSchema({
       v.literal("ready"),
       v.literal("live"),
       v.literal("disconnected"),
+      // El entrevistador lo sacó. No se borra la fila: sus eventos son la
+      // evidencia del reporte. Deja de contar para el cupo y sale del mosaico.
+      v.literal("removed"),
     ),
     consent: v.object({
       audio: v.boolean(),

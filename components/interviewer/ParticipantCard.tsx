@@ -17,6 +17,8 @@ const PRESENCIA: Record<Doc<"participants">["presence"], string> = {
   ready: "Listo",
   live: "Conectado",
   disconnected: "Desconectado",
+  // No debería verse en el mosaico: listForSession filtra a los retirados.
+  removed: "Retirado de la sesión",
 };
 
 function hora(at: number) {

@@ -100,7 +100,7 @@ export const setStatus = mutation({
         .query("participants")
         .withIndex("by_session", (q) => q.eq("sessionId", sessionId))
         .collect();
-      for (const p of participants) {
+      for (const p of participants.filter((x) => x.presence !== "removed")) {
         await ctx.scheduler.runAfter(0, internal.reports.generateInternal, {
           sessionId,
           participantId: p._id,
