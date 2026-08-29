@@ -1,0 +1,120 @@
+import { v } from "convex/values";
+import { getAuthUserId } from "@convex-dev/auth/server";
+import { mutation, query } from "./_generated/server";
+import { requireInterviewer } from "./lib/auth";
+
+function makeJoinCode() {
+  return Math.random().toString(36).slice(2, 10);
+}
+
+// ── Entrevistador ────────────────────────────────────────────────────────────
+
+export const create = mutation({
+  args: {
+    title: v.string(),
+    role: v.string(),
+    seniority: v.string(),
+    technologies: v.array(v.string()),
+    durationMinutes: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("No autenticado");
+    return await ctx.db.insert("sessions", {
+      ...args,
+      interviewerId: userId,
+      maxCandidates: 3,
+      status: "draft",
+      joinCode: makeJoinCode(),
+      linkRevoked: false,
+      stuckThresholdSec: 90,
+    });
+  },
+});
+
+export const listMine = query({
+  args: {},
+  handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) return [];
+    return await ctx.db
+      .query("sessions")
+      .withIndex("by_interviewer", (q) => q.eq("interviewerId", userId))
+      .order("desc")
+      .collect();
+  },
+});
+
+export const get = query({
+  args: { sessionId: v.id("sessions") },
+  handler: async (ctx, { sessionId }) => {
+    const { session } = await requireInterviewer(ctx, sessionId);
+    return session;
+  },
+});
+
+/** FR-05. Cambia el estado y deja rastro en el timeline. */
+export const setStatus = mutation({
+  args: {
+    sessionId: v.id("sessions"),
+    status: v.union(
+      v.literal("ready"), v.literal("live"), v.literal("paused"),
+      v.literal("closing"), v.literal("closed"),
+    ),
+  },
+  handler: async (ctx, { sessionId, status }) => {
+    const { userId, session } = await requireInterviewer(ctx, sessionId);
+    const now = Date.now();
+    await ctx.db.patch(sessionId, {
+      status,
+      startedAt: status === "live" && !session.startedAt ? now : session.startedAt,
+      endsAt:
+        status === "live" && !session.endsAt
+          ? now + session.durationMinutes * 60_000
+          : session.endsAt,
+    });
+    const map = {
+      live: "session.started", paused: "session.paused",
+      closed: "session.closed", closing: "session.closed", ready: "session.started",
+    } as const;
+    await ctx.db.insert("events", {
+      sessionId, actorId: userId, type: map[status], at: now, payload: { status },
+    });
+    // TODO(salim): al pasar a "closing", disparar reports.generateAll
+  },
+});
+
+/** FR-02. Un link revocado no admite ingresos nuevos. */
+export const setLinkRevoked = mutation({
+  args: { sessionId: v.id("sessions"), revoked: v.boolean() },
+  handler: async (ctx, { sessionId, revoked }) => {
+    await requireInterviewer(ctx, sessionId);
+    await ctx.db.patch(sessionId, { linkRevoked: revoked });
+  },
+});
+
+// ── Candidato (público, sin auth) ────────────────────────────────────────────
+
+/** Lo que ve la página /join/[code] antes de que exista un participante. */
+export const publicInfo = query({
+  args: { joinCode: v.string() },
+  handler: async (ctx, { joinCode }) => {
+    const session = await ctx.db
+      .query("sessions")
+      .withIndex("by_joinCode", (q) => q.eq("joinCode", joinCode))
+      .unique();
+    if (!session || session.linkRevoked) return null;
+    const count = (
+      await ctx.db.query("participants")
+        .withIndex("by_session", (q) => q.eq("sessionId", session._id)).collect()
+    ).length;
+    // Nunca exponer interviewerId, retos sin publicar ni otros candidatos.
+    return {
+      title: session.title,
+      role: session.role,
+      durationMinutes: session.durationMinutes,
+      status: session.status,
+      full: count >= session.maxCandidates,
+    };
+  },
+});
