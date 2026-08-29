@@ -87,6 +87,9 @@ dist/
 # sin esos archivos su TypeScript no compila.
 .convex/
 
+# Config personal de Claude Code (las skills compartidas SI se commitean)
+.claude/settings.local.json
+
 # Testing / coverage
 /coverage/
 /playwright-report/
