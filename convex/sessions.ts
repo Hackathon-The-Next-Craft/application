@@ -114,9 +114,13 @@ export const setStatus = mutation({
     await ctx.db.insert("events", {
       sessionId, actorId: userId, type: map[status], at: now, payload: { status },
     });
-    // Al cerrar se generan los reportes. Va por el scheduler para no dejar al
-    // entrevistador esperando a que el modelo termine (FR-16).
-    if (status === "closing" || status === "closed") {
+    // Solo en "closing": es el estado que el PRD §5.3 define como "se bloquean
+    // cambios, se consolidan eventos y comienza el análisis". Disparar también
+    // en "closed" duplicaba todo, porque cerrar pasa por los dos estados: eran
+    // dos generaciones por candidato compitiendo por la misma fila, al doble de
+    // costo. Como la tabla de transiciones obliga a pasar por "closing" antes
+    // de "closed", aquí no se pierde ningún caso.
+    if (status === "closing") {
       const participants = await ctx.db
         .query("participants")
         .withIndex("by_session", (q) => q.eq("sessionId", sessionId))
