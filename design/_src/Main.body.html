@@ -1,0 +1,229 @@
+<div style="width:1440px;height:950px;background:var(--bg);display:flex;flex-direction:column;font-family:var(--sans);">
+
+  <!-- Barra superior -->
+  <header style="height:56px;flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:20px;padding:0 32px;">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <svg width="24" height="24" viewBox="0 0 40 40" fill="none" aria-label="Multix"><path d="M5 10H17C23.5 10 24 20 30 20" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><path d="M5 20H30" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><path d="M5 30H17C23.5 30 24 20 30 20" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><circle cx="31.5" cy="20" r="4.5" fill="var(--mx-iris-600)"></circle></svg>
+      <span style="font-family:var(--display);font-size:18px;font-weight:800;letter-spacing:-0.03em;">Multix</span>
+    </div>
+    <div style="width:1px;height:24px;background:var(--border);"></div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font:600 14px/20px var(--sans);">Backend Junior · Python</span>
+      <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);">3 candidatos · 2 retos · 60 min</span>
+    </div>
+    <span class="mx-chip mx-chip--fail">
+      <span style="width:6px;height:6px;border-radius:999px;background:var(--mx-fail);display:block;"></span>
+      En vivo
+    </span>
+
+    <div style="flex-grow:1;"></div>
+
+    <div style="display:flex;flex-direction:column;align-items:flex-end;margin-right:4px;">
+      <span class="num" style="font-family:var(--mono);font-size:18px;line-height:22px;font-weight:500;">32:14</span>
+      <span class="mx-label">Restantes</span>
+    </div>
+    <button style="height:36px;padding:0 14px;border:1px solid var(--border);background:var(--surface);border-radius:8px;font:600 13px/16px var(--sans);color:var(--mx-iris-600);cursor:pointer;display:inline-flex;align-items:center;gap:8px;">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 4v8M10 4v8"></path></svg>
+      Pausar sesión
+    </button>
+    <button style="height:36px;padding:0 14px;border:none;background:var(--mx-iris-600);border-radius:8px;font:600 13px/16px var(--sans);color:#fff;cursor:pointer;">Finalizar</button>
+  </header>
+
+  <!-- Cuerpo -->
+  <div style="flex-grow:1;display:grid;grid-template-columns:1fr 340px;gap:24px;padding:24px 32px 32px;min-height:0;">
+
+    <!-- Mosaico -->
+    <section style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;min-height:0;">
+
+      <!-- Ana -->
+      <article style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--mx-advance);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;min-height:0;overflow:hidden;">
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font:600 14px/20px var(--sans);flex-grow:1;">Ana Restrepo</span>
+            <span class="mx-chip mx-chip--advance">Avanza</span>
+          </div>
+          <p class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);">Superó test_orden · hace 40 s</p>
+        </div>
+
+        <div style="position:relative;flex-grow:1;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;overflow:hidden;min-height:0;">
+          <div style="position:absolute;top:8px;right:8px;width:96px;border-radius:8px;overflow:hidden;border:1px solid var(--border);">
+            <div style="height:60px;background:var(--mx-n-100);display:flex;align-items:center;justify-content:center;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--mx-n-400)" stroke-width="1.75" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.5"></circle><path d="M4.5 20a7.5 7.5 0 0 1 15 0"></path></svg>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;padding:5px 7px;background:var(--surface);border-top:1px solid var(--border);">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="var(--mx-advance)" stroke-width="1.5" stroke-linecap="round"><rect x="6" y="2" width="4" height="7" rx="2"></rect><path d="M4 8a4 4 0 0 0 8 0M8 12v2"></path></svg>
+              <span style="display:flex;gap:2px;align-items:flex-end;height:9px;">
+                <span style="width:2px;height:4px;background:var(--mx-advance);border-radius:2px;"></span>
+                <span style="width:2px;height:9px;background:var(--mx-advance);border-radius:2px;"></span>
+                <span style="width:2px;height:6px;background:var(--mx-advance);border-radius:2px;"></span>
+                <span style="width:2px;height:3px;background:var(--mx-n-300);border-radius:2px;"></span>
+              </span>
+            </div>
+          </div>
+          <pre class="code" style="font-size:12px;line-height:20px;padding:12px;"><div><span class="k">def</span> <span class="f">first_duplicate</span>(stream):</div><div>    seen = <span class="f">set</span>()</div><div>    <span class="k">for</span> item <span class="k">in</span> stream:</div><div>        <span class="k">if</span> item <span class="k">in</span> seen:</div><div>            <span class="k">return</span> item</div><div>        seen.<span class="f">add</span>(item)</div><div>    <span class="k">return</span> <span class="k">None</span></div><div> </div><div><span class="c"># prueba rápida</span></div><div><span class="k">assert</span> <span class="f">first_duplicate</span>(</div><div>    [<span class="n">1</span>,<span class="n">2</span>,<span class="n">3</span>,<span class="n">2</span>]) == <span class="n">2</span></div></pre>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);flex-grow:1;">Reto 1 de 2</span>
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);">18:42 activa</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="flex-grow:1;height:6px;border-radius:3px;background:var(--mx-n-100);overflow:hidden;display:flex;">
+              <span style="width:60%;background:var(--mx-advance);display:block;"></span>
+            </div>
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;font-weight:500;">3/5</span>
+          </div>
+          <button style="height:36px;width:100%;border:1px solid var(--border);background:var(--surface);border-radius:8px;font:600 13px/16px var(--sans);color:var(--mx-iris-600);cursor:pointer;">Abrir workspace</button>
+        </div>
+      </article>
+
+      <!-- Bruno -->
+      <article style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--mx-stuck);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;min-height:0;overflow:hidden;box-shadow:var(--mx-shadow-md);">
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font:600 14px/20px var(--sans);flex-grow:1;">Bruno Méndez</span>
+            <span class="mx-chip mx-chip--stuck">Atascado</span>
+          </div>
+          <p class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--mx-stuck-text);">Mismo IndexError ×3 · 2 min</p>
+        </div>
+
+        <div style="position:relative;flex-grow:1;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;overflow:hidden;min-height:0;">
+          <div style="position:absolute;top:8px;right:8px;width:96px;border-radius:8px;overflow:hidden;border:1px solid var(--border);">
+            <div style="height:60px;background:var(--mx-n-100);display:flex;align-items:center;justify-content:center;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--mx-n-400)" stroke-width="1.75" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.5"></circle><path d="M4.5 20a7.5 7.5 0 0 1 15 0"></path></svg>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;padding:5px 7px;background:var(--surface);border-top:1px solid var(--border);">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="var(--mx-n-400)" stroke-width="1.5" stroke-linecap="round"><rect x="6" y="2" width="4" height="7" rx="2"></rect><path d="M4 8a4 4 0 0 0 8 0M8 12v2"></path></svg>
+              <span class="num" style="font-family:var(--mono);font-size:9px;line-height:10px;letter-spacing:0.1em;color:var(--text-2);">EN SILENCIO</span>
+            </div>
+          </div>
+          <pre class="code" style="font-size:12px;line-height:20px;padding:12px;"><div><span class="k">def</span> <span class="f">first_duplicate</span>(stream):</div><div>    result = []</div><div>    <span class="k">for</span> i <span class="k">in</span> <span class="f">range</span>(<span class="f">len</span>(stream)):</div><div>        <span class="k">for</span> j <span class="k">in</span> <span class="f">range</span>(</div><div>                i+<span class="n">1</span>, <span class="f">len</span>(stream)):</div><div>            <span class="k">if</span> stream[i] == stream[j]:</div><div>                result.<span class="f">append</span>(stream[i])</div><div>    <span class="k">return</span> result[<span class="n">0</span>]</div></pre>
+          <div style="position:absolute;left:0;right:0;bottom:0;background:var(--mx-fail-bg);border-top:1px solid var(--mx-fail-bd);padding:7px 12px;">
+            <p class="code" style="font-size:11px;line-height:16px;color:var(--mx-fail-text);">IndexError: list index out of range</p>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);flex-grow:1;">Reto 1 de 2</span>
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);">18:40 activo</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="flex-grow:1;height:6px;border-radius:3px;background:var(--mx-n-100);overflow:hidden;display:flex;">
+              <span style="width:20%;background:var(--mx-stuck);display:block;"></span>
+            </div>
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;font-weight:500;">1/5</span>
+          </div>
+          <button style="height:36px;width:100%;border:none;background:var(--mx-iris-600);border-radius:8px;font:600 13px/16px var(--sans);color:#fff;cursor:pointer;">Atender a Bruno</button>
+        </div>
+      </article>
+
+      <!-- Carla -->
+      <article style="background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--mx-explore);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;min-height:0;overflow:hidden;">
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font:600 14px/20px var(--sans);flex-grow:1;">Carla Yañez</span>
+            <span class="mx-chip mx-chip--explore">Explorando</span>
+          </div>
+          <p class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);">Escribe sin ejecutar · 4 min</p>
+        </div>
+
+        <div style="position:relative;flex-grow:1;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;overflow:hidden;min-height:0;">
+          <div style="position:absolute;top:8px;right:8px;width:96px;border-radius:8px;overflow:hidden;border:1px dashed var(--border-2);">
+            <div style="height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:var(--surface);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mx-n-400)" stroke-width="1.75" stroke-linecap="round"><path d="M3 3l18 18"></path><path d="M16 10V7.5l4-2.5v9"></path><path d="M13 6H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h9"></path></svg>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;padding:5px 7px;background:var(--surface);border-top:1px solid var(--border);">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="var(--mx-advance)" stroke-width="1.5" stroke-linecap="round"><rect x="6" y="2" width="4" height="7" rx="2"></rect><path d="M4 8a4 4 0 0 0 8 0M8 12v2"></path></svg>
+              <span style="display:flex;gap:2px;align-items:flex-end;height:9px;">
+                <span style="width:2px;height:3px;background:var(--mx-advance);border-radius:2px;"></span>
+                <span style="width:2px;height:5px;background:var(--mx-advance);border-radius:2px;"></span>
+                <span style="width:2px;height:3px;background:var(--mx-n-300);border-radius:2px;"></span>
+                <span style="width:2px;height:2px;background:var(--mx-n-300);border-radius:2px;"></span>
+              </span>
+            </div>
+          </div>
+          <pre class="code" style="font-size:12px;line-height:20px;padding:12px;"><div><span class="k">def</span> <span class="f">first_duplicate</span>(stream):</div><div>    <span class="c"># 1) set  -> O(n) memoria</span></div><div>    <span class="c"># 2) sort -> pierde orden</span></div><div>    <span class="c"># 3) Counter, dos pasadas</span></div><div> </div><div>    <span class="c"># el stream puede ser</span></div><div>    <span class="c"># infinito?</span></div><div>    <span class="k">pass</span></div></pre>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);flex-grow:1;">Reto 1 de 2</span>
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);">18:38 activa</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="flex-grow:1;height:6px;border-radius:3px;background:var(--mx-n-100);overflow:hidden;display:flex;">
+              <span style="width:4%;background:var(--mx-explore);display:block;"></span>
+            </div>
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;font-weight:500;">0/5</span>
+          </div>
+          <button style="height:36px;width:100%;border:1px solid var(--border);background:var(--surface);border-radius:8px;font:600 13px/16px var(--sans);color:var(--mx-iris-600);cursor:pointer;">Abrir workspace</button>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- Carril de alertas -->
+    <aside style="background:var(--surface);border:1px solid var(--border);border-radius:14px;display:flex;flex-direction:column;overflow:hidden;min-height:0;">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+        <h2 style="font-size:20px;line-height:26px;letter-spacing:-0.02em;flex-grow:1;">Requiere atención</h2>
+        <span class="num" style="font-family:var(--mono);font-size:12px;font-weight:700;color:#fff;background:var(--mx-stuck);border-radius:999px;padding:2px 8px;">2</span>
+      </div>
+
+      <div style="flex-grow:1;display:flex;flex-direction:column;gap:12px;padding:16px 20px;overflow:hidden;">
+
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border-radius:10px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--mx-stuck);">
+          <div style="flex-grow:1;">
+            <p style="font:600 14.5px/20px var(--sans);margin-bottom:2px;">Bruno · error repetido</p>
+            <p style="font:400 13px/18px var(--sans);color:var(--text-2);">Mismo <span style="font-family:var(--mono);font-size:12px;">IndexError</span> en 3 ejecuciones seguidas, sin cambios entre intentos.</p>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:10px;">
+              <span class="num" style="font-family:var(--mono);font-size:11px;line-height:16px;color:var(--text-2);flex-grow:1;">14:31 · hace 2 min</span>
+              <button style="height:30px;padding:0 12px;border:none;background:var(--mx-iris-600);border-radius:6px;font:600 12px/14px var(--sans);color:#fff;cursor:pointer;">Abrir</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border-radius:10px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--mx-explore);">
+          <div style="flex-grow:1;">
+            <p style="font:600 14.5px/20px var(--sans);margin-bottom:2px;">Carla · sin ejecutar</p>
+            <p style="font:400 13px/18px var(--sans);color:var(--text-2);">4 min escribiendo comentarios sin correr el código. Umbral configurado: 3 min.</p>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:10px;">
+              <span class="num" style="font-family:var(--mono);font-size:11px;line-height:16px;color:var(--text-2);flex-grow:1;">14:29 · hace 4 min</span>
+              <button style="height:30px;padding:0 12px;border:1px solid var(--border);background:transparent;border-radius:6px;font:600 12px/14px var(--sans);color:var(--mx-iris-600);cursor:pointer;">Abrir</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+          <span class="mx-label">Antes en la sesión</span>
+          <span style="flex-grow:1;height:1px;background:var(--border);"></span>
+        </div>
+
+        <div style="display:flex;flex-direction:column;">
+          <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);width:38px;flex-shrink:0;">14:22</span>
+            <p style="font:400 13px/18px var(--sans);color:var(--text-2);flex-grow:1;"><span style="color:var(--text);font-weight:600;">Ana</span> superó <span style="font-family:var(--mono);font-size:12px;">test_orden</span></p>
+          </div>
+          <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);width:38px;flex-shrink:0;">14:14</span>
+            <p style="font:400 13px/18px var(--sans);color:var(--text-2);flex-grow:1;"><span style="color:var(--text);font-weight:600;">Bruno</span> pidió una aclaración del enunciado</p>
+          </div>
+          <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);width:38px;flex-shrink:0;">14:09</span>
+            <p style="font:400 13px/18px var(--sans);color:var(--text-2);flex-grow:1;"><span style="color:var(--text);font-weight:600;">Carla</span> tuvo un fallo de entorno · resuelto</p>
+          </div>
+          <div style="display:flex;gap:12px;padding:10px 0;">
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);width:38px;flex-shrink:0;">14:02</span>
+            <p style="font:400 13px/18px var(--sans);color:var(--text-2);flex-grow:1;">Sesión iniciada con 3 candidatos</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid var(--border);padding:14px 20px;background:var(--surface-2);">
+        <p style="font:400 13px/18px var(--sans);color:var(--text-2);">Las alertas describen señales observables del editor y la ejecución. No interpretan actitud ni emociones.</p>
+      </div>
+    </aside>
+
+  </div>
+</div>

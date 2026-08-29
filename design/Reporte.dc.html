@@ -1,0 +1,370 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+  <style>
+    :root{
+      /* ---------- MARCA ---------- */
+      --mx-iris-50:#F0EFFC;
+      --mx-iris-100:#E7E5FB;
+      --mx-iris-200:#CDC8F7;
+      --mx-iris-300:#A9A1F0;
+      --mx-iris-400:#7D72E8;
+      --mx-iris-500:#4F42E3;
+      --mx-iris-600:#3B2FD8;
+      --mx-iris-700:#2E24AE;
+      --mx-iris-800:#241C87;
+      --mx-iris-900:#1A1463;
+      --mx-iris-lift:#5A50EE;
+
+      /* ---------- NEUTRALES ---------- */
+      --mx-n-0:#FFFFFF;
+      --mx-n-25:#F7F8FA;
+      --mx-n-50:#EDEFF4;
+      --mx-n-100:#E2E5EC;
+      --mx-n-200:#D8DCE5;
+      --mx-n-300:#C0C6D2;
+      --mx-n-400:#9AA2B1;
+      --mx-n-500:#5C6577;
+      --mx-n-600:#454D5E;
+      --mx-n-700:#252C3B;
+      --mx-n-800:#191E29;
+      --mx-n-900:#0F1219;
+
+      /* ---------- ESTADOS ---------- */
+      --mx-advance:#1D9A6C;   --mx-advance-bg:#E6F3EC;  --mx-advance-text:#14704F;  --mx-advance-dark:#4FD3A0;
+      --mx-explore:#2E86C8;   --mx-explore-bg:#E6F0F9;  --mx-explore-text:#1F6296;  --mx-explore-dark:#6FB6EC;
+      --mx-stuck:#C97A12;     --mx-stuck-bg:#FBF0DF;    --mx-stuck-text:#94590D;    --mx-stuck-dark:#F0AE55;
+      --mx-fail:#D6423F;      --mx-fail-bg:#FBEBEA;     --mx-fail-text:#A32F2D;     --mx-fail-dark:#FF8A87;
+      --mx-done:#14807E;      --mx-done-bg:#E3F1F1;     --mx-done-text:#0E5F5D;     --mx-done-dark:#43C4C1;
+
+      /* extensión: borde de 1px para chips y bloques de estado */
+      --mx-advance-bd:#BFE0CF;
+      --mx-explore-bd:#BFD8EE;
+      --mx-stuck-bd:#EDD5AE;
+      --mx-fail-bd:#F2C7C5;
+      --mx-done-bd:#BCDEDD;
+
+      /* ---------- SEMÁNTICOS ---------- */
+      --mx-bg:var(--mx-n-50);
+      --mx-surface:var(--mx-n-0);
+      --mx-surface-sunk:var(--mx-n-25);
+      --mx-surface-dark:var(--mx-n-900);
+      --mx-surface-dark-2:var(--mx-n-800);
+      --mx-border:var(--mx-n-200);
+      --mx-border-dark:var(--mx-n-700);
+      --mx-text:var(--mx-n-900);
+      --mx-text-muted:var(--mx-n-500);
+      --mx-text-invert:var(--mx-n-0);
+      --mx-text-dark:#E6E9EF;
+      --mx-accent:var(--mx-iris-600);
+      --mx-accent-hover:var(--mx-iris-700);
+      --mx-accent-wash:var(--mx-iris-100);
+
+      /* ---------- TIPOGRAFÍA ---------- */
+      --mx-font-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+      --mx-font-body:"Inter",ui-sans-serif,system-ui,-apple-system,sans-serif;
+      --mx-font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+      /* ---------- SOMBRAS ---------- */
+      --mx-shadow-sm:0 1px 2px rgba(15,18,25,.06);
+      --mx-shadow-md:0 4px 12px -2px rgba(15,18,25,.10);
+      --mx-shadow-lg:0 12px 32px -8px rgba(15,18,25,.18);
+      --mx-shadow-panel:0 24px 60px -28px rgba(15,18,25,.55);
+      --mx-focus-ring:0 0 0 2px #FFFFFF, 0 0 0 4px var(--mx-iris-600);
+
+      /* ============================================================
+         Alias de compatibilidad: los cuerpos de las pantallas se
+         escribieron contra estos nombres; aquí resuelven al sistema.
+         ============================================================ */
+      --bg:var(--mx-bg);
+      --bg-grad:var(--mx-bg);
+      --surface:var(--mx-surface);
+      --surface-2:var(--mx-surface-sunk);
+      --grad-subtle:var(--mx-surface-sunk);
+      --grad-topbar:var(--mx-surface);
+      --veil:rgba(237,239,244,.74);
+      --border:var(--mx-border);
+      --border-2:var(--mx-n-300);
+      --text:var(--mx-text);
+      --text-2:var(--mx-text-muted);
+      --text-3:var(--mx-text-muted);
+      --accent:var(--mx-iris-600);
+      --accent-2:var(--mx-iris-700);
+      --accent-bg:var(--mx-iris-100);
+      --accent-bd:var(--mx-iris-200);
+      --grad-accent:var(--mx-iris-600);
+      --ok:var(--mx-advance-text);       --ok-bg:var(--mx-advance-bg);  --ok-bd:var(--mx-advance-bd);  --grad-ok:var(--mx-advance);
+      --explore:var(--mx-explore-text);  --explore-bg:var(--mx-explore-bg); --explore-bd:var(--mx-explore-bd); --grad-explore:var(--mx-explore);
+      --stuck:var(--mx-stuck-text);      --stuck-bg:var(--mx-stuck-bg); --stuck-bd:var(--mx-stuck-bd); --grad-stuck:var(--mx-stuck);
+      --fail:var(--mx-fail-text);        --fail-bg:var(--mx-fail-bg);   --fail-bd:var(--mx-fail-bd);
+      --ink:var(--mx-n-900);
+      --shadow-card:0 0 0 0 transparent;
+      --shadow-accent:0 0 0 0 transparent;
+      --shadow-lg:rgba(15,18,25,.18);
+      --sans:var(--mx-font-body);
+      --mono:var(--mx-font-mono);
+      --display:var(--mx-font-display);
+    }
+
+    *{box-sizing:border-box;}
+    body{
+      margin:0;background:var(--mx-bg);color:var(--mx-text);
+      font:400 16px/24px var(--mx-font-body);
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:var(--mx-iris-600);text-decoration:none;}
+    a:hover{color:var(--mx-iris-700);text-decoration:underline;}
+    p{margin:0;}
+
+    /* Display: Bricolage en todos los titulares */
+    h1,h2,h3{margin:0;font-family:var(--mx-font-display);font-weight:700;letter-spacing:-.025em;}
+
+    /* Utilidad: cifras verificables siempre tabulares */
+    .num{font-variant-numeric:tabular-nums;}
+    .code{font-family:var(--mx-font-mono);white-space:pre;margin:0;}
+
+    /* Eyebrow / encabezado de columna */
+    .mx-label{
+      font-family:var(--mx-font-mono);font-size:11px;line-height:12px;font-weight:700;
+      letter-spacing:.14em;text-transform:uppercase;color:var(--mx-text-muted);
+    }
+    /* Chip de estado */
+    .mx-chip{
+      display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;
+      border-radius:999px;font-family:var(--mx-font-mono);font-size:10px;line-height:10px;
+      font-weight:700;letter-spacing:.10em;text-transform:uppercase;white-space:nowrap;
+    }
+    .mx-chip--advance{background:var(--mx-advance-bg);color:var(--mx-advance-text);}
+    .mx-chip--explore{background:var(--mx-explore-bg);color:var(--mx-explore-text);}
+    .mx-chip--stuck{background:var(--mx-stuck-bg);color:var(--mx-stuck-text);}
+    .mx-chip--fail{background:var(--mx-fail-bg);color:var(--mx-fail-text);}
+    .mx-chip--done{background:var(--mx-done-bg);color:var(--mx-done-text);}
+    .mx-chip--neutral{background:var(--mx-n-100);color:var(--mx-n-600);}
+    .mx-chip--brand{background:var(--mx-iris-100);color:var(--mx-iris-700);}
+    .mx-chip--dark{background:rgba(230,233,239,.10);color:var(--mx-text-dark);}
+
+    /* Superficie de editor y panel: Tinta 900 */
+    .mx-dark{background:var(--mx-n-900);color:var(--mx-text-dark);}
+    .mx-dark .code{color:var(--mx-text-dark);}
+    .mx-dark .k{color:var(--mx-iris-300);}
+    .mx-dark .f{color:var(--mx-explore-dark);}
+    .mx-dark .s{color:var(--mx-advance-dark);}
+    .mx-dark .c{color:var(--mx-n-500);}
+    .mx-dark .n{color:var(--mx-stuck-dark);}
+    .mx-dark .gutter{color:var(--mx-n-600);}
+
+    /* Sintaxis sobre superficie clara (evidencia, solución de referencia) */
+    .k{color:var(--mx-iris-700);}
+    .f{color:var(--mx-explore-text);}
+    .s{color:var(--mx-advance-text);}
+    .c{color:var(--mx-n-500);font-style:italic;}
+    .n{color:var(--mx-stuck-text);}
+
+    /* Bloque de evidencia */
+    .mx-evidence{border-left:2px solid var(--mx-iris-600);padding-left:14px;font:400 12px/20px var(--mx-font-mono);white-space:pre-wrap;}
+
+    @media (prefers-reduced-motion: reduce){
+      *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+    }
+  </style>
+</helmet>
+
+<div style="width:1440px;height:1200px;background:var(--bg-grad);display:flex;flex-direction:column;font-family:var(--sans);">
+
+  <header style="height:56px;flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:24px;padding:0 24px;">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <svg width="24" height="24" viewBox="0 0 40 40" fill="none" aria-label="Multix"><path d="M5 10H17C23.5 10 24 20 30 20" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><path d="M5 20H30" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><path d="M5 30H17C23.5 30 24 20 30 20" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><circle cx="31.5" cy="20" r="4.5" fill="var(--mx-iris-600)"></circle></svg>
+      <span style="font-family:var(--display);font-size:18px;font-weight:800;letter-spacing:-0.03em;">Multix</span>
+    </div>
+    <nav style="display:flex;align-items:center;gap:4px;">
+      <a href="#" style="font-size:14px;color:var(--text-2);padding:8px 12px;border-radius:6px;text-decoration:none;">Sesiones</a>
+      <a href="#" style="font-size:14px;color:var(--text);font-weight:500;background:var(--surface-2);padding:8px 12px;border-radius:6px;text-decoration:none;">Backend Junior · Python</a>
+    </nav>
+    <div style="flex-grow:1;"></div>
+    <div style="display:flex;align-items:center;gap:9px;">
+      <span style="width:30px;height:30px;border-radius:50%;background:var(--accent-bg);border:1px solid var(--accent-bd);color:var(--accent-2);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;">MT</span>
+      <span style="font-size:14px;">Marta Toledo</span>
+    </div>
+  </header>
+
+  <!-- Cabecera del candidato -->
+  <div style="flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--border);padding:20px 24px;display:flex;align-items:center;gap:20px;">
+    <span style="width:48px;height:48px;border-radius:50%;background:var(--accent-bg);border:1px solid var(--accent-bd);font-size:16px;font-weight:600;color:var(--accent-2);display:flex;align-items:center;justify-content:center;">BM</span>
+    <div style="flex-grow:1;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <h1 style="font-size:20px;font-weight:600;letter-spacing:-0.01em;">Bruno Méndez</h1>
+        <span style="font-size:11px;font-weight:600;color:var(--text-2);background:var(--surface-2);border:1px solid var(--border);border-radius:4px;padding:3px 8px;letter-spacing:0.02em;">SESIÓN CERRADA</span>
+      </div>
+      <p class="num" style="font-size:13px;color:var(--text-2);margin-top:3px;">Backend Junior · Python · 28 ago 2026, 14:02–14:47 · 45 min · 1 de 2 retos enviados</p>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;padding:6px 4px;">
+      <button style="height:36px;width:44px;border:1px solid var(--border-2);background:var(--surface);border-radius:8px;color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;">
+        <svg width="17" height="17" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 8l4-4 4 4"></path><path d="M10 4v9"></path><path d="M4 14v2h12v-2"></path></svg>
+      </button>
+      <button style="height:36px;padding:0 14px;border:1px solid var(--border-2);background:var(--surface);border-radius:8px;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);cursor:pointer;">Comparar candidatos</button>
+      <button style="height:36px;padding:0 14px;border:1px solid transparent;background:var(--grad-accent);box-shadow:var(--shadow-accent);border-radius:8px;font-family:var(--sans);font-size:13px;font-weight:600;color:#fff;cursor:pointer;">Registrar decisión</button>
+    </div>
+  </div>
+
+  <!-- Aviso -->
+  <div style="flex-shrink:0;background:var(--accent-bg);border-bottom:1px solid var(--accent-bd);padding:11px 24px;display:flex;align-items:center;gap:10px;">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--accent-2)" stroke-width="1.6" stroke-linecap="round" style="flex-shrink:0;"><circle cx="8" cy="8" r="6.2"></circle><path d="M8 7.2v4M8 4.9v.01"></path></svg>
+    <p style="font-size:13px;color:var(--accent-2);">Borrador generado por IA. Cada afirmación enlaza a evidencia de la sesión; las que no la tienen aparecen como <strong style="font-weight:600;">no observado</strong>. La decisión es tuya.</p>
+  </div>
+
+  <!-- Cuerpo -->
+  <div style="flex-grow:1;display:grid;grid-template-columns:648px 1fr;gap:20px;padding:20px 24px 24px;min-height:0;">
+
+    <!-- Hallazgos -->
+    <section style="display:flex;flex-direction:column;gap:16px;min-height:0;">
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;">
+        <h2 style="font-family:var(--mono);font-size:11px;line-height:12px;font-weight:700;letter-spacing:0.14em;color:var(--text-2);margin-bottom:10px;">RESUMEN</h2>
+        <p style="font-size:14px;line-height:1.6;text-wrap:pretty;">Resolvió el caso base con un enfoque de fuerza bruta y llegó a la complejidad correcta tras una pista. Perdió 8 minutos en un <span style="font-family:var(--mono);font-size:13px;">IndexError</span> derivado de no contemplar la lista vacía. Explicó su razonamiento con claridad cuando se le preguntó, pero no lo verbalizó por iniciativa propia.</p>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;display:flex;flex-direction:column;flex-grow:1;min-height:0;overflow:hidden;">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+          <h2 style="font-size:15px;font-weight:600;flex-grow:1;">Rúbrica y aspectos críticos</h2>
+          <span style="font-size:12px;color:var(--text-2);">Selecciona un hallazgo para ver su evidencia</span>
+        </div>
+
+        <div style="display:flex;flex-direction:column;">
+
+          <!-- Hallazgo seleccionado -->
+          <div style="padding:16px 20px;border-bottom:1px solid var(--border);background:var(--accent-bg);border-left:3px solid var(--accent);display:flex;flex-direction:column;gap:9px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-weight:600;font-size:14px;flex-grow:1;">Manejo de casos borde</span>
+              <span style="font-size:11px;font-weight:600;color:var(--explore);background:var(--explore-bg);border:1px solid var(--explore-bd);border-radius:4px;padding:3px 8px;">PARCIAL</span>
+              <span style="display:inline-flex;align-items:center;gap:8px;"><span class="mx-label">alta</span><span style="display:inline-flex;gap:3px;"><span style="width:14px;height:5px;border-radius:2px;background:var(--mx-iris-600);"></span><span style="width:14px;height:5px;border-radius:2px;background:var(--mx-iris-600);"></span><span style="width:14px;height:5px;border-radius:2px;background:var(--mx-iris-600);"></span></span></span>
+            </div>
+            <p style="font-size:13px;color:var(--text-2);line-height:1.55;">Contempló el caso sin repetidos solo después de que el test público fallara; la lista vacía nunca llegó a manejarse.</p>
+            <p class="num" style="font-size:12px;color:var(--accent-2);font-weight:500;">4 evidencias →</p>
+          </div>
+
+          <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-weight:600;font-size:14px;flex-grow:1;">Corrección de la solución</span>
+              <span style="font-size:11px;font-weight:600;color:var(--ok);background:var(--ok-bg);border:1px solid var(--ok-bd);border-radius:4px;padding:3px 8px;">CUMPLIDO</span>
+              <span style="display:inline-flex;align-items:center;gap:8px;"><span class="mx-label">alta</span><span style="display:inline-flex;gap:3px;"><span style="width:14px;height:5px;border-radius:2px;background:var(--mx-iris-600);"></span><span style="width:14px;height:5px;border-radius:2px;background:var(--mx-iris-600);"></span><span style="width:14px;height:5px;border-radius:2px;background:var(--mx-iris-600);"></span></span></span>
+            </div>
+            <p style="font-size:13px;color:var(--text-2);line-height:1.55;">4 de 4 pruebas públicas y 3 de 3 ocultas superadas en el envío final.</p>
+            <p class="num" style="font-size:12px;color:var(--text-3);">3 evidencias</p>
+          </div>
+
+          <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-weight:600;font-size:14px;flex-grow:1;">Complejidad y elección de estructura</span>
+              <span style="font-size:11px;font-weight:600;color:var(--ok);background:var(--ok-bg);border:1px solid var(--ok-bd);border-radius:4px;padding:3px 8px;">CUMPLIDO</span>
+              <span style="display:inline-flex;align-items:center;gap:8px;"><span class="mx-label">media</span><span style="display:inline-flex;gap:3px;"><span style="width:14px;height:5px;border-radius:2px;background:var(--mx-iris-600);"></span><span style="width:14px;height:5px;border-radius:2px;background:var(--mx-iris-600);"></span><span style="width:14px;height:5px;border-radius:2px;background:var(--mx-n-200);"></span></span></span>
+            </div>
+            <p style="font-size:13px;color:var(--text-2);line-height:1.55;">Pasó de O(n²) a O(n) con <span style="font-family:var(--mono);font-size:12.5px;">set</span> tras una pista del entrevistador, no de forma autónoma.</p>
+            <p class="num" style="font-size:12px;color:var(--text-3);">2 evidencias · 1 ayuda registrada</p>
+          </div>
+
+          <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-weight:600;font-size:14px;flex-grow:1;">Comunica su razonamiento</span>
+              <span style="font-size:11px;font-weight:600;color:var(--text-2);background:var(--surface-2);border:1px solid var(--border-2);border-radius:4px;padding:3px 8px;">NO OBSERVADO</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-2);line-height:1.55;">La transcripción está desactivada para este candidato: no consintió el audio. No hay base para evaluar este criterio.</p>
+            <div style="display:flex;align-items:center;gap:12px;"><span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);">sin evidencia · no se puntúa</span><span style="display:inline-flex;align-items:center;gap:8px;"><span class="mx-label">baja</span><span style="display:inline-flex;gap:3px;"><span style="width:14px;height:5px;border-radius:2px;background:var(--mx-iris-600);"></span><span style="width:14px;height:5px;border-radius:2px;background:var(--mx-n-200);"></span><span style="width:14px;height:5px;border-radius:2px;background:var(--mx-n-200);"></span></span></span></div>
+          </div>
+
+          <div style="padding:16px 20px;display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-weight:600;font-size:14px;flex-grow:1;">Lectura y uso de errores</span>
+              <span style="font-size:11px;font-weight:600;color:var(--stuck);background:var(--stuck-bg);border:1px solid var(--stuck-bd);border-radius:4px;padding:3px 8px;">POR DEBAJO</span>
+              <span style="display:inline-flex;align-items:center;gap:8px;"><span class="mx-label">alta</span><span style="display:inline-flex;gap:3px;"><span style="width:14px;height:5px;border-radius:2px;background:var(--mx-iris-600);"></span><span style="width:14px;height:5px;border-radius:2px;background:var(--mx-iris-600);"></span><span style="width:14px;height:5px;border-radius:2px;background:var(--mx-iris-600);"></span></span></span>
+            </div>
+            <p style="font-size:13px;color:var(--text-2);line-height:1.55;">Reejecutó el mismo código tres veces sin modificarlo tras el mismo <span style="font-family:var(--mono);font-size:12.5px;">IndexError</span>.</p>
+            <p class="num" style="font-size:12px;color:var(--text-3);">3 evidencias</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Evidencia -->
+    <section style="background:var(--surface);border:1px solid var(--border);border-radius:14px;display:flex;flex-direction:column;min-height:0;overflow:hidden;">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);">
+        <h2 style="font-family:var(--mono);font-size:11px;line-height:12px;font-weight:700;letter-spacing:0.14em;color:var(--text-2);">EVIDENCIA DE</h2>
+        <p style="font-size:15px;font-weight:600;margin-top:4px;">Manejo de casos borde</p>
+      </div>
+
+      <div style="flex-grow:1;padding:18px 20px;display:flex;flex-direction:column;gap:14px;overflow:hidden;">
+
+        <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+          <div style="display:flex;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid var(--border);background:var(--surface-2);">
+            <span class="num" style="font-family:var(--mono);font-size:12px;color:var(--text-2);">14:22:41</span>
+            <span style="font-size:11px;font-weight:600;color:var(--fail);background:var(--fail-bg);border-radius:4px;padding:2px 7px;">TEST FALLIDO</span>
+            <div style="flex-grow:1;"></div>
+            <a href="#" style="font-size:12px;">Ver en el timeline</a>
+          </div>
+          <div style="padding:12px;">
+            <pre class="code" style="font-size:12.5px;line-height:1.65;color:var(--text-2);"><div>test_sin_repetidos</div><div>  esperado: <span class="k">None</span></div><div>  recibido: <span class="n">0</span></div></pre>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+          <div style="display:flex;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid var(--border);background:var(--surface-2);">
+            <span class="num" style="font-family:var(--mono);font-size:12px;color:var(--text-2);">14:26:08</span>
+            <span style="font-size:11px;font-weight:600;color:var(--accent-2);background:var(--accent-bg);border-radius:4px;padding:2px 7px;">CÓDIGO</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text-3);">solution.py · líneas 6–8</span>
+            <div style="flex-grow:1;"></div>
+            <a href="#" style="font-size:12px;">Abrir snapshot</a>
+          </div>
+          <div style="padding:12px 12px 12px 0;background:var(--surface-2);">
+            <pre class="code mx-evidence" style="font-size:12px;line-height:20px;color:var(--text);"><div>    <span class="k">for</span> i <span class="k">in</span> <span class="f">range</span>(<span class="f">len</span>(stream)):</div><div>        ...</div><div>    <span class="k">return</span> result[<span class="n">0</span>]   <span class="c"># asume que siempre hay uno</span></div></pre>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+          <div style="display:flex;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid var(--border);background:var(--surface-2);">
+            <span class="num" style="font-family:var(--mono);font-size:12px;color:var(--text-2);">14:31:15</span>
+            <span style="font-size:11px;font-weight:600;color:var(--stuck);background:var(--stuck-bg);border-radius:4px;padding:2px 7px;">EJECUCIÓN · ×3</span>
+            <div style="flex-grow:1;"></div>
+            <a href="#" style="font-size:12px;">Ver las 3</a>
+          </div>
+          <div style="padding:12px;">
+            <pre class="code" style="font-size:12.5px;line-height:1.65;color:var(--fail);">IndexError: list index out of range</pre>
+            <p style="font-size:12px;color:var(--text-2);margin-top:8px;line-height:1.5;">Tres ejecuciones consecutivas con el mismo código y el mismo error, en 2 min 40 s.</p>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+          <div style="display:flex;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid var(--border);background:var(--surface-2);">
+            <span class="num" style="font-family:var(--mono);font-size:12px;color:var(--text-2);">14:34:52</span>
+            <span style="font-size:11px;font-weight:600;color:var(--text-2);background:var(--surface);border:1px solid var(--border-2);border-radius:4px;padding:2px 7px;">NOTA DEL ENTREVISTADOR</span>
+          </div>
+          <div style="padding:12px;">
+            <p style="font-size:13px;line-height:1.6;color:var(--text);">«Le pregunté qué devuelve su función si la lista está vacía. No lo había pensado; lo corrigió en 40 s.»</p>
+            <p style="font-size:12px;color:var(--text-3);margin-top:8px;">Marta Toledo · nota privada, no visible para el candidato</p>
+          </div>
+        </div>
+
+        <div style="flex-grow:1;"></div>
+
+        <div style="border-top:1px solid var(--border);padding-top:14px;">
+          <h3 style="font-family:var(--mono);font-size:11px;line-height:12px;font-weight:700;letter-spacing:0.14em;color:var(--text-2);margin-bottom:8px;">LIMITACIONES DE ESTE INFORME</h3>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <p style="font-size:12.5px;color:var(--text-2);line-height:1.5;">· Sin transcripción: el candidato no consintió la captura de audio. Un criterio queda sin observar.</p>
+            <p style="font-size:12.5px;color:var(--text-2);line-height:1.5;">· Hubo una caída de red de 1 min 10 s a las 14:19 que no se descuenta del tiempo activo.</p>
+            <p style="font-size:12.5px;color:var(--text-2);line-height:1.5;">· El segundo reto no llegó a abrirse; no hay evidencia sobre esa parte de la rúbrica.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

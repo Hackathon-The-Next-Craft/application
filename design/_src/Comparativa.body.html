@@ -1,0 +1,202 @@
+<div style="width:1440px;height:1000px;background:var(--bg-grad);display:flex;flex-direction:column;font-family:var(--sans);">
+
+  <header style="height:56px;flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:24px;padding:0 24px;">
+    <div style="display:flex;align-items:center;gap:7px;">
+      <svg width="24" height="24" viewBox="0 0 40 40" fill="none" aria-label="Multix"><path d="M5 10H17C23.5 10 24 20 30 20" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><path d="M5 20H30" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><path d="M5 30H17C23.5 30 24 20 30 20" stroke="var(--mx-n-900)" stroke-width="3" stroke-linecap="round"></path><circle cx="31.5" cy="20" r="4.5" fill="var(--mx-iris-600)"></circle></svg>
+      <span style="font-family:var(--display);font-size:18px;font-weight:800;letter-spacing:-0.03em;">Multix</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;font-size:14px;">
+      <a href="#" style="color:var(--text-2);">Sesiones</a>
+      <span style="color:var(--text-3);">/</span>
+      <span style="font-weight:500;">Backend Junior · Python</span>
+      <span style="color:var(--text-3);">/</span>
+      <span style="font-weight:500;">Comparar</span>
+    </div>
+    <div style="flex-grow:1;"></div>
+    <button style="height:36px;padding:0 14px;border:1px solid var(--border-2);background:var(--surface);border-radius:8px;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);cursor:pointer;">Exportar comparativa</button>
+  </header>
+
+  <div style="flex-grow:1;padding:28px 40px 32px;display:flex;flex-direction:column;gap:18px;min-height:0;">
+
+    <div>
+      <h1 style="font-size:24px;font-weight:600;letter-spacing:-0.02em;">Comparar candidatos</h1>
+      <p class="num" style="font-size:14px;color:var(--text-2);margin-top:5px;">Sesión del 28 ago 2026 · mismo set de retos para los tres</p>
+    </div>
+
+    <div style="background:var(--accent-bg);border:1px solid var(--accent-bd);border-radius:7px;padding:12px 16px;display:flex;align-items:center;gap:11px;">
+      <svg width="17" height="17" viewBox="0 0 20 20" fill="none" stroke="var(--accent-2)" stroke-width="1.6" stroke-linecap="round" style="flex-shrink:0;"><circle cx="10" cy="10" r="7.5"></circle><path d="M10 9v5M10 6.4v.01"></path></svg>
+      <p style="font-size:13px;color:var(--accent-2);line-height:1.5;">Esta vista no ordena ni puntúa a nadie: muestra los mismos criterios lado a lado para que compares con la evidencia delante. La decisión de cada candidato se registra por separado.</p>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;flex-grow:1;display:flex;flex-direction:column;min-height:0;">
+
+      <div style="display:grid;grid-template-columns:300px repeat(3, minmax(0, 1fr));border-bottom:1px solid var(--border);background:var(--surface-2);">
+        <div style="padding:16px 20px;display:flex;align-items:flex-end;">
+          <span style="font-family:var(--mono);font-size:11px;line-height:12px;font-weight:700;letter-spacing:0.14em;color:var(--text-2);">CRITERIO</span>
+        </div>
+        <div style="padding:16px 20px;border-left:1px solid var(--border);display:flex;align-items:center;gap:11px;">
+          <span style="width:34px;height:34px;border-radius:50%;background:var(--surface);border:1px solid var(--accent-bd);font-size:12px;font-weight:600;color:var(--accent-2);display:flex;align-items:center;justify-content:center;">AR</span>
+          <div>
+            <p style="font-size:14px;font-weight:600;">Ana Restrepo</p>
+            <p class="num" style="font-size:12px;color:var(--text-2);margin-top:1px;">2 de 2 retos · 45 min</p>
+          </div>
+        </div>
+        <div style="padding:16px 20px;border-left:1px solid var(--border);display:flex;align-items:center;gap:11px;">
+          <span style="width:34px;height:34px;border-radius:50%;background:var(--surface);border:1px solid var(--accent-bd);font-size:12px;font-weight:600;color:var(--accent-2);display:flex;align-items:center;justify-content:center;">BM</span>
+          <div>
+            <p style="font-size:14px;font-weight:600;">Bruno Méndez</p>
+            <p class="num" style="font-size:12px;color:var(--text-2);margin-top:1px;">1 de 2 retos · 45 min</p>
+          </div>
+        </div>
+        <div style="padding:16px 20px;border-left:1px solid var(--border);display:flex;align-items:center;gap:11px;">
+          <span style="width:34px;height:34px;border-radius:50%;background:var(--surface);border:1px solid var(--accent-bd);font-size:12px;font-weight:600;color:var(--accent-2);display:flex;align-items:center;justify-content:center;">CY</span>
+          <div>
+            <p style="font-size:14px;font-weight:600;">Carla Yañez</p>
+            <p class="num" style="font-size:12px;color:var(--text-2);margin-top:1px;">1 de 2 retos · 44 min</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:300px repeat(3, minmax(0, 1fr));border-bottom:1px solid var(--border);">
+        <div style="padding:15px 20px;">
+          <p style="font-size:13.5px;font-weight:500;">Corrección de la solución</p>
+          <p class="num" style="font-size:12px;color:var(--text-2);margin-top:2px;">peso 40 %</p>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:12px;font-weight:600;color:var(--ok);background:var(--ok-bg);border-radius:5px;padding:4px 9px;align-self:flex-start;">CUMPLIDO</span>
+          <span class="num" style="font-size:12px;color:var(--text-2);">7/7 tests · 4 evidencias</span>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:12px;font-weight:600;color:var(--ok);background:var(--ok-bg);border-radius:5px;padding:4px 9px;align-self:flex-start;">CUMPLIDO</span>
+          <span class="num" style="font-size:12px;color:var(--text-2);">7/7 tests · 3 evidencias</span>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:12px;font-weight:600;color:var(--explore);background:var(--explore-bg);border-radius:5px;padding:4px 9px;align-self:flex-start;">PARCIAL</span>
+          <span class="num" style="font-size:12px;color:var(--text-2);">5/7 tests · 3 evidencias</span>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:300px repeat(3, minmax(0, 1fr));border-bottom:1px solid var(--border);">
+        <div style="padding:15px 20px;">
+          <p style="font-size:13.5px;font-weight:500;">Manejo de casos borde</p>
+          <p class="num" style="font-size:12px;color:var(--text-2);margin-top:2px;">peso 35 %</p>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:12px;font-weight:600;color:var(--ok);background:var(--ok-bg);border-radius:5px;padding:4px 9px;align-self:flex-start;">CUMPLIDO</span>
+          <span class="num" style="font-size:12px;color:var(--text-2);">3 evidencias</span>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:12px;font-weight:600;color:var(--explore);background:var(--explore-bg);border-radius:5px;padding:4px 9px;align-self:flex-start;">PARCIAL</span>
+          <span class="num" style="font-size:12px;color:var(--text-2);">4 evidencias · 1 ayuda</span>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:12px;font-weight:600;color:var(--ok);background:var(--ok-bg);border-radius:5px;padding:4px 9px;align-self:flex-start;">CUMPLIDO</span>
+          <span class="num" style="font-size:12px;color:var(--text-2);">2 evidencias</span>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:300px repeat(3, minmax(0, 1fr));border-bottom:1px solid var(--border);">
+        <div style="padding:15px 20px;">
+          <p style="font-size:13.5px;font-weight:500;">Complejidad y estructuras</p>
+          <p class="num" style="font-size:12px;color:var(--text-2);margin-top:2px;">peso 25 %</p>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:12px;font-weight:600;color:var(--ok);background:var(--ok-bg);border-radius:5px;padding:4px 9px;align-self:flex-start;">CUMPLIDO</span>
+          <span class="num" style="font-size:12px;color:var(--text-2);">O(n) desde el inicio</span>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:12px;font-weight:600;color:var(--ok);background:var(--ok-bg);border-radius:5px;padding:4px 9px;align-self:flex-start;">CUMPLIDO</span>
+          <span class="num" style="font-size:12px;color:var(--text-2);">tras una pista</span>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:12px;font-weight:600;color:var(--ok);background:var(--ok-bg);border-radius:5px;padding:4px 9px;align-self:flex-start;">CUMPLIDO</span>
+          <span class="num" style="font-size:12px;color:var(--text-2);">2 evidencias</span>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:300px repeat(3, minmax(0, 1fr));border-bottom:1px solid var(--border);background:var(--surface-2);">
+        <div style="padding:15px 20px;">
+          <p style="font-size:13.5px;font-weight:500;">Comunica su razonamiento</p>
+          <p style="font-size:12px;color:var(--text-2);margin-top:2px;">depende del consentimiento</p>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:12px;font-weight:600;color:var(--ok);background:var(--ok-bg);border-radius:5px;padding:4px 9px;align-self:flex-start;">CUMPLIDO</span>
+          <span class="num" style="font-size:12px;color:var(--text-2);">5 citas de transcripción</span>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:12px;font-weight:600;color:var(--text-2);background:var(--surface);border:1px solid var(--border-2);border-radius:5px;padding:4px 9px;align-self:flex-start;">NO OBSERVADO</span>
+          <span style="font-size:12px;color:var(--text-2);">sin consentimiento de audio</span>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:5px;">
+          <span style="font-size:12px;font-weight:600;color:var(--explore);background:var(--explore-bg);border-radius:5px;padding:4px 9px;align-self:flex-start;">PARCIAL</span>
+          <span class="num" style="font-size:12px;color:var(--text-2);">2 citas de transcripción</span>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:300px repeat(3, minmax(0, 1fr));border-bottom:1px solid var(--border);">
+        <div style="padding:15px 20px;">
+          <p style="font-size:13.5px;font-weight:500;">Aspectos críticos</p>
+          <p class="num" style="font-size:12px;color:var(--text-2);margin-top:2px;">4 condiciones verificables</p>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;align-items:center;gap:6px;">
+          <span style="width:22px;height:8px;border-radius:2px;background:var(--ok);"></span>
+          <span style="width:22px;height:8px;border-radius:2px;background:var(--ok);"></span>
+          <span style="width:22px;height:8px;border-radius:2px;background:var(--ok);"></span>
+          <span style="width:22px;height:8px;border-radius:2px;background:var(--ok);"></span>
+          <span class="num" style="font-size:12px;color:var(--text-2);margin-left:6px;">4 de 4</span>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;align-items:center;gap:6px;">
+          <span style="width:22px;height:8px;border-radius:2px;background:var(--ok);"></span>
+          <span style="width:22px;height:8px;border-radius:2px;background:var(--ok);"></span>
+          <span style="width:22px;height:8px;border-radius:2px;background:var(--explore);"></span>
+          <span style="width:22px;height:8px;border-radius:2px;background:var(--border-2);"></span>
+          <span class="num" style="font-size:12px;color:var(--text-2);margin-left:6px;">2 de 4</span>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;align-items:center;gap:6px;">
+          <span style="width:22px;height:8px;border-radius:2px;background:var(--ok);"></span>
+          <span style="width:22px;height:8px;border-radius:2px;background:var(--ok);"></span>
+          <span style="width:22px;height:8px;border-radius:2px;background:var(--ok);"></span>
+          <span style="width:22px;height:8px;border-radius:2px;background:var(--border-2);"></span>
+          <span class="num" style="font-size:12px;color:var(--text-2);margin-left:6px;">3 de 4</span>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:300px repeat(3, minmax(0, 1fr));border-bottom:1px solid var(--border);">
+        <div style="padding:15px 20px;">
+          <p style="font-size:13.5px;font-weight:500;">Bloqueos y ayudas</p>
+          <p style="font-size:12px;color:var(--text-2);margin-top:2px;">contexto, no puntuación</p>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);">
+          <p class="num" style="font-size:13px;color:var(--text-2);line-height:1.5;">Sin bloqueos · sin ayudas</p>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);">
+          <p class="num" style="font-size:13px;color:var(--text-2);line-height:1.5;">1 bloqueo de 8 min · 1 ayuda registrada</p>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);">
+          <p class="num" style="font-size:13px;color:var(--text-2);line-height:1.5;">1 fallo de entorno de 1 min 10 s</p>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:300px repeat(3, minmax(0, 1fr));flex-grow:1;">
+        <div style="padding:15px 20px;">
+          <p style="font-size:13.5px;font-weight:500;">Tu decisión</p>
+          <p style="font-size:12px;color:var(--text-2);margin-top:2px;">se registra por candidato</p>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:9px;align-items:flex-start;">
+          <span style="display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;font-family:var(--mono);font-size:10px;line-height:10px;font-weight:700;letter-spacing:0.10em;color:var(--ok);background:var(--ok-bg);">AVANZA</span>
+          <button style="height:36px;padding:0 14px;border:1px solid var(--border-2);background:var(--surface);border-radius:8px;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);cursor:pointer;">Ver informe</button>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:9px;align-items:flex-start;">
+          <span style="display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;font-family:var(--mono);font-size:10px;line-height:10px;font-weight:700;letter-spacing:0.10em;color:var(--explore);background:var(--explore-bg);">SIN DECIDIR</span>
+          <button style="height:36px;padding:0 14px;border:1px solid transparent;background:var(--grad-accent);box-shadow:var(--shadow-accent);border-radius:8px;font-family:var(--sans);font-size:13px;font-weight:600;color:#fff;cursor:pointer;">Revisar y decidir</button>
+        </div>
+        <div style="padding:15px 20px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:9px;align-items:flex-start;">
+          <span style="display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;font-family:var(--mono);font-size:10px;line-height:10px;font-weight:700;letter-spacing:0.10em;color:var(--explore);background:var(--explore-bg);">SIN DECIDIR</span>
+          <button style="height:36px;padding:0 14px;border:1px solid transparent;background:var(--grad-accent);box-shadow:var(--shadow-accent);border-radius:8px;font-family:var(--sans);font-size:13px;font-weight:600;color:#fff;cursor:pointer;">Revisar y decidir</button>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:12px;color:var(--text-3);line-height:1.5;">Los tiempos y bloqueos son contexto de la sesión, no una medida de capacidad. Un fallo de entorno nunca debe pesar contra el candidato.</p>
+  </div>
+</div>
