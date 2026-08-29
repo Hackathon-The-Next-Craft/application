@@ -78,3 +78,30 @@ export const publish = mutation({
     await ctx.db.patch(challengeId, { published });
   },
 });
+
+/**
+ * Bloqueada si algún candidato ya abrió el reto: borrarlo ahí dejaría su
+ * workspace apuntando a un challengeId inexistente, y su código y sus
+ * ejecuciones son evidencia del reporte. Despublicar es la salida segura.
+ */
+export const remove = mutation({
+  args: { challengeId: v.id("challenges") },
+  handler: async (ctx, { challengeId }) => {
+    const challenge = await ctx.db.get(challengeId);
+    if (!challenge) throw new Error("Reto no encontrado");
+    await requireInterviewer(ctx, challenge.sessionId);
+
+    const abierto = await ctx.db
+      .query("workspaces")
+      .withIndex("by_session", (q) => q.eq("sessionId", challenge.sessionId))
+      .filter((q) => q.eq(q.field("challengeId"), challengeId))
+      .take(1);
+    if (abierto.length > 0) {
+      throw new Error(
+        "No se puede borrar: al menos un candidato ya abrió este reto. Despublícalo en su lugar.",
+      );
+    }
+
+    await ctx.db.delete(challengeId);
+  },
+});

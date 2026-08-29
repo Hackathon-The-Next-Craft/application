@@ -66,8 +66,12 @@ function ItemChecklist({ ok, children }: { ok: boolean; children: React.ReactNod
 export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> }) {
   const update = useMutation(api.challenges.update);
   const publish = useMutation(api.challenges.publish);
+  const remove = useMutation(api.challenges.remove);
 
   const [abierto, setAbierto] = useState(!challenge.published);
+  const [confirmandoBorrado, setConfirmandoBorrado] = useState(false);
+  const [borrando, setBorrando] = useState(false);
+  const [errorBorrado, setErrorBorrado] = useState<string | null>(null);
   const [titulo, setTitulo] = useState(challenge.title);
   const [enunciado, setEnunciado] = useState(challenge.statement);
   const [language, setLanguage] = useState(challenge.language);
@@ -112,6 +116,19 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
     }
   }
 
+  async function borrar() {
+    setBorrando(true);
+    setErrorBorrado(null);
+    try {
+      await remove({ challengeId: challenge._id });
+    } catch (caught) {
+      setErrorBorrado(
+        caught instanceof Error ? caught.message : "No se pudo borrar el reto.",
+      );
+      setBorrando(false);
+    }
+  }
+
   function cambiarTest(indice: number, parcial: Partial<Test>) {
     setTests(tests.map((t, i) => (i === indice ? { ...t, ...parcial } : t)));
     marcarSucio();
@@ -140,28 +157,81 @@ export function ChallengeEditor({ challenge }: { challenge: Doc<"challenges"> })
             {challenge.generatedBy ? ` · ${challenge.generatedBy}` : ""}
           </p>
         </div>
-        <div className="flex items-center gap-2.5">
-          <Chip tone={challenge.published ? "advance" : "neutral"}>
-            {challenge.published ? "Publicado" : "Borrador"}
-          </Chip>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() =>
-              publish({ challengeId: challenge._id, published: !challenge.published })
-            }
-          >
-            {challenge.published ? "Despublicar" : "Publicar"}
-          </Button>
-          <button
-            type="button"
-            onClick={() => setAbierto(!abierto)}
-            className="text-body-sm text-ink-500 underline underline-offset-4 hover:text-iris-600"
-          >
-            {abierto ? "Cerrar" : "Editar"}
-          </button>
-        </div>
+        {confirmandoBorrado ? (
+          <div className="flex items-center gap-2.5">
+            {errorBorrado && (
+              <span className="text-body-sm text-fail-text">{errorBorrado}</span>
+            )}
+            <span className="text-body-sm text-ink-900">¿Borrar este reto?</span>
+            <Button
+              type="button"
+              variant="danger"
+              size="sm"
+              disabled={borrando}
+              onClick={borrar}
+            >
+              {borrando ? "Borrando…" : "Sí, borrar"}
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              disabled={borrando}
+              onClick={() => {
+                setConfirmandoBorrado(false);
+                setErrorBorrado(null);
+              }}
+            >
+              Cancelar
+            </Button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2.5">
+            <Chip tone={challenge.published ? "advance" : "neutral"}>
+              {challenge.published ? "Publicado" : "Borrador"}
+            </Chip>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                publish({ challengeId: challenge._id, published: !challenge.published })
+              }
+            >
+              {challenge.published ? "Despublicar" : "Publicar"}
+            </Button>
+            {/* Expande/comprime el editor — no navega a ningún lado, así que
+                nunca lleva el subrayado de un enlace. */}
+            <button
+              type="button"
+              onClick={() => setAbierto(!abierto)}
+              className="text-body-sm text-ink-500 hover:text-iris-600"
+            >
+              {abierto ? "Cerrar" : "Editar"}
+            </button>
+            <span className="h-5 w-px bg-ink-200" />
+            <button
+              type="button"
+              onClick={() => setConfirmandoBorrado(true)}
+              title="Borrar este reto"
+              aria-label="Borrar este reto"
+              className="flex h-7 w-7 items-center justify-center rounded-md text-ink-400 transition-colors duration-[120ms] hover:bg-fail-bg hover:text-fail-text"
+            >
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M2.5 4h11M6 4V2.5h4V4M6.5 7.5v4M9.5 7.5v4M3.5 4l.6 8.4a1 1 0 0 0 1 .9h5.8a1 1 0 0 0 1-.9L12.5 4" />
+              </svg>
+            </button>
+          </div>
+        )}
       </header>
 
       {abierto && (
