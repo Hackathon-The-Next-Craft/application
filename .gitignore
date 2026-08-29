@@ -73,6 +73,29 @@ dist/
 .yarn/install-state.gz
 .yarn/unplugged/
 
+# Next.js
+/.next/
+/out/
+/build/
+.vercel
+.eslintcache
+*.tsbuildinfo
+.turbo/
+
+# Convex
+# OJO: convex/_generated SI se commitea. Anjali no corre `convex dev`, así que
+# sin esos archivos su TypeScript no compila.
+.convex/
+
+# Testing / coverage
+/coverage/
+/playwright-report/
+/test-results/
+/.nyc_output/
+
+# Runtimes descargados en caliente (Pyodide, wasm)
+/public/pyodide/
+
 # Env files
 .env
 .env.*
