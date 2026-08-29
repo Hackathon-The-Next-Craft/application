@@ -1,0 +1,337 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+  <style>
+    :root{
+      /* ---------- MARCA ---------- */
+      --mx-iris-50:#F0EFFC;
+      --mx-iris-100:#E7E5FB;
+      --mx-iris-200:#CDC8F7;
+      --mx-iris-300:#A9A1F0;
+      --mx-iris-400:#7D72E8;
+      --mx-iris-500:#4F42E3;
+      --mx-iris-600:#3B2FD8;
+      --mx-iris-700:#2E24AE;
+      --mx-iris-800:#241C87;
+      --mx-iris-900:#1A1463;
+      --mx-iris-lift:#5A50EE;
+
+      /* ---------- NEUTRALES ---------- */
+      --mx-n-0:#FFFFFF;
+      --mx-n-25:#F7F8FA;
+      --mx-n-50:#EDEFF4;
+      --mx-n-100:#E2E5EC;
+      --mx-n-200:#D8DCE5;
+      --mx-n-300:#C0C6D2;
+      --mx-n-400:#9AA2B1;
+      --mx-n-500:#5C6577;
+      --mx-n-600:#454D5E;
+      --mx-n-700:#252C3B;
+      --mx-n-800:#191E29;
+      --mx-n-900:#0F1219;
+
+      /* ---------- ESTADOS ---------- */
+      --mx-advance:#1D9A6C;   --mx-advance-bg:#E6F3EC;  --mx-advance-text:#14704F;  --mx-advance-dark:#4FD3A0;
+      --mx-explore:#2E86C8;   --mx-explore-bg:#E6F0F9;  --mx-explore-text:#1F6296;  --mx-explore-dark:#6FB6EC;
+      --mx-stuck:#C97A12;     --mx-stuck-bg:#FBF0DF;    --mx-stuck-text:#94590D;    --mx-stuck-dark:#F0AE55;
+      --mx-fail:#D6423F;      --mx-fail-bg:#FBEBEA;     --mx-fail-text:#A32F2D;     --mx-fail-dark:#FF8A87;
+      --mx-done:#14807E;      --mx-done-bg:#E3F1F1;     --mx-done-text:#0E5F5D;     --mx-done-dark:#43C4C1;
+
+      /* extensión: borde de 1px para chips y bloques de estado */
+      --mx-advance-bd:#BFE0CF;
+      --mx-explore-bd:#BFD8EE;
+      --mx-stuck-bd:#EDD5AE;
+      --mx-fail-bd:#F2C7C5;
+      --mx-done-bd:#BCDEDD;
+
+      /* ---------- SEMÁNTICOS ---------- */
+      --mx-bg:var(--mx-n-50);
+      --mx-surface:var(--mx-n-0);
+      --mx-surface-sunk:var(--mx-n-25);
+      --mx-surface-dark:var(--mx-n-900);
+      --mx-surface-dark-2:var(--mx-n-800);
+      --mx-border:var(--mx-n-200);
+      --mx-border-dark:var(--mx-n-700);
+      --mx-text:var(--mx-n-900);
+      --mx-text-muted:var(--mx-n-500);
+      --mx-text-invert:var(--mx-n-0);
+      --mx-text-dark:#E6E9EF;
+      --mx-accent:var(--mx-iris-600);
+      --mx-accent-hover:var(--mx-iris-700);
+      --mx-accent-wash:var(--mx-iris-100);
+
+      /* ---------- TIPOGRAFÍA ---------- */
+      --mx-font-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+      --mx-font-body:"Inter",ui-sans-serif,system-ui,-apple-system,sans-serif;
+      --mx-font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+      /* ---------- SOMBRAS ---------- */
+      --mx-shadow-sm:0 1px 2px rgba(15,18,25,.06);
+      --mx-shadow-md:0 4px 12px -2px rgba(15,18,25,.10);
+      --mx-shadow-lg:0 12px 32px -8px rgba(15,18,25,.18);
+      --mx-shadow-panel:0 24px 60px -28px rgba(15,18,25,.55);
+      --mx-focus-ring:0 0 0 2px #FFFFFF, 0 0 0 4px var(--mx-iris-600);
+
+      /* ============================================================
+         Alias de compatibilidad: los cuerpos de las pantallas se
+         escribieron contra estos nombres; aquí resuelven al sistema.
+         ============================================================ */
+      --bg:var(--mx-bg);
+      --bg-grad:var(--mx-bg);
+      --surface:var(--mx-surface);
+      --surface-2:var(--mx-surface-sunk);
+      --grad-subtle:var(--mx-surface-sunk);
+      --grad-topbar:var(--mx-surface);
+      --veil:rgba(237,239,244,.74);
+      --border:var(--mx-border);
+      --border-2:var(--mx-n-300);
+      --text:var(--mx-text);
+      --text-2:var(--mx-text-muted);
+      --text-3:var(--mx-text-muted);
+      --accent:var(--mx-iris-600);
+      --accent-2:var(--mx-iris-700);
+      --accent-bg:var(--mx-iris-100);
+      --accent-bd:var(--mx-iris-200);
+      --grad-accent:var(--mx-iris-600);
+      --ok:var(--mx-advance-text);       --ok-bg:var(--mx-advance-bg);  --ok-bd:var(--mx-advance-bd);  --grad-ok:var(--mx-advance);
+      --explore:var(--mx-explore-text);  --explore-bg:var(--mx-explore-bg); --explore-bd:var(--mx-explore-bd); --grad-explore:var(--mx-explore);
+      --stuck:var(--mx-stuck-text);      --stuck-bg:var(--mx-stuck-bg); --stuck-bd:var(--mx-stuck-bd); --grad-stuck:var(--mx-stuck);
+      --fail:var(--mx-fail-text);        --fail-bg:var(--mx-fail-bg);   --fail-bd:var(--mx-fail-bd);
+      --ink:var(--mx-n-900);
+      --shadow-card:0 0 0 0 transparent;
+      --shadow-accent:0 0 0 0 transparent;
+      --shadow-lg:rgba(15,18,25,.18);
+      --sans:var(--mx-font-body);
+      --mono:var(--mx-font-mono);
+      --display:var(--mx-font-display);
+    }
+
+    *{box-sizing:border-box;}
+    body{
+      margin:0;background:var(--mx-bg);color:var(--mx-text);
+      font:400 16px/24px var(--mx-font-body);
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:var(--mx-iris-600);text-decoration:none;}
+    a:hover{color:var(--mx-iris-700);text-decoration:underline;}
+    p{margin:0;}
+
+    /* Display: Bricolage en todos los titulares */
+    h1,h2,h3{margin:0;font-family:var(--mx-font-display);font-weight:700;letter-spacing:-.025em;}
+
+    /* Utilidad: cifras verificables siempre tabulares */
+    .num{font-variant-numeric:tabular-nums;}
+    .code{font-family:var(--mx-font-mono);white-space:pre;margin:0;}
+
+    /* Eyebrow / encabezado de columna */
+    .mx-label{
+      font-family:var(--mx-font-mono);font-size:11px;line-height:12px;font-weight:700;
+      letter-spacing:.14em;text-transform:uppercase;color:var(--mx-text-muted);
+    }
+    /* Chip de estado */
+    .mx-chip{
+      display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;
+      border-radius:999px;font-family:var(--mx-font-mono);font-size:10px;line-height:10px;
+      font-weight:700;letter-spacing:.10em;text-transform:uppercase;white-space:nowrap;
+    }
+    .mx-chip--advance{background:var(--mx-advance-bg);color:var(--mx-advance-text);}
+    .mx-chip--explore{background:var(--mx-explore-bg);color:var(--mx-explore-text);}
+    .mx-chip--stuck{background:var(--mx-stuck-bg);color:var(--mx-stuck-text);}
+    .mx-chip--fail{background:var(--mx-fail-bg);color:var(--mx-fail-text);}
+    .mx-chip--done{background:var(--mx-done-bg);color:var(--mx-done-text);}
+    .mx-chip--neutral{background:var(--mx-n-100);color:var(--mx-n-600);}
+    .mx-chip--brand{background:var(--mx-iris-100);color:var(--mx-iris-700);}
+    .mx-chip--dark{background:rgba(230,233,239,.10);color:var(--mx-text-dark);}
+
+    /* Superficie de editor y panel: Tinta 900 */
+    .mx-dark{background:var(--mx-n-900);color:var(--mx-text-dark);}
+    .mx-dark .code{color:var(--mx-text-dark);}
+    .mx-dark .k{color:var(--mx-iris-300);}
+    .mx-dark .f{color:var(--mx-explore-dark);}
+    .mx-dark .s{color:var(--mx-advance-dark);}
+    .mx-dark .c{color:var(--mx-n-500);}
+    .mx-dark .n{color:var(--mx-stuck-dark);}
+    .mx-dark .gutter{color:var(--mx-n-600);}
+
+    /* Sintaxis sobre superficie clara (evidencia, solución de referencia) */
+    .k{color:var(--mx-iris-700);}
+    .f{color:var(--mx-explore-text);}
+    .s{color:var(--mx-advance-text);}
+    .c{color:var(--mx-n-500);font-style:italic;}
+    .n{color:var(--mx-stuck-text);}
+
+    /* Bloque de evidencia */
+    .mx-evidence{border-left:2px solid var(--mx-iris-600);padding-left:14px;font:400 12px/20px var(--mx-font-mono);white-space:pre-wrap;}
+
+    @media (prefers-reduced-motion: reduce){
+      *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+    }
+  </style>
+</helmet>
+
+<div style="width:1440px;height:950px;background:var(--bg);display:flex;flex-direction:column;font-family:var(--sans);">
+
+  <header style="height:56px;flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;padding:0 32px;">
+    <button style="height:30px;padding:0 12px;border:1px solid var(--border);background:transparent;border-radius:6px;font:600 12px/14px var(--sans);color:var(--mx-iris-600);cursor:pointer;display:inline-flex;align-items:center;gap:8px;">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 3.5L5 8l4.5 4.5"></path></svg>
+      Mosaico
+    </button>
+    <div style="width:1px;height:24px;background:var(--border);"></div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <h1 style="font-size:20px;line-height:26px;letter-spacing:-0.02em;">Bruno Méndez</h1>
+      <span class="mx-chip mx-chip--stuck">
+        <span style="width:6px;height:6px;border-radius:999px;background:var(--mx-stuck);display:block;"></span>
+        Atascado
+      </span>
+      <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);">mismo IndexError ×3 · 2 min</span>
+    </div>
+
+    <div style="flex-grow:1;"></div>
+
+    <div style="display:flex;flex-direction:column;align-items:flex-end;margin-right:4px;">
+      <span class="num" style="font-family:var(--mono);font-size:18px;line-height:22px;font-weight:500;">32:14</span>
+      <span class="mx-label">Restantes</span>
+    </div>
+    <button style="height:36px;padding:0 14px;border:1px solid var(--border);background:var(--surface);border-radius:8px;font:600 13px/16px var(--sans);color:var(--mx-iris-600);cursor:pointer;">Pausar a Bruno</button>
+  </header>
+
+  <div style="flex-grow:1;display:grid;grid-template-columns:92px 1fr 372px;min-height:0;">
+
+    <!-- Participantes -->
+    <nav style="border-right:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 0;">
+      <span class="mx-label" style="font-size:10px;letter-spacing:.12em;margin-bottom:4px;">Sala</span>
+
+      <div style="width:68px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 0;border-radius:10px;border:1px solid transparent;cursor:pointer;">
+        <span style="width:40px;height:40px;border-radius:999px;background:var(--mx-iris-100);border:1px solid var(--mx-iris-200);font:600 13px/16px var(--sans);color:var(--mx-iris-700);display:flex;align-items:center;justify-content:center;">AR</span>
+        <span style="font:500 12px/16px var(--sans);color:var(--text-2);">Ana</span>
+        <span style="width:7px;height:7px;border-radius:999px;background:var(--mx-advance);"></span>
+      </div>
+
+      <div style="width:68px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 0;border-radius:10px;background:var(--mx-iris-100);border:1px solid var(--mx-iris-200);cursor:pointer;">
+        <span style="width:40px;height:40px;border-radius:999px;background:var(--mx-iris-600);font:600 13px/16px var(--sans);color:#fff;display:flex;align-items:center;justify-content:center;">BM</span>
+        <span style="font:600 12px/16px var(--sans);color:var(--mx-iris-700);">Bruno</span>
+        <span style="width:7px;height:7px;border-radius:999px;background:var(--mx-stuck);"></span>
+      </div>
+
+      <div style="width:68px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 0;border-radius:10px;border:1px solid transparent;cursor:pointer;">
+        <span style="width:40px;height:40px;border-radius:999px;background:var(--mx-iris-100);border:1px solid var(--mx-iris-200);font:600 13px/16px var(--sans);color:var(--mx-iris-700);display:flex;align-items:center;justify-content:center;">CY</span>
+        <span style="font:500 12px/16px var(--sans);color:var(--text-2);">Carla</span>
+        <span style="width:7px;height:7px;border-radius:999px;background:var(--mx-explore);"></span>
+      </div>
+
+      <div style="flex-grow:1;"></div>
+      <p style="font:400 11px/15px var(--sans);color:var(--text-2);text-align:center;padding:0 8px;">Cambiar de candidato no interrumpe a nadie</p>
+    </nav>
+
+    <!-- Workspace del candidato -->
+    <section style="display:flex;flex-direction:column;min-height:0;background:var(--surface);">
+      <div style="height:44px;flex-shrink:0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;padding:0 24px;background:var(--surface-2);">
+        <span class="num" style="font-family:var(--mono);font-size:13px;line-height:22px;font-weight:500;">solution.py</span>
+        <span style="font:400 13px/18px var(--sans);color:var(--text-2);">Reto 1 de 2 · Detectar duplicados en un stream</span>
+        <div style="flex-grow:1;"></div>
+        <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);display:inline-flex;align-items:center;gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="6"></circle><path d="M8 5v3.2l2 1.3"></path></svg>
+          reflejo en vivo · solo lectura
+        </span>
+      </div>
+
+      <div style="flex-grow:1;display:flex;overflow:hidden;min-height:0;">
+        <div style="padding:20px 0 20px 24px;text-align:right;user-select:none;">
+          <pre class="code num" style="font-size:13px;line-height:22px;color:var(--mx-n-400);"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div></pre>
+        </div>
+        <div style="padding:20px 24px;flex-grow:1;">
+          <pre class="code" style="font-size:13px;line-height:22px;"><div><span class="k">def</span> <span class="f">first_duplicate</span>(stream):</div><div>    result = []</div><div>    <span class="k">for</span> i <span class="k">in</span> <span class="f">range</span>(<span class="f">len</span>(stream)):</div><div>        <span class="k">for</span> j <span class="k">in</span> <span class="f">range</span>(i + <span class="n">1</span>, <span class="f">len</span>(stream)):</div><div>            <span class="k">if</span> stream[i] == stream[j]:</div><div>                result.<span class="f">append</span>(stream[i])</div><div>    <span class="k">return</span> result[<span class="n">0</span>]</div><div> </div><div> </div><div><span class="c"># no entiendo por qué falla el test 4</span></div></pre>
+        </div>
+      </div>
+
+      <div style="height:210px;flex-shrink:0;border-top:1px solid var(--border);display:flex;flex-direction:column;background:var(--surface-2);">
+        <div style="height:44px;flex-shrink:0;display:flex;align-items:center;gap:12px;padding:0 24px;border-bottom:1px solid var(--border);">
+          <span class="mx-label">Últimas ejecuciones</span>
+          <span class="mx-chip mx-chip--stuck">3 idénticas</span>
+          <div style="flex-grow:1;"></div>
+          <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);">14:31:15 · 14:30:04 · 14:28:35</span>
+        </div>
+        <div style="padding:14px 24px;display:flex;flex-direction:column;">
+          <div class="code" style="font-size:13px;line-height:22px;color:var(--text-2);">$ python -m pytest tests_publicos.py</div>
+          <div class="code" style="font-size:13px;line-height:22px;color:var(--mx-advance-text);">test_basico ......... ok</div>
+          <div class="code" style="font-size:13px;line-height:22px;color:var(--mx-fail-text);">test_sin_repetidos .. ERROR</div>
+          <div class="code" style="font-size:13px;line-height:22px;color:var(--mx-fail-text);">IndexError: list index out of range<span style="color:var(--text-2);">   solution.py:7</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Panel de intervención -->
+    <aside style="border-left:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;min-height:0;">
+
+      <div style="padding:16px;border-bottom:1px solid var(--border);">
+        <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border);">
+          <div style="height:186px;background:var(--mx-n-100);display:flex;align-items:center;justify-content:center;">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--mx-n-400)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="8.5" r="3.5"></circle><path d="M4.5 20a7.5 7.5 0 0 1 15 0"></path></svg>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface-2);border-top:1px solid var(--border);">
+            <span style="width:6px;height:6px;border-radius:999px;background:var(--mx-advance);"></span>
+            <span style="font:400 13px/18px var(--sans);color:var(--text);flex-grow:1;">Canal de audio abierto</span>
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);">00:42</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button style="flex-grow:1;height:36px;border:none;background:var(--mx-iris-600);border-radius:8px;font:600 13px/16px var(--sans);color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="6" y="2" width="4" height="7" rx="2"></rect><path d="M4 8a4 4 0 0 0 8 0M8 12v2"></path></svg>
+            Micrófono abierto
+          </button>
+          <button style="width:36px;height:36px;border:1px solid var(--border);background:var(--surface);border-radius:8px;color:var(--text-2);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 6.5v3h2.5L8 12.5v-9L4.5 6.5H2z"></path><path d="M11 6l3 4M14 6l-3 4"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <div style="flex-grow:1;padding:16px;display:flex;flex-direction:column;gap:12px;overflow:hidden;min-height:0;">
+        <span class="mx-label">Línea de tiempo</span>
+        <div style="display:flex;flex-direction:column;">
+          <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);width:36px;flex-shrink:0;">14:31</span>
+            <p style="font:400 13px/18px var(--sans);color:var(--text-2);flex-grow:1;">Tercera ejecución con el mismo error</p>
+          </div>
+          <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);width:36px;flex-shrink:0;">14:27</span>
+            <p style="font:400 13px/18px var(--sans);color:var(--text-2);flex-grow:1;">Revirtió el cambio de las líneas 4–6</p>
+          </div>
+          <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);width:36px;flex-shrink:0;">14:22</span>
+            <p style="font:400 13px/18px var(--sans);color:var(--text-2);flex-grow:1;">Falló <span style="font-family:var(--mono);font-size:12px;">test_sin_repetidos</span></p>
+          </div>
+          <div style="display:flex;gap:12px;padding:10px 0;">
+            <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);width:36px;flex-shrink:0;">14:14</span>
+            <p style="font:400 13px/18px var(--sans);color:var(--text-2);flex-grow:1;">Pidió una aclaración del enunciado</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:12px;background:var(--surface-2);">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="mx-label" style="flex-grow:1;">Nota privada</span>
+          <span class="num" style="font-family:var(--mono);font-size:12px;line-height:18px;letter-spacing:0.02em;color:var(--text-2);">anclada a 14:33</span>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:8px;background:var(--surface);padding:12px;min-height:96px;">
+          <p style="font:400 14px/20px var(--sans);">Le pregunté qué devuelve si la lista está vacía. No lo había pensado.<span style="display:inline-block;width:1.5px;height:15px;background:var(--mx-iris-600);vertical-align:-3px;margin-left:2px;"></span></p>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button style="flex-grow:1;height:36px;border:1px solid var(--border);background:var(--surface);border-radius:8px;font:600 13px/16px var(--sans);color:var(--mx-iris-600);cursor:pointer;">Marcar ayuda brindada</button>
+          <button style="height:36px;padding:0 14px;border:none;background:var(--mx-iris-600);border-radius:8px;font:600 13px/16px var(--sans);color:#fff;cursor:pointer;">Guardar</button>
+        </div>
+        <p style="font:400 13px/18px var(--sans);color:var(--text-2);">Las notas y las ayudas quedan en el informe. El candidato no las ve.</p>
+      </div>
+    </aside>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
