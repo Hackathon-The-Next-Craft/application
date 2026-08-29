@@ -34,6 +34,10 @@ export function DeviceCheck({
   );
   const [detalle, setDetalle] = useState<string | null>(deviceCheck?.error ?? null);
   const [oyoAlgo, setOyoAlgo] = useState(false);
+  // El stream vive en estado, no solo en la ref: el <video> no existe hasta
+  // que el estado pasa a "probando", así que asignarle srcObject durante
+  // getUserMedia no hacía nada. Con esto se conecta cuando ya está montado.
+  const [stream, setStream] = useState<MediaStream | null>(null);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const barraRef = useRef<HTMLDivElement>(null);
@@ -54,6 +58,12 @@ export function DeviceCheck({
   // navegador se queda encendido durante toda la espera.
   useEffect(() => soltar, [soltar]);
 
+  // Conectar la cámara en cuanto el elemento existe.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video && stream) video.srcObject = stream;
+  }, [stream]);
+
   async function probar() {
     setEstado("pidiendo");
     setDetalle(null);
@@ -64,7 +74,6 @@ export function DeviceCheck({
         video: true,
       });
       streamRef.current = stream;
-      if (videoRef.current) videoRef.current.srcObject = stream;
 
       const ctx = new AudioContext();
       audioCtxRef.current = ctx;
@@ -91,10 +100,12 @@ export function DeviceCheck({
       medir();
 
       setEstado("probando");
+      setStream(stream);
     } catch (caught) {
       const message =
         caught instanceof Error ? caught.message : "No se pudo abrir la cámara o el micrófono";
       soltar();
+      setStream(null);
       await setReady({ joinToken, micOk: false, cameraOk: false, error: message });
       setDetalle(message);
       setEstado("error");
@@ -103,6 +114,7 @@ export function DeviceCheck({
 
   async function confirmar() {
     soltar();
+    setStream(null);
     await setReady({ joinToken, micOk: true, cameraOk: true });
     setEstado("listo");
   }
