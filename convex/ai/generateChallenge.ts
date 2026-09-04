@@ -32,7 +32,11 @@ const Challenge = z.object({
     .array(
       z.object({
         criterion: z.string(),
-        weight: z.number().min(0).max(1),
+        weight: z
+          .number()
+          .min(0)
+          .max(100)
+          .describe("Peso en porcentaje. Los pesos del reto suman 100"),
         observableSignals: z
           .array(z.string())
           .describe("Señales verificables en el código o los tests"),
@@ -64,6 +68,48 @@ const Challenge = z.object({
 
 const Output = z.object({ challenges: z.array(Challenge).min(1).max(2) });
 
+type Rubrica = z.infer<typeof Challenge>["rubric"];
+
+/**
+ * Los pesos de la rúbrica son porcentajes que suman 100: es lo que valida y
+ * muestra el editor de retos. El modelo los devolvía como fracciones (0.5,
+ * 0.3, 0.2), así que la pantalla los sumaba en 1 y pintaba "1%" en rojo, con
+ * el check de "los pesos suman 100%" sin marcar hasta corregirlos a mano.
+ *
+ * Reescalamos aquí en vez de confiar solo en el prompt: también endereza los
+ * pesos que suman 90 o 105, que es la otra forma de llegar al mismo rojo.
+ */
+function enPorcentajes(rubric: Rubrica): Rubrica {
+  const total = rubric.reduce((suma, r) => suma + r.weight, 0);
+
+  // Sin señal que reescalar: reparto parejo antes que dejar la rúbrica en cero.
+  if (total <= 0) {
+    const base = Math.floor(100 / rubric.length);
+    return rubric.map((r, i) => ({
+      ...r,
+      weight: i === 0 ? 100 - base * (rubric.length - 1) : base,
+    }));
+  }
+
+  const escalados = rubric.map((r) => ({
+    ...r,
+    weight: Math.round((r.weight / total) * 100),
+  }));
+
+  // Redondear cada peso por separado deja la suma en 99 o 101. La diferencia
+  // va al criterio de mayor peso, donde menos se nota.
+  const suma = escalados.reduce((acc, r) => acc + r.weight, 0);
+  if (suma !== 100) {
+    let mayor = 0;
+    for (let i = 1; i < escalados.length; i++) {
+      if (escalados[i].weight > escalados[mayor].weight) mayor = i;
+    }
+    escalados[mayor].weight += 100 - suma;
+  }
+
+  return escalados;
+}
+
 const SYSTEM = `Diseñas pruebas de live coding para entrevistas técnicas.
 
 Reglas:
@@ -71,6 +117,7 @@ Reglas:
   problema pequeño y bien acotado antes que uno ambicioso a medias.
 - La rúbrica usa criterios observables en el código, la ejecución o la
   explicación. Nunca criterios vagos como "buena actitud" o "es proactivo".
+- Los pesos de la rúbrica son porcentajes enteros y suman exactamente 100.
 - Los aspectos críticos deben poder verificarse con un test o leyendo el código.
 - Incluye casos normales, de borde y de error. Marca hidden: true en los que no
   debe ver el candidato, y que esos no revelen la solución.
@@ -104,6 +151,7 @@ export const run = internalAction({
 
     return result.challenges.slice(0, n).map((c) => ({
       ...c,
+      rubric: enPorcentajes(c.rubric),
       promptVersion: PROMPT_VERSION,
     }));
   },
